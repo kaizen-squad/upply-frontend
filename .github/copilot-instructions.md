@@ -12,7 +12,7 @@ Avant toute review, vérifie que les conventions définies dans [`REPOSITORY-CON
 |---|---|
 | Framework | Next.js 14 — App Router |
 | Styling | Tailwind CSS — classes utilitaires uniquement |
-| Authentification | Access Token (mémoire/store) + Refresh Token (cookie HttpOnly) |
+| Authentification | Access Token (mémoire React/store uniquement) + Refresh Token (cookie HttpOnly géré par le backend) |
 | HTTP Client | Axios ou fetch wrapper centralisé |
 | Paiement | FedaPay `checkout.js` — widget côté client |
 
@@ -22,7 +22,7 @@ Avant toute review, vérifie que les conventions définies dans [`REPOSITORY-CON
 
 - **Valeurs sensibles :** Aucune clé API, token ou valeur sensible ne doit apparaître dans le code. Tout passe par les variables d'environnement Next.js (`NEXT_PUBLIC_` pour les variables exposées au client, sans préfixe pour les variables serveur). Signale toute valeur hardcodée comme erreur bloquante.
 - **Gestion des états :** Tout appel API doit gérer trois états : chargement, succès, erreur. Un composant qui affiche des données sans gérer l'état de chargement ou l'état d'erreur est incomplet. Signale-le comme avertissement.
-- **Stockage des tokens :** L'Access Token ne doit jamais être stocké dans `localStorage` ou `sessionStorage`. Il doit être en mémoire (store React/Context) ou dans un cookie sécurisé. Signale tout stockage dans `localStorage` comme erreur bloquante.
+- **Stockage des tokens :** L'Access Token doit être stocké exclusivement en mémoire (Context React ou store Zustand). Il ne doit jamais être stocké dans `localStorage`, `sessionStorage`, ou un cookie — quelle que soit sa configuration. Sa disparition au rafraîchissement de page est un comportement attendu et intentionnel : le refresh automatique via le cookie HttpOnly du Refresh Token prend le relais. Signale tout stockage persistant de l'Access Token comme erreur bloquante.
 
 ---
 
