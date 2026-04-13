@@ -1,5 +1,5 @@
 import { ChevronDown } from 'lucide-react';
-import React, { HTMLAttributes, SelectHTMLAttributes, useState } from 'react'
+import React, { SelectHTMLAttributes, useState } from 'react'
 
 type SelectFieldProps = {
     name: string,
@@ -33,14 +33,14 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
     };
 
   return (  
-    <div className='max-w-62.5 relative w-max'>
+    <div role='button' className='max-w-62.5 relative w-max'>
 
         <select
           {...props}
           name={name.toLowerCase()}
           id={name.toLowerCase()}
           className='hidden'
-          value={selected}
+          value={selected.toUpperCase()}
           onChange={(e) => {
             setSelected(e.target.value);
             onChange?.(e);
@@ -48,7 +48,7 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
         >
           {placeholder && <option value="" disabled>{placeholder}</option>}
           {options.map((option, i) => (
-            <option key={i} value={option.toLowerCase()}>{}</option>
+            <option key={i} value={option}>{option}</option>
           ))}
         </select>
 
@@ -60,9 +60,9 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
         </div>
         { isVisible && <ul aria-expanded={isVisible} aria-haspopup="listbox" className='absolute rounded-md shadow-2xs border-[0.5px] border-gray-300 my-2 bg-white p-1 w-full z-1'>
             { options.map((option, index) => 
-            <li className={(selected === option.toLowerCase() ? 'bg-orange-500/80 ' : '') + 'py-1 px-2 hover:bg-gray-100 rounded-md cursor-pointer flex items-center justify-between'}  key={index} onClick={()=> handleSelectOption(option)}>
+            <li style={{backgroundColor: selected === option ? '#fa6515cd' : ''}} className={'py-1 px-2 hover:bg-gray-100 rounded-md cursor-pointer flex items-center justify-between'}  key={index} onClick={()=> handleSelectOption(option)}>
                <small>{option}</small> 
-               {selected === option.toLowerCase() && <span>✓</span>}
+               {selected === option && <span>✓</span>}
             </li>)}</ul> }
     </div>
     
