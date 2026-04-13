@@ -1,7 +1,11 @@
+'use client'
+import Tab from '@/components/ui/Tabs/Tab'
 import Image from 'next/image'
+import { redirect, usePathname } from 'next/navigation'
 import { FC, ReactNode } from 'react'
 
 const layout: FC<{children:ReactNode}> = ({children}) => {
+  const pathname = usePathname();
   return (
     <div className='flex'>
       <div className='w-[45%] bg-cover-beige'>
@@ -14,8 +18,13 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
         />
       </div>
       
-      <div className='w-[35%] m-auto'>
-        {children}
+      <div className='w-[35%] m-auto my-40'>
+        <Tab options={['Login', 'Register']} current={pathname.includes('login') ? 'Login' : 'Register'} onclick={(e)=> {
+            redirect((e.currentTarget.id  === 'Login' ? '/login' : '/register'))
+        }} />
+        <div>
+          {children}
+        </div>
       </div>
     </div>
   )
