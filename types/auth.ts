@@ -18,18 +18,23 @@ export const RegisterSchema = z.object({
         path: ['confirmPassword'],
     }
 );
+
 export enum UserRole {
     client = 'client',
     prestataire = 'prestataire'
 }
 export type LoginProps = z.infer<typeof LoginSchema>;
+
 export type RegisterProps = z.infer<typeof RegisterSchema>;
 
-export type LoginResponse = {
+export type User = {
+    role: UserRole,
+    id: string
+}
+
+export type AuthResponse = {
     access_token: string,
     refresh_token: string,
-    user: {
-        role: UserRole,
-        id: string
-    }
+    user: User
 }
+
