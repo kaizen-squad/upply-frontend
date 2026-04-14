@@ -33,6 +33,7 @@ function LoginForm() {
     const onSubmit = async (loginData: LoginProps)=> {
         
     } 
+    
   return (
     <form onSubmit={handleSubmit(onSubmit, (err)=>console.log(err))} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200'>
         <h1 className='text-2xl font-bold'>Welcome back</h1>

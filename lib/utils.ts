@@ -1,9 +1,12 @@
 import { cookies } from "next/headers"
 import apiFetch from "./api";
 
-export const setAccessToken=async (token: string)=>{
+/**
+ * Set the Access token by storing it inside a httpOnly cookie
+ * @param token the access_token
+ */
+export const setAccessToken=async (token: string, destroy: boolean=false)=>{
     const cookieStore = await cookies();
-
     cookieStore.set('access_token', token, {
         httpOnly: true,
         secure: true,
@@ -13,7 +16,12 @@ export const setAccessToken=async (token: string)=>{
     });
 }
 
-export const setRefreshToken = async (token: string)=>{
+/**
+ * Set the refresh token by storing it inside a httpOnly cookie
+ * @param token the refresh_token
+ */
+
+export const setRefreshToken = async (token: string, destroy: boolean = false)=>{
     const cookieStore = await cookies();
 
     cookieStore.set('refresh_token', token, {
@@ -25,22 +33,29 @@ export const setRefreshToken = async (token: string)=>{
     });
 }
 
-
+/**
+ * Get the access_token by reading the corresponding cookie 
+ * @returns the access_Token: string
+ */
 export const getToken = async () => {
     const cookieStore = await cookies();
     
     return cookieStore.get('access_token')?.value;
 }
 
+/**
+ * Fires when the access token expires
+ * @returns the access_token refreshed
+ */
 export const refreshToken = async() => {
     try{
         const res =  await apiFetch('/refresh-token');
-        const {accessToken, refreshToken} = res.data;
-        setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
+        const {access_token, refresh_token} = res.data;
+        setAccessToken(access_token);
+        setRefreshToken(refresh_token);
 
-        return accessToken;
-        
+        return access_token;
+
     }catch(err){
         throw err;
     }
