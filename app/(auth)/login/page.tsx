@@ -3,6 +3,7 @@
 import Button from "@/components/ui/Button/Button";
 import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
 import TextField from "@/components/ui/TextField/TextField";
+import { useAuth } from "@/hooks/useAuth";
 import { LoginProps, LoginSchema } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock, Mail } from "lucide-react";
@@ -12,6 +13,8 @@ import { Controller, useForm } from "react-hook-form";
 
 function LoginForm() {
     const {notify} = useNotificationManager();
+    const {login} = useAuth();
+
     const emailProps = {
         type: 'email',
         label: 'Email',
@@ -31,9 +34,9 @@ function LoginForm() {
     });
 
     const onSubmit = async (loginData: LoginProps)=> {
-        
+        await login(loginData);
     } 
-    
+
   return (
     <form onSubmit={handleSubmit(onSubmit, (err)=>console.log(err))} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200'>
         <h1 className='text-2xl font-bold'>Welcome back</h1>

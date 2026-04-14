@@ -2,10 +2,10 @@ import { cookies } from "next/headers"
 import apiFetch from "./api";
 
 /**
- * Set the Access token by storing it inside a httpOnly cookie
+ * Set the Access token by storing it inside a httpOnly cookie.
  * @param token the access_token
  */
-export const setAccessToken=async (token: string, destroy: boolean=false)=>{
+export const setAccessToken=async (token: string)=>{
     const cookieStore = await cookies();
     cookieStore.set('access_token', token, {
         httpOnly: true,
@@ -17,11 +17,11 @@ export const setAccessToken=async (token: string, destroy: boolean=false)=>{
 }
 
 /**
- * Set the refresh token by storing it inside a httpOnly cookie
+ * Set the refresh token by storing it inside a httpOnly cookie.
  * @param token the refresh_token
  */
 
-export const setRefreshToken = async (token: string, destroy: boolean = false)=>{
+export const setRefreshToken = async (token: string)=>{
     const cookieStore = await cookies();
 
     cookieStore.set('refresh_token', token, {
@@ -34,7 +34,7 @@ export const setRefreshToken = async (token: string, destroy: boolean = false)=>
 }
 
 /**
- * Get the access_token by reading the corresponding cookie 
+ * Get the access_token by reading the corresponding cookie.
  * @returns the access_Token: string
  */
 export const getToken = async () => {
@@ -44,8 +44,8 @@ export const getToken = async () => {
 }
 
 /**
- * Fires when the access token expires
- * @returns the access_token refreshed
+ * Fires to refresh the access token when it expires.
+ * @returns the access_token refreshed.
  */
 export const refreshToken = async() => {
     try{
@@ -59,4 +59,18 @@ export const refreshToken = async() => {
     }catch(err){
         throw err;
     }
+}
+
+/**
+ * When fires, destoy the access and refresh tokens cookies.
+ */
+
+export const destroycookies = async ()=>{
+    const cookieStore = await cookies();
+    try{
+        cookieStore.delete('access_token').delete('refresh_token');
+    }catch(err){
+        throw `Error deleting cookies: ${err}`;
+    }
+    
 }
