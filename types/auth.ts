@@ -3,9 +3,7 @@ import z from 'zod/v4';
 export const LoginSchema = z.object({
     email: z.email({error:'Incorrect email format!'}),
     password: z.string().min(8, '8 characters minimum.')
-})
-
-export type LoginProps = z.infer<typeof LoginSchema>;
+});
 
 export const RegisterSchema = z.object({    
     role: z.enum(['client', 'prestataire']),
@@ -19,6 +17,19 @@ export const RegisterSchema = z.object({
         error: "Passwords do not match!",
         path: ['confirmPassword'],
     }
-)
-
+);
+export enum UserRole {
+    client = 'client',
+    prestataire = 'prestataire'
+}
+export type LoginProps = z.infer<typeof LoginSchema>;
 export type RegisterProps = z.infer<typeof RegisterSchema>;
+
+export type LoginResponse = {
+    access_token: string,
+    refresh_token: string,
+    user: {
+        role: UserRole,
+        id: string
+    }
+}
