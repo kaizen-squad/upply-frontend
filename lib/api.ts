@@ -1,6 +1,6 @@
 import axios from "axios";
 import dotenv from 'dotenv'
-import { getToken, refreshToken, setAccessToken, setRefreshToken } from "./utils";
+import { getToken, refreshToken, setAccessToken, setRefreshToken } from "./auth";
 import { HTTPResponse } from '../types/index';
 import { isPublicRoute } from "./middleware";
 

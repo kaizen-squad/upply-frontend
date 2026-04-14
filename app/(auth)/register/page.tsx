@@ -6,6 +6,7 @@ import { RegisterProps, RegisterSchema } from '@/types/auth';
 import SelectField from '@/components/ui/SelectField/SelectField';
 import TextField from '@/components/ui/TextField/TextField';
 import { Lock, Mail, User } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 function RegisterForm() {
   const {handleSubmit, control} = useForm<RegisterProps>({
@@ -13,9 +14,11 @@ function RegisterForm() {
     resolver: zodResolver(RegisterSchema),
     defaultValues: { role: 'client' }
   });
+
+  const {register} = useAuth();
   
   const onSubmit = async (registerData:RegisterProps)=>{
-    
+      await register(registerData);
   }
 
   return (
