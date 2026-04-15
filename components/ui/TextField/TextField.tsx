@@ -9,7 +9,7 @@ const TextField: FC<ITextFieldProps> = ( { type, label, value, className, placeh
         <div className='flex flex-col gap-2 w-full'>  
             {label && <div className='flex justify-between w-full'>
                 <label htmlFor={label} className='font-bold text-gray-700'>{label}</label>
-                {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
+                {errorMessage && <small className='text-red-500'>{errorMessage}</small>}
             </div>}              
            
            <div className='relative'>

@@ -5,8 +5,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { RegisterProps, RegisterSchema } from '@/types/auth';
 import SelectField from '@/components/ui/SelectField/SelectField';
 import TextField from '@/components/ui/TextField/TextField';
-import { Lock, Mail, User } from 'lucide-react';
+import { Lock, Mail, Phone, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+
 
 function RegisterForm() {
   const {handleSubmit, control} = useForm<RegisterProps>({
@@ -43,10 +44,20 @@ function RegisterForm() {
 
             <Controller 
               control={control}
+              name='phone'
+              render={({field, fieldState: {error}})=> <TextField value={field.value}
+                onChange={field.onChange} type='text' errorMessage={field.value && error?.message} label="Phone" placeholder="+1 234567890" Icon={Phone}/>}
+              />
+        </div>
+
+        <div>
+          <Controller 
+              control={control}
               name='email'
               render={({field, fieldState: {error}})=> <TextField value={field.value}
                 onChange={field.onChange} type='email' errorMessage={field.value && error?.message} label="Email" placeholder="traveler@example.com" Icon={Mail}/>}
               />
+
         </div>
         
         <div className='my-2'>

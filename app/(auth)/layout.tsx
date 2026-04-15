@@ -8,6 +8,8 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
   const pathname = usePathname();
   return (
     <div className='flex'>
+      
+      {/* Left Image */}
       <div className='w-[45%] bg-cover-beige'>
         <Image 
           src={'/Images/cover1.jpg'}
@@ -15,17 +17,20 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
           width={600}
           height={500}
           alt='cover'
+          loading='eager'
         />
       </div>
       
-      <div className='w-[35%] m-auto my-40'>
-        <Tab options={['Login', 'Register']} current={pathname.includes('login') ? 'Login' : 'Register'} onclick={(e)=> {
+      {/* Forms Zone */}
+      <div className='w-[35%] m-auto mt-35'>
+        <Tab options={['Login', 'Register']} current={pathname?.includes('login') ? 'Login' : 'Register'} onclick={(e)=> {
             redirect((e.currentTarget.id  === 'Login' ? '/login' : '/register'))
         }} />
         <div>
           {children}
         </div>
       </div>
+
     </div>
   )
 }
