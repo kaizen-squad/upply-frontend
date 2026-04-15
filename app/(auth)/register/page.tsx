@@ -13,6 +13,7 @@ import Spinner from '@/components/ui/Spinner/Spinner';
 
 
 
+
 function RegisterForm() {
   const {handleSubmit, control} = useForm<RegisterProps>({
     mode: 'onChange',
