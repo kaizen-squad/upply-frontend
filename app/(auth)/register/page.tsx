@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 
 
+
 function RegisterForm() {
   const {handleSubmit, control} = useForm<RegisterProps>({
     mode: 'onChange',
