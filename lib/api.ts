@@ -1,10 +1,15 @@
 import axios from "axios";
-import dotenv from 'dotenv'
-import { getToken, refreshToken, setAccessToken, setRefreshToken } from "./auth";
 import { HTTPResponse } from '../types/index';
-import { isPublicRoute } from "./middleware";
+import { useTokenStore } from "@/hooks/store";
 
-dotenv.config();
+/**
+ * The opened routes which any client can reach whithout authorization, except refresh token where the token is checked directly from the http cookie 
+ */
+export const publicAccessRoutes=[
+  'login',
+  'register',
+  'refresh'
+]
 
 let isRefreshing = false;
 let queue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; }[] = [];
@@ -15,7 +20,8 @@ let queue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; 
 const instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     headers: {
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/json'
     },    
     withCredentials: true
 });
@@ -25,9 +31,9 @@ const instance = axios.create({
  * Check https://axios-http.com/docs/interceptors for more info.
  */
 instance.interceptors.request.use((config)=> {
-
-    if(config.url && isPublicRoute.includes(config.url)){
-        const access_token = getToken();
+    console.log(config.url)
+    if(config.url && !publicAccessRoutes.find((route)=>config.url?.includes(route))){
+        const access_token = useTokenStore.getState().access_token;
         config.headers.Authorization = `Bearer ${access_token}`
     }
 
@@ -59,8 +65,11 @@ instance.interceptors.response.use(
 
             try{
 
-               const access_token = await refreshToken();
-                    
+                const response = await axios.post('api/auth/refresh', {}, {
+                    withCredentials: true
+                });
+                const { access_token } : { access_token: string } = response.data;
+
                 queue.forEach(p => p.resolve(access_token));
                 error.config.headers.Authorization = `Bearer ${access_token}`;
                 instance(error.config)
@@ -69,13 +78,14 @@ instance.interceptors.response.use(
 
                 queue.forEach(p => p.reject());
                 queue = [];
-                return Promise.reject(err);
+                Promise.reject(err);
 
+                if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+                    window.location.href = '/login';
+                }
             }
             finally{
-
-                isRefreshing=false;
-                    
+                isRefreshing=false;    
             }
         }
 
@@ -96,12 +106,25 @@ export default async function apiFetch (url: string, body?: object | undefined, 
 
     try{
 
-        const res: HTTPResponse = await instance({url, method, data:body})
+        const res: HTTPResponse = await instance({url, method, data:body},)
         .then((response)=> response.data);
 
         return res;
 
     }catch(err){
-        throw err
+        // Debugging errors in the console
+        if (axios.isAxiosError(err)) {
+            console.error('Error details:', {
+                status: err.response?.status,
+                data: err.response?.data,
+                message: err.message
+            });
+        }
+        console.error(err);
+        return {
+            success: false,
+            message: err instanceof Error ? err.message : 'Request failed',
+            data: null
+        } as HTTPResponse;
     }
 }
