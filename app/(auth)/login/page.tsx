@@ -12,7 +12,6 @@ import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 
 function LoginForm() {
-    const {notify} = useNotificationManager();
     const {login} = useAuth();
 
     const emailProps = {

@@ -1,12 +1,10 @@
 import apiFetch from "@/lib/api"
-import { setAccessToken, setRefreshToken } from "@/lib/auth"
 import { LoginProps, RegisterProps } from "@/types/auth"
 import { AuthResponse } from '../types/auth';
 import { redirect } from "next/navigation";
 import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
 import { HTTPResponse } from "@/types";
-import { destroycookies } from '../lib/auth';
-import useUserStore from "./store";
+import useUserStore, { useTokenStore } from "./store";
 
 
 /**
@@ -28,35 +26,48 @@ export const useAuth = () =>{
 
         if(success){
             try{
-                setAccessToken(data.access_token);
-                setRefreshToken(data.refresh_token);
+                useTokenStore.setState({access_token:data.access_token});
                 setUser(data.user);
 
                 redirect(`${data.user.role}/dashboard`)
             }catch(err){
-                logout();
                 throw(err);
-            }
-            
+            }   
         }
-
         notify(message, 'error');
     }
 
     const login = async(body:LoginProps) => {
-        const response = await apiFetch('auth/login', body, 'POST');
-        getLoggedIn(response)
+        const response = await apiFetch('api/auth/login', body, 'POST');
+        if(response)
+            getLoggedIn(response)
+        else
+            notify('Login Failed: An unexpected error occured.', 'error')
     }
 
     const register = async (body: RegisterProps) =>{
-        const response = await apiFetch('auth/register', body, 'POST');
-        getLoggedIn(response);
+        const response = await apiFetch('api/auth/register', body, 'POST');
+        
+        if(response)
+            getLoggedIn(response)
+        else
+            notify('Registration Failed: An unexpected error occured.', 'error')
+
     }
 
-    const logout = ()=> {
-        destroycookies();
-        setUser(undefined);
-        redirect('auth/login');
+    const logout = async () =>{
+        try{
+            const response = await apiFetch('/api/auth/logout', {}, 'POST');
+            if(!response){
+                notify('An unexpected error occured.', 'error')
+            }
+        }catch(err){
+            throw err
+        }finally{
+            if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+                window.location.href = '/login';
+            }
+        }
     }
 
     return { login, register, logout }
