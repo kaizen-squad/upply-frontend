@@ -40,7 +40,7 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
           name={name.toLowerCase()}
           id={name.toLowerCase()}
           className='hidden'
-          value={selected.toUpperCase()}
+          value={selected.toLowerCase()}
           onChange={(e) => {
             setSelected(e.target.value);
             onChange?.(e);
