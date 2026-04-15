@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import axios, { InternalAxiosRequestConfig } from "axios";
+=======
+import axios from "axios";
+>>>>>>> 78a43c6 (Fixed auth structure, api service and middleware)
 import { HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
 
