@@ -10,6 +10,7 @@ const TextField: FC<ITextFieldProps> = ( { type, id, label, value, className, pl
         <div className='flex flex-col gap-2 w-full'>  
             {label && <div className='flex justify-between w-full'>
                 <label htmlFor={textFieldId} className={cn('font-bold ', errorMessage ? 'text-red-600' : '') }>{label}</label>
+                <label htmlFor={props.name} className={cn('font-bold ', errorMessage ? 'text-red-600' : '') }>{label}</label>
                 {(errorMessage && Eposition ==='top') && <small className='text-red-500'>{errorMessage}</small>}
             </div>}              
            
