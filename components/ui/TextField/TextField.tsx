@@ -9,8 +9,13 @@ const TextField: FC<ITextFieldProps> = ( { type, id, label, value, className, pl
     return ( 
         <div className='flex flex-col gap-2 w-full'>  
             {label && <div className='flex justify-between w-full'>
+<<<<<<< HEAD
                 <label htmlFor={props.name} className={cn('font-bold ', errorMessage ? 'text-red-600' : '') }>{label}</label>
                 {(errorMessage && Eposition ==='top') && <small className='text-red-500'>{errorMessage}</small>}
+=======
+                <label htmlFor={label} className='font-bold text-gray-700'>{label}</label>
+                {errorMessage && <small className='text-red-500'>{errorMessage}</small>}
+>>>>>>> 78a43c6 (Fixed auth structure, api service and middleware)
             </div>}              
            
            <div className='relative'>
