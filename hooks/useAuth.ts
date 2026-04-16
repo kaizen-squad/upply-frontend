@@ -1,10 +1,10 @@
 import apiFetch from "@/lib/api"
 import { LoginProps, RegisterProps } from "@/types/auth"
-import { AuthResponse } from '../types/auth';
+import { AuthDataResponse } from '../types/auth';
 import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
 import { HTTPResponse } from "@/types";
 import  { useTokenStore } from "./store";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 
 /**
@@ -18,16 +18,16 @@ import { useRouter } from "next/router";
 export const useAuth = () =>{
 
     const { notify } = useNotificationManager();
-
-    const getLoggedIn = (response: HTTPResponse)=> {
+    const router = useRouter();
+    const getLoggedIn = (response: HTTPResponse<AuthDataResponse>)=> {
         const { success, message } = response;
-        const data:AuthResponse = response.data;
-
+        const data:AuthDataResponse | null= response.data;
+            
         if(success){
             try{
                 useTokenStore.setState({access_token:data.access_token});
 
-                useRouter().push(`/${data.user.role}/dashboard`);
+                router.push(`/${data.user.role}/dashboard`);
                 
             }catch(err){
                 throw(err);
@@ -37,7 +37,7 @@ export const useAuth = () =>{
     }
 
     const login = async(body:LoginProps) => {
-        const response = await apiFetch('api/auth/login', body, 'POST');
+        const response: HTTPResponse<AuthDataResponse> = await apiFetch('api/auth/login', body, 'POST');
         if(response)
             getLoggedIn(response)
         else
@@ -45,7 +45,7 @@ export const useAuth = () =>{
     }
 
     const register = async (body: RegisterProps) =>{
-        const response = await apiFetch('api/auth/register', body, 'POST');
+        const response: HTTPResponse<AuthDataResponse> = await apiFetch('api/auth/register', body, 'POST');
         
         if(response)
             getLoggedIn(response)

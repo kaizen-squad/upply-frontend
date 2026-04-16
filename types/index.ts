@@ -1,9 +1,14 @@
+import { AuthDataResponse, RefreshTokenResponse } from "./auth";
 /**
  * HTTP Response format for all requests
  */
-export interface HTTPResponse{
+
+// Type utilitaire pour les réponses
+export type DataType = AuthDataResponse | RefreshTokenResponse;
+
+export interface HTTPResponse<T>{
     success: boolean,
-    data: any,
+    data: T,
     message: string,
     status: number
 }
