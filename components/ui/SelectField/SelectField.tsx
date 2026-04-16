@@ -60,7 +60,7 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
         </div>
         { isVisible && <ul aria-expanded={isVisible} aria-haspopup="listbox" className='absolute rounded-md shadow-2xs border-[0.5px] border-gray-300 my-2 bg-white p-1 w-full z-1'>
             { options.map((option, index) => 
-            <li style={{backgroundColor: selected === option ? '#fa6515cd' : ''}} className={'py-1 px-2 hover:bg-gray-100 rounded-md cursor-pointer flex items-center justify-between'}  key={index} onClick={()=> handleSelectOption(option)}>
+            <li className={(selected === option ? 'bg-orange-500/80 ' : '') + 'py-1 px-2 hover:bg-gray-100 rounded-md cursor-pointer flex items-center justify-between'}  key={index} onClick={()=> handleSelectOption(option)}>
                <small>{option}</small> 
                {selected === option && <span>✓</span>}
             </li>)}</ul> }
