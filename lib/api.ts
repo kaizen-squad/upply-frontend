@@ -1,10 +1,15 @@
-import axios from "axios";
-import { HTTPResponse } from '../types/index';
+import axios, { InternalAxiosRequestConfig } from "axios";
+import { DataType, HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
 
 /**
  * The opened routes which any client can reach whithout authorization, except refresh token where the token is checked directly from the http cookie 
  */
+
+interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
+
 export const publicAccessRoutes=[
   'login',
   'register',
@@ -31,7 +36,7 @@ const instance = axios.create({
  * Check https://axios-http.com/docs/interceptors for more info.
  */
 instance.interceptors.request.use((config)=> {
-    console.log(config.url)
+    
     if(config.url && !publicAccessRoutes.find((route)=>config.url?.includes(route))){
         const access_token = useTokenStore.getState().access_token;
         if(access_token)
@@ -48,17 +53,18 @@ instance.interceptors.request.use((config)=> {
 instance.interceptors.response.use(
     (response)=> response, 
     async (error) => {
+        const config = error.config as CustomAxiosRequestConfig;
+        
+        if (error.response?.status === 401 && !config._retry && !publicAccessRoutes.find((route)=>error.config.url?.includes(route))) {
 
-        if (error.response?.status === 401 && !error.config._retry && !publicAccessRoutes.find((route)=>error.config.url?.includes(route))) {
-
-            error.config._retry = true;
+            config._retry = true;
 
             if(isRefreshing){
                 return new Promise((resolve, reject)=>{
                     queue.push({resolve, reject});
                 }).then(token => {
-                    error.config.headers.Authorization = `Bearer ${token}`
-                    return instance(error.config);
+                    config.headers.Authorization = `Bearer ${token}`
+                    return instance(config);
                 }).catch(err => {
                     return Promise.reject(err);
                 })
@@ -67,15 +73,12 @@ instance.interceptors.response.use(
             isRefreshing= true;
 
             try{
-
-                const response = await axios.post('api/auth/refresh', {}, {
-                    withCredentials: true
-                });
+                const response = await instance.post('/api/auth/refresh', {})
                 const { access_token } : { access_token: string } = response.data;
 
                 queue.forEach(p => p.resolve(access_token));
-                error.config.headers.Authorization = `Bearer ${access_token}`;
-                return instance(error.config)
+                config.headers.Authorization = `Bearer ${access_token}`;
+                return instance(config)
 
             }catch(err){
 
@@ -103,14 +106,14 @@ instance.interceptors.response.use(
  * @param method method of the request (optional: automatically set to GET when not supplied)
  * @returns res: HTTPResponse {success, message, data}
  */
-export default async function apiFetch (url: string, body?: object | undefined,  method?: 'GET'| 'POST'| 'PUT'| 'PATCH' | 'DELETE') {
+export default async function apiFetch<T> (url: string, body?: object | undefined,  method?: 'GET'| 'POST'| 'PUT'| 'PATCH' | 'DELETE'): Promise<HTTPResponse<T> > {
 
     if(!method)
         method = 'GET';
 
     try{
 
-        const res: HTTPResponse = await instance({url, method, data:body},)
+        const res: HTTPResponse<T> = await instance({url, method, data:body},)
         .then((response)=> response.data);
 
         return res;
@@ -128,7 +131,8 @@ export default async function apiFetch (url: string, body?: object | undefined, 
         return {
             success: false,
             message: err instanceof Error ? err.message : 'Request failed',
-            data: null
-        } as HTTPResponse;
+            data: null as T,
+            status: 500
+        } ;
     }
 }

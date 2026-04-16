@@ -2,6 +2,8 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import apiFetch from '@/lib/api';
+import { HTTPResponse } from '@/types';
+import { RefreshTokenResponse } from '@/types/auth';
 
 export async function POST(request: Request) {
   const cookieStore = await cookies();
@@ -15,9 +17,9 @@ export async function POST(request: Request) {
   }
   
   // Call the backend to refresh the tokens
-  const response= await apiFetch(`auth/refresh`, {refresh_token: refreshToken}, 'POST');
+  const response:HTTPResponse<RefreshTokenResponse> = await apiFetch(`auth/refresh`, {refresh_token: refreshToken}, 'POST');
     
-  const { data } : { data:{ access_token: string } } = response;
+  const { data } = response;
 
   if (response.success) {
     return NextResponse.json({

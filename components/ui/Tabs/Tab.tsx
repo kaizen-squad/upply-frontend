@@ -23,10 +23,10 @@ function  Tab( {options, current, onclick}: {options: string[], current?:string,
 
 
     useEffect(()=>{      
-        const tabulate = ()=> tabFunc();                                                                 
+        const onResize = ()=> tabFunc();                                                                 
         tabFunc();
-        window.addEventListener('resize', ()=> tabulate());
-        return () => window.removeEventListener('resize', ()=>tabulate());
+        window.addEventListener('resize', ()=> onResize);
+        return () => window.removeEventListener('resize', ()=>onResize);
     }, [current]);
 
     
