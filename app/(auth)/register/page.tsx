@@ -39,13 +39,13 @@ function RegisterForm() {
             <Controller 
               control={control}
               name='name'
-              render={({field, fieldState:{error}})=> <TextField value={field.value} onChange={field.onChange} errorMessage={field.value && error?.message} label="Name" Icon={User} placeholder="John" />}
+              render={({field, fieldState:{error}})=> <TextField name='name' value={field.value} onChange={field.onChange} errorMessage={field.value && error?.message} label="Name" Icon={User} placeholder="John" />}
             />
 
             <Controller 
               control={control}
               name='phone'
-              render={({field, fieldState: {error}})=> <TextField value={field.value}
+              render={({field, fieldState: {error}})=> <TextField name='phone' value={field.value}
                 onChange={field.onChange} type='text' errorMessage={field.value && error?.message} label="Phone" placeholder="+1 234567890" Icon={Phone}/>}
               />
         </div>
@@ -54,7 +54,7 @@ function RegisterForm() {
           <Controller 
               control={control}
               name='email'
-              render={({field, fieldState: {error}})=> <TextField value={field.value}
+              render={({field, fieldState: {error}})=> <TextField name='email' value={field.value}
                 onChange={field.onChange} type='email' errorMessage={field.value && error?.message} label="Email" placeholder="traveler@example.com" Icon={Mail}/>}
               />
 
@@ -64,7 +64,7 @@ function RegisterForm() {
           <Controller 
               control={control}
               name='password'
-              render={({field, fieldState: {error}})=> <TextField value={field.value}
+              render={({field, fieldState: {error}})=> <TextField name='password' value={field.value}
                 onChange={field.onChange} type='password' errorMessage={field.value && error?.message} label="Password" placeholder="Create a password" Icon={Lock}/>}
           />
         </div>
@@ -73,7 +73,7 @@ function RegisterForm() {
             <Controller 
               control={control}
               name='confirmPassword'
-              render={({field, fieldState: {error}})=> <TextField value={field.value}
+              render={({field, fieldState: {error}})=> <TextField name='confirmPassword' value={field.value}
                 onChange={field.onChange} type='password' errorMessage={field.value && error?.message} label="Confirm Password" placeholder="Re-enter your password" Icon={Lock}/>}
             />
         </div>

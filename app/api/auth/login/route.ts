@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import apiFetch from '@/lib/api';
-import { AuthResponse } from '@/types/auth';
+import { AuthDataResponse } from '@/types/auth';
+import { HTTPResponse } from '@/types';
 
 export async function POST(request: Request) {
   const body = await request.json();
 
-  const response = await apiFetch(`auth/login`, body, 'POST');
+  const response: HTTPResponse<AuthDataResponse> = await apiFetch(`auth/login`, body, 'POST');
   
-  const {data}:{data:AuthResponse} = response;
+  const {data}= response;
 
   if (response.success && data.refresh_token) {
 

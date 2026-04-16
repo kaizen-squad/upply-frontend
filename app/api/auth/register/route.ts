@@ -22,7 +22,6 @@ export async function POST(request: Request) {
       sameSite: 'lax',     
       maxAge: 7 * 24 * 60 * 60, // 7 jours
       path: '/',           
-      domain: process.env.COOKIE_DOMAIN 
     });
 
     cookieStore.set('user', JSON.stringify(data.user), {
