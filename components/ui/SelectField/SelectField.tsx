@@ -33,7 +33,7 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
     };
 
   return (  
-    <div role='button' className='max-w-62.5 relative w-max'>
+    <div className='max-w-62.5 relative w-max'>
 
         <select
           {...props}
