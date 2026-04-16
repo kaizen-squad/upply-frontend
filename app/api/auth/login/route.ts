@@ -36,5 +36,5 @@ export async function POST(request: Request) {
     });
   }
   
-  return NextResponse.json(data, { status: response.status });
+  return NextResponse.json(response, { status: response.status ?? 500 });
 }
