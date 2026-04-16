@@ -26,6 +26,7 @@ function  Tab( {options, current, onclick}: {options: string[], current?:string,
 
     useEffect(()=>{      
         const onResize = ()=> tabFunc();                                                                 
+<<<<<<< HEAD
         tabFunc();
         window.addEventListener('resize', onResize);
         return () => window.removeEventListener('resize', onResize);
@@ -61,9 +62,11 @@ function  Tab( {options, current, onclick}: {options: string[], current?:string,
 
     useEffect(()=>{      
         const tabulate = ()=> tabFunc();                                                                 
+=======
+>>>>>>> a6a9cdf (Fixed error related to the review)
         tabFunc();
-        window.addEventListener('resize', ()=> tabulate());
-        return () => window.removeEventListener('resize', ()=>tabulate());
+        window.addEventListener('resize', ()=> onResize);
+        return () => window.removeEventListener('resize', ()=>onResize);
     }, [current]);
 
     
