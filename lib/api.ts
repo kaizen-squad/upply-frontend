@@ -34,7 +34,8 @@ instance.interceptors.request.use((config)=> {
     console.log(config.url)
     if(config.url && !publicAccessRoutes.find((route)=>config.url?.includes(route))){
         const access_token = useTokenStore.getState().access_token;
-        config.headers.Authorization = `Bearer ${access_token}`
+        if(access_token)
+            config.headers.Authorization = `Bearer ${access_token}`
     }
 
     return config;
@@ -48,16 +49,18 @@ instance.interceptors.response.use(
     (response)=> response, 
     async (error) => {
 
-        if (error.response?.status === 401 && !error.config._retry) {
+        if (error.response?.status === 401 && !error.config._retry && !publicAccessRoutes.find((route)=>error.config.url?.includes(route))) {
 
-            error.config._retry= true;
+            error.config._retry = true;
 
             if(isRefreshing){
                 return new Promise((resolve, reject)=>{
                     queue.push({resolve, reject});
                 }).then(token => {
                     error.config.headers.Authorization = `Bearer ${token}`
-                    return instance(error.config)
+                    return instance(error.config);
+                }).catch(err => {
+                    return Promise.reject(err);
                 })
             }
             
@@ -72,24 +75,25 @@ instance.interceptors.response.use(
 
                 queue.forEach(p => p.resolve(access_token));
                 error.config.headers.Authorization = `Bearer ${access_token}`;
-                instance(error.config)
+                return instance(error.config)
 
             }catch(err){
 
                 queue.forEach(p => p.reject());
                 queue = [];
-                Promise.reject(err);
 
                 if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
                     window.location.href = '/login';
                 }
+                return Promise.reject(err);
             }
             finally{
                 isRefreshing=false;    
             }
         }
 
-    throw error;
+        // Retourner l'erreur originale pour les autres cas
+        return Promise.reject(error);
 });
 
 /**

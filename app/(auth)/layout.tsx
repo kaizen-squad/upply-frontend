@@ -22,11 +22,11 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
       </div>
       
       {/* Forms Zone */}
-      <div className='w-[35%] m-auto mt-35'>
+      <div className='w-[35%] m-auto flex flex-col'>
         <Tab options={['Login', 'Register']} current={pathname?.includes('login') ? 'Login' : 'Register'} onclick={(e)=> {
             redirect((e.currentTarget.id  === 'Login' ? '/login' : '/register'))
         }} />
-        <div>
+        <div className='h-max m-auto w-full'>
           {children}
         </div>
       </div>

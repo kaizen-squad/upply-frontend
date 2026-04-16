@@ -1,10 +1,10 @@
 import apiFetch from "@/lib/api"
 import { LoginProps, RegisterProps } from "@/types/auth"
 import { AuthResponse } from '../types/auth';
-import { redirect } from "next/navigation";
 import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
 import { HTTPResponse } from "@/types";
-import useUserStore, { useTokenStore } from "./store";
+import  { useTokenStore } from "./store";
+import { useRouter } from "next/router";
 
 
 /**
@@ -17,7 +17,6 @@ import useUserStore, { useTokenStore } from "./store";
  */
 export const useAuth = () =>{
 
-    const {setUser} = useUserStore();
     const { notify } = useNotificationManager();
 
     const getLoggedIn = (response: HTTPResponse)=> {
@@ -27,14 +26,14 @@ export const useAuth = () =>{
         if(success){
             try{
                 useTokenStore.setState({access_token:data.access_token});
-                setUser(data.user);
 
-                redirect(`${data.user.role}/dashboard`)
+                useRouter().push(`/${data.user.role}/dashboard`);
+                
             }catch(err){
                 throw(err);
             }   
-        }
-        notify(message, 'error');
+        }else 
+            notify(message, 'error');
     }
 
     const login = async(body:LoginProps) => {
@@ -52,7 +51,6 @@ export const useAuth = () =>{
             getLoggedIn(response)
         else
             notify('Registration Failed: An unexpected error occured.', 'error')
-
     }
 
     const logout = async () =>{
