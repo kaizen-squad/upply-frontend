@@ -9,7 +9,7 @@ import { Lock, Mail } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
 function LoginForm() {
-    const {login} = useAuth();
+    const { login } = useAuth();
 
     const emailProps = {
         type: 'email',

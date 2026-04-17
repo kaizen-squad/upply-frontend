@@ -15,7 +15,7 @@ const NotificationPortal:FC<NotificationPortalProps> = ( {children} ) => {
             return 
         }
     }, [])
-    if(!notificationRoot) return ;
+    if(!notificationRoot) return null;
   return createPortal(children, notificationRoot)
 }
 
