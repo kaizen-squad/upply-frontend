@@ -1,5 +1,5 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
-import { DataType, HTTPResponse } from '../types/index';
+import { HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
 
 /**
@@ -75,8 +75,10 @@ instance.interceptors.response.use(
             try{
                 const response = await instance.post('/api/auth/refresh', {})
                 const { access_token } : { access_token: string } = response.data;
-
+                
+                useTokenStore.setState({access_token:access_token});
                 queue.forEach(p => p.resolve(access_token));
+                queue = [];
                 config.headers.Authorization = `Bearer ${access_token}`;
                 return instance(config)
 

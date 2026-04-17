@@ -25,8 +25,8 @@ function  Tab( {options, current, onclick}: {options: string[], current?:string,
     useEffect(()=>{      
         const onResize = ()=> tabFunc();                                                                 
         tabFunc();
-        window.addEventListener('resize', ()=> onResize);
-        return () => window.removeEventListener('resize', ()=>onResize);
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
     }, [current]);
 
     

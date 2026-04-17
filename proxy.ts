@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 import { User } from './types/auth';
 
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const refreshToken = request.cookies.get('refresh_token');
   const isLoggedIn = !!refreshToken;
   
@@ -36,7 +36,6 @@ export async function middleware(request: NextRequest) {
           return NextResponse.redirect(new URL('/prestataire/dashboard', request.url));
       }
     }
-
     // Fallback: logout si pas de rôle
     const response = NextResponse.redirect(new URL('/login', request.url));
     response.cookies.delete('refresh_token');
