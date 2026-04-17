@@ -9,7 +9,7 @@ import { Lock, Mail } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
 function LoginForm() {
-    const {login} = useAuth();
+    const { login } = useAuth();
 
     const emailProps = {
         type: 'email',
@@ -40,14 +40,14 @@ function LoginForm() {
         <Controller
             control={control}
             name='email'
-            render={({field, fieldState: {error}})=> <TextField value={field.value} errorMessage={error?.message ?? ''} {...emailProps} onChange={field.onChange} /> }
+            render={({field, fieldState: {error}})=> <TextField name="email" value={field.value} errorMessage={error?.message ?? ''} {...emailProps} onChange={field.onChange} /> }
         />
         
         <div className="mt-3">
          <Controller 
             control={control}
             name='password'
-            render={({field, fieldState: {error}})=> <TextField errorMessage={error?.message ?? ''} {...passwordProps} value={field.value} onChange={field.onChange} /> }
+            render={({field, fieldState: {error}})=> <TextField name="password" errorMessage={error?.message ?? ''} {...passwordProps} value={field.value} onChange={field.onChange} /> }
         />
         </div>
 
