@@ -44,6 +44,7 @@ export type RegisterProps = z.infer<typeof RegisterSchema>;
  * User type used to save his information accross the app.
  */
 export type User = {
+    name: string,
     role: Role,
     id: string
 }

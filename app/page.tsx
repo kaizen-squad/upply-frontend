@@ -1,6 +1,5 @@
-import Footer from "@/components/ui/Footer/Footer";
-import FooterMobile from "@/components/ui/Footer/FooterMobile";
+import Sidebar from "@/components/ui/Sidebar/Sidebar";
 
 export default function Home() {
-  return <FooterMobile/>
+  return <Sidebar/>
 }
