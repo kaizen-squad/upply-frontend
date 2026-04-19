@@ -32,7 +32,7 @@ const Sidebar = () => {
                  </li>)
             }
         </ul>
-        <button className='absolute bottom-10 left-[10%] w-[80%] py-2 bg-alizarin-crimson-red-51 rounded-md text-white-solid cursor-pointer hover:opacity-85 hover:scale-98 duration-200 '>Log Out</button>
+        <button className='absolute bottom-10 left-[10%] w-[80%] py-2 bg-alizarin-crimson-red-51 rounded-md text-white-solid cursor-pointer hover:opacity-85 hover:scale-98 duration-200'>Log Out</button>
     </aside> 
   );
 }
