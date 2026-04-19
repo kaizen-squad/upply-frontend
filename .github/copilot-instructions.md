@@ -115,7 +115,7 @@ Toute implémentation qui duplique cette logique dans un composant est une erreu
 
 ---
 
-npm run dee
+npm run dev
 
 ```typescript
 type Role = 'client' | 'prestataire'
