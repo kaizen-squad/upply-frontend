@@ -1,4 +1,5 @@
 import Footer from "@/components/ui/Footer/Footer"
+import FooterMobile from "@/components/ui/Footer/FooterMobile"
 import Sidebar from "@/components/ui/Sidebar/Sidebar"
 import { FC, ReactNode } from "react"
 
@@ -16,8 +17,8 @@ const layout:FC<{children: ReactNode}> = ({children}) => {
                 </div>
             </div>
         </div>
-        
         <Footer/>
+        <FooterMobile/>
     </div>
   )
 }
