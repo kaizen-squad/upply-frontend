@@ -41,7 +41,6 @@ export function useTasks<T = ApplicationResponse | TaskProps>(id:string|undefine
     }
   };
 
-<<<<<<< HEAD
   const createTask = async (taskData:TaskFormType) => {
     try{
         setLoading(true);
@@ -153,11 +152,3 @@ export function useApplication(): UseApplicationReturn {
 
     return {applyTotask, application, loading, deleteApplication}
   }
-=======
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  return { tasks, loading, refetch: fetchTasks };
-}
->>>>>>> 814eb5a (Built task page with api call.)
