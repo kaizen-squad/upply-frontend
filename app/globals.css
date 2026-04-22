@@ -75,6 +75,16 @@
     --header-height: 80px;
     --main-height: calc(100vh - 80px)
   }
+
+  footer{
+    @apply bg-woodsmoke-gray-10
+  } 
+  h1{
+    @apply text-3xl font-bold  
+  }
+  h2{
+    @apply text-xl font-semibold
+  }
 }
 
   footer{
