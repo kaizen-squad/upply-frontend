@@ -17,6 +17,7 @@
   --scorpion-gray-37: #5F5E5E;
   --white-solid: #FFFFFF;
   --woodsmoke-gray-10: #18181B;
+  --sidebar-width: 230px;
 }
 
 @theme inline {
@@ -39,6 +40,7 @@
   --color-woodsmoke-gray-8: var(--woodsmoke-gray-8);  
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --radius-sidebar-width: var(--sidebar-width)
 }
 
 @media (prefers-color-scheme: dark) {
@@ -59,10 +61,17 @@
     --scorpion-gray-37: #5F5E5E;
     --white-solid: #FFFFFF;
     --woodsmoke-gray-10: #18181B;
+    --sidebar-width: 230px;
   }
 
   footer{
     @apply bg-woodsmoke-gray-10
   } 
+  h1{
+    @apply text-3xl font-bold  
+  }
+  h2{
+    @apply text-xl font-semibold
+  }
 }
 
