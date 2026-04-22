@@ -38,7 +38,7 @@ const FooterMobile = () => {
     };
 
     return (
-        <footer className='text-white-solid p-10'>
+        <footer className='text-white-solid p-10 md:hidden'>
             <div className='w-max m-auto mb-7'>
                 <p className='text-center'>La micro-mission en toute sécurité.</p>
             </div>
