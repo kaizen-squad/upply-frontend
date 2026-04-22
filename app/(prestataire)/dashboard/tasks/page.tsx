@@ -48,7 +48,7 @@ const page =  () => {
         }
 
 
-        <div className="flex items-stretch flex-1 m-auto gap-5 w-full mt-18 lg:mt-10 lg:w-[85%] lg:scale-80">
+        <div className="flex items-stretch flex-1 m-auto gap-5 w-full mt-18 md: lg:mt-10 lg:scale-90">
             <div className="text-center items-center gap-10 rounded-sm p-8 w-full bg-white-solid sm:bg-woodsmoke-gray-10 sm:w-[80%] lg:w-max lg:text-left lg:flex">
                 <div className="lg:w-80">
                     <h2 className="text-woodsmoke-gray-10 text-3xl sm:text-white-solid ">Vous ne trouvez pas votre bonheur?</h2>
