@@ -1,7 +1,8 @@
 'use client'
 import { userStore } from '@/hooks/store'
 import { ChartColumnDecreasing, LayoutGrid, NotepadText, Settings, Wallet } from 'lucide-react'
-import { useRouter } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
+import Button from '../Button/Button';
 
 const Sidebar = () => {
     const {user} = userStore();
@@ -15,15 +16,15 @@ const Sidebar = () => {
     ];
     
   return (
-    <aside className='pl-0.5 w-[250px] shadow-2xs border-r border-r-iron-2-gray-84 h-screen relative'>
-        <div className='mb-8 mt-12 ml-7'>
+    <aside className='pl-0.5 pt-12 w-(--sidebar-width) shadow-2xs border-r-2 border-r-gray-200 h-screen relative left-0 top-0'>
+        <div className='mb-8 ml-7'>
             <p className='text-xl font-semibold'>{user?.name ?? 'Johny Sins'}</p>
             <small className='text-sm font-medium text-scarpa-flow-gray-34'>{(user?.role === 'client') ? 'VERIFIED WORKED' : 'VERIFIED ENTERPRISE'}</small>
         </div>
         <ul>
             {
-                onglets.map(({Icon, text, redirect}) => 
-                <li 
+                onglets.map(({Icon, text, redirect}, index) => 
+                <li key={index}
                     className='flex items-center duration-300 gap-5 text-scarpa-flow-gray-34 py-3 px-5 hover:border-l-6 border-l-alizarin-crimson-red-51 cursor-pointer hover:bg-gallery-gray-93 w-full hover:text-black'
                     onClick={()=> router.push(redirect)}
                 >
@@ -32,7 +33,10 @@ const Sidebar = () => {
                  </li>)
             }
         </ul>
-        <button className='absolute bottom-10 left-[10%] w-[80%] py-2 bg-alizarin-crimson-red-51 rounded-md text-white-solid cursor-pointer hover:opacity-85 hover:scale-98 duration-200'>Log Out</button>
+        <Button 
+            className='absolute bottom-10 left-[10%] w-[80%] py-2 bg-alizarin-crimson-red-51 rounded-md text-white-solid'
+            textContent='Log Out' 
+        />
     </aside> 
   );
 }

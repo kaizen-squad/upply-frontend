@@ -13,5 +13,5 @@ export default function Home() {
     client_id:'2',
     prestataire_id: null
   }
-  return <Task {...task}/>
+  return <Task task={task}/>
 }
