@@ -124,12 +124,12 @@ export default async function apiFetch<T> (url: string, body?: object | undefine
         // Debugging errors in the console
         if (axios.isAxiosError(err)) {
             console.error('Error details:', {
-                status: err.response?.status,
+                status: err.response?.status || 500,
                 data: err.response?.data,
                 message: err.message
             });
-        }
-        console.error(err);
+        }else
+            console.error(err);
         return {
             success: false,
             message: err instanceof Error ? err.message : 'Request failed',
