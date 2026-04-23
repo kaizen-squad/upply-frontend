@@ -20,6 +20,7 @@ export async function proxy(request: NextRequest) {
   
   // 1. Non authentifié sur route protégée entraine redirection login
   if (!isLoggedIn && !isPublicPath) {
+    return NextResponse.redirect(new URL('/', request.url));
   }
   
   // 2. Authentifié sur route publique entraine redirection dashboard
