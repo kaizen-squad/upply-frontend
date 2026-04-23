@@ -6,7 +6,7 @@ import { useTasks } from "@/hooks/useTasks"
 import { RotateCw } from "lucide-react"
 
 const page =  () => {
-     const {loading, tasks, refetch} = useTasks();
+     const {loading, tasks, refetch} = useTasks(undefined);
     
   return (
     <div>
