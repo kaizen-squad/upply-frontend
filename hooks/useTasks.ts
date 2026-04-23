@@ -7,21 +7,24 @@ import useNotificationManager from '@/components/ui/Notification/hooks/useNotifi
 interface UseTasksReturn {
   tasks: TaskProps[];
   loading: boolean;
-  refetch: () => void;
+  refetch: (id:string | undefined) => Promise<void>;
 }
 
-export function useTasks(): UseTasksReturn {
+export function useTasks(id:string|undefined): UseTasksReturn {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
   const [loading, setLoading] = useState(true);
   const {notify} = useNotificationManager();
 
-  const fetchTasks = async () => {
+  const fetchTasks = async (id:string | undefined) => {
     setLoading(true);
     
     try {
-      const response = await apiFetch<TaskProps[]>('api/tasks');
-      if(response.data)
-        setTasks(response.data);
+      const response = await apiFetch<TaskProps[] | TaskProps>(`api/tasks${id ? `/${id}` : ''}`);
+      if(response.data){
+        const data:TaskProps[] = Array(1).fill(response.data).flat(Infinity)
+        setTasks(data);
+      }
+        
       else throw ''
     } catch (err) {
       notify(err instanceof Error ? err.message : 'Erreur lors du chargement', 'error')
@@ -31,8 +34,8 @@ export function useTasks(): UseTasksReturn {
   };
 
   useEffect(() => {
-    fetchTasks();
+    fetchTasks(id);
   }, []);
 
-  return { tasks, loading, refetch: fetchTasks };
+  return { tasks, loading, refetch: (id:string | undefined)=> fetchTasks(id) };
 }
