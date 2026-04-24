@@ -14,7 +14,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
                 <Sidebar/>
             </div>
             <div className="pt-15 w-full overflow-y-scroll bg-alabaster-gray-98">
-                <div className="w-[90%] m-auto pb-10">
+                <div className="pb-10">
                     {children}
                 </div>
             </div>
