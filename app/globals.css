@@ -17,6 +17,9 @@
   --scorpion-gray-37: #5F5E5E;
   --white-solid: #FFFFFF;
   --woodsmoke-gray-10: #18181B;
+  --green-success:#2E7D32;
+      --orange-alert: #EF6C00;
+
   --sidebar-width: 230px;
 }
 
@@ -38,6 +41,8 @@
   --color-white-solid: var(--white-solid);
   --color-woodsmoke-gray-10: var(--woodsmoke-gray-10);  
   --color-woodsmoke-gray-8: var(--woodsmoke-gray-8);  
+  --color-green-success: var(--green-success);
+  --color-orange-alert: var(--orange-alert);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --radius-sidebar-width: var(--sidebar-width)
@@ -60,6 +65,8 @@
     --scarpa-flow-gray-34: #52525B;
     --scorpion-gray-37: #5F5E5E;
     --white-solid: #FFFFFF;
+    --green-success:#2E7D32;
+    --orange-alert: #EF6C00;
     --woodsmoke-gray-10: #18181B;
     --sidebar-width: 230px;
   }
