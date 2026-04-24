@@ -4,14 +4,16 @@ import { FC } from "react"
 import Button from "../ui/Button/Button";
 import { useRouter } from "next/navigation";
 
+export const flagColor ={
+        OUVERTE: 'scorpion-gray-37',
+        EN_COURS: 'orange-alert',
+        LIVREE: 'alizarin-crimson-red-51',
+        VALIDEE: 'green-success'
+}
+
 const Task: FC<{task:TaskProps}> = ({task}) => {
     const {id, client_id, prestataire_id, title, description, budget, deadline, status} = task;
-    const flagColor ={
-        OUVERTE: 'scorpion-gray-37',
-        EN_COURS: '',
-        LIVREE: 'alizarin-crimson-red-51',
-        VALIDEE: ''
-    }
+    
     const router = useRouter();
   return (
     <div className="bg-white-solid border-2 border-gray-200 shadow-2xs w-[280px] rounded-sm">
