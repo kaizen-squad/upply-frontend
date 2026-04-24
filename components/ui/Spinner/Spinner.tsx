@@ -3,7 +3,6 @@ import { FC } from 'react'
 
 const Spinner:FC<{size?: number}> = ({size = 11}) => {
  
-
   return (
     <div 
         className='rounded-full flex items-center justify-center animate-spin'
