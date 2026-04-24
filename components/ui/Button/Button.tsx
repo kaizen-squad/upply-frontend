@@ -12,7 +12,8 @@ const Button: FC<IButtonProps> = ({type, textContent, className, Icon, onClick, 
                 if(onClick)
                     onClick(e)
             }}
-            className={ (className ?? '') + ' font-medium flex gap-3 justify-center cursor-pointer shadow-2xl duration-200 hover:opacity-90 hover:scale-98'}            
+            className={ (className ?? '') + ' font-medium flex gap-3 justify-center cursor-pointer shadow-2xl' +    
+               (!className?.includes('hover') &&  ' hover:opacity-90 hover:scale-98 duration-200') }            
         >
               {Icon && ((typeof Icon === 'string') ? <img src={Icon} alt="image-logo" /> : <Icon/>)}  {textContent}
         </button>
