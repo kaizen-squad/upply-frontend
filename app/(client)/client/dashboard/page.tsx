@@ -1,6 +1,5 @@
 'use client'
 import MissionBoard from '@/components/dashboard/client/MissionBoard';
-import { flagColor } from '@/components/tasks/Task';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { useTasks } from '@/hooks/useTasks';
