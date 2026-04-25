@@ -1,8 +1,9 @@
 'use client'
 import type { FC } from 'react';
 import type { IButtonProps } from '../types';
+import { cn } from '@/lib/utils';
 
-const Button: FC<IButtonProps> = ({type, textContent, className, Icon, onClick, ...properties})=>{
+const Button: FC<IButtonProps> = ({type, textContent, className, Icon, Iposition='left', onClick, ...properties})=>{
 
     return (
         <button 
@@ -12,9 +13,17 @@ const Button: FC<IButtonProps> = ({type, textContent, className, Icon, onClick, 
                 if(onClick)
                     onClick(e)
             }}
-            className={ (className ?? '') + ' font-medium flex gap-3 justify-center cursor-pointer shadow-2xl duration-200 hover:opacity-90 hover:scale-98'}            
-        >
-              {Icon && ((typeof Icon === 'string') ? <img src={Icon} alt="image-logo" /> : <Icon/>)}  {textContent}
+            className={cn(
+                Iposition === 'left' 
+                ? '' : 'flex-row-reverse',
+                'font-medium flex gap-3 justify-center cursor-pointer shadow-2xl',     
+               (!className?.includes('hover') &&  ' hover:opacity-90 hover:scale-98 duration-200'),
+               className 
+            )}            
+        >  
+            {Icon && ((typeof Icon === 'string') ? <img src={Icon} alt="image-logo" /> : <Icon/>)}  
+            {textContent}
+              
         </button>
     )
 }

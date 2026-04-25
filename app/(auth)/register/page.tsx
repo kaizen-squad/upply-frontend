@@ -7,6 +7,7 @@ import SelectField from '@/components/ui/SelectField/SelectField';
 import TextField from '@/components/ui/TextField/TextField';
 import { Lock, Mail, Phone, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 
 
 function RegisterForm() {
@@ -15,16 +16,16 @@ function RegisterForm() {
     resolver: zodResolver(RegisterSchema),
     defaultValues: { role: 'client' }
   });
-
+  const {notify}= useNotificationManager();
   const {register} = useAuth();
   
   const onSubmit = async (registerData:RegisterProps)=>{
       await register(registerData);
   }
+  const onError = ()=> notify('Veuillez entrez des données valides!', 'warning');
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, (err)=>console.log(err)
-    )} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200'>
+    <form onSubmit={handleSubmit(onSubmit, onError)} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200'>
         <div className='flex items-center justify-between'>
           <h1 className="font-bold text-2xl">Create Account</h1>
           <Controller 
