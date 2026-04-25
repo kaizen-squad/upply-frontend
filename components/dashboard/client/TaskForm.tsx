@@ -21,9 +21,9 @@ const TaskForm = () => {
     const onError = ()=> notify('Veuillez entrez des données valides!', 'warning');
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)} className='w-max bg-white-solid p-10 border rounded-sm' >
+    <form onSubmit={handleSubmit(onSubmit, onError)} className='w-full lg:w-max bg-white-solid p-10 border rounded-sm' >
         <h2>Informations de la mission</h2>
-        <p className='text-santa-gray'>Détaillez vos besoins pour attirer les meilleurs prestataires de la plateforme</p>
+        <p className='text-santa-gray hidden lg:block'>Détaillez vos besoins pour attirer les meilleurs prestataires de la plateforme</p>
 
         <div className='my-8'>
             <Controller
@@ -56,7 +56,7 @@ const TaskForm = () => {
             />
         </div>
 
-        <div className='flex gap-8 my-5'>
+        <div className='flex-col gap-8 lg:flex-row flex my-5'>
             <Controller
                 name='budget'
                 control={control}
