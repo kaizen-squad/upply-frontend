@@ -139,3 +139,4 @@ export type PDashboardData = {
   applications: ApplicationCardProps[],
   statistics: statistics
 }
+
