@@ -9,8 +9,7 @@ import { BookOpenCheck, Lightbulb, Plus, Zap } from 'lucide-react';
 
 const page = () => {
     const {tasks, loading, refetch} = useTasks('mine');
-
- const mockTasks: TaskProps[] = [
+ const mockTasks: TaskProps[] =  [
   {
     id: "task_001",
     client_id: "client_001",
