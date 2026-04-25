@@ -1,6 +1,5 @@
 'use client'
 import MissionBoard from '@/components/dashboard/client/MissionBoard';
-import { flagColor } from '@/components/tasks/Task';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { useTasks } from '@/hooks/useTasks';
@@ -123,7 +122,7 @@ const page = () => {
                     {
                         loading ? 
                         <div>
-                            <p className='h-10 rounded-md bg-gray-200 w-50 animate-pulse lg:mt-3'></p> 
+                            <p className='h-10 rounded-md bg-gray-200 w-50 animate-pulse lg:mt-3 mb-2'></p> 
                             <p  className='h-7 rounded-md bg-gray-200 w-80 animate-pulse lg:mt-3'></p>
                         </div>
                             
