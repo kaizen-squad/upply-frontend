@@ -88,6 +88,19 @@
   h3{
     @apply text-[1rem] font-semibold
   }
+
+  @layer utilities {
+    /* Chrome, Safari, Edge, Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    
+    /* Firefox */
+    .no-scrollbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;  /* IE and Edge */
+    }
+  }
 }
 
   footer{
