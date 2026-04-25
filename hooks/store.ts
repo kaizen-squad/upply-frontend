@@ -6,7 +6,7 @@ type UserStoreProps = {
     setUser: (value: User)=>void
 }
 
-export const userStore = create<UserStoreProps>((set)=> ({
+export const useUserStore = create<UserStoreProps>((set)=> ({
     user: undefined,
     setUser: (value: User)=> {set({user:value})}
 }))

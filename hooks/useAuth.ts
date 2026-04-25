@@ -3,7 +3,7 @@ import { LoginProps, RegisterProps } from "@/types/auth"
 import { AuthDataResponse } from '../types/auth';
 import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
 import { HTTPResponse } from "@/types";
-import  { userStore, useTokenStore } from "./store";
+import  { useTokenStore, useUserStore } from "./store";
 import { useRouter } from "next/navigation";
 
 
@@ -26,7 +26,7 @@ export const useAuth = () =>{
         if(success){
             try{
                 useTokenStore.setState({access_token:data.access_token});
-                userStore.setState({user: data.user});
+                useUserStore.setState({user: data.user});
                 router.push(`/${data.user.role}/dashboard`);
                 
             }catch(err){

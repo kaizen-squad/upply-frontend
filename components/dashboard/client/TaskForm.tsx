@@ -21,7 +21,7 @@ const TaskForm = () => {
     const onError = ()=> notify('Veuillez entrez des données valides!', 'warning');
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)} className='w-full lg:w-max bg-white-solid p-10 border rounded-sm' >
+    <form onSubmit={handleSubmit(onSubmit, onError)} className='w-full lg:w-max bg-white-solid py-10 px-5 md:p-10 border rounded-sm' >
         <h2>Informations de la mission</h2>
         <p className='text-santa-gray hidden lg:block'>Détaillez vos besoins pour attirer les meilleurs prestataires de la plateforme</p>
 
