@@ -80,5 +80,8 @@
   h2{
     @apply text-xl font-semibold
   }
+  h3{
+    @apply text-[1rem] font-semibold
+  }
 }
 

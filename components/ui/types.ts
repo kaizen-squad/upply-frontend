@@ -17,5 +17,6 @@ export type IButtonProps = {
     textContent: string,
     className?: string,
     Icon?: React.FC<React.SVGProps<SVGSVGElement>> | string,
+    Iposition?: 'left' | 'right'
     onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
 } & ButtonHTMLAttributes<HTMLButtonElement>
