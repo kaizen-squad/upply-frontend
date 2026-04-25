@@ -1,5 +1,4 @@
 import Task from "@/components/tasks/Task";
-import Sidebar from "@/components/ui/Sidebar/Sidebar";
 import type { TaskProps} from "@/types";
 
 export default function Home() {
