@@ -1,11 +1,11 @@
 'use client'
-import { userStore } from '@/hooks/store'
+import { useUserStore } from '@/hooks/store'
 import { ChartColumnDecreasing, LayoutGrid, NotepadText, Settings, Wallet } from 'lucide-react'
-import { useRouter, redirect } from 'next/navigation';
-import Button from '../Button/Button';
+import { useRouter } from 'next/navigation';
+import Button from '../ui/Button/Button';
 
 const Sidebar = () => {
-    const {user} = userStore();
+    const {user} = useUserStore();
     const router = useRouter();
     const onglets = [
         {Icon: LayoutGrid, text: 'DASHBOARD', redirect:''},
@@ -33,7 +33,7 @@ const Sidebar = () => {
                  </li>)
             }
         </ul>
-        <Button 
+        <Button
             className='absolute bottom-10 left-[10%] w-[80%] py-2 bg-alizarin-crimson-red-51 rounded-md text-white-solid'
             textContent='Log Out' 
         />
