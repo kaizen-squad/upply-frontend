@@ -25,12 +25,12 @@ const Button: FC<IButtonProps> = ({type, textContent, className, Icon, onClick, 
             className={cn(
                 Iposition === 'left' 
                 ? '' : 'flex-row-reverse',
-                'font-medium flex gap-3 justify-center cursor-pointer shadow-2xl',     
+                'font-medium flex gap-3 justify-center cursor-pointer shadow-2xl items-center',     
                (!className?.includes('hover') &&  ' hover:opacity-90 hover:scale-98 duration-200'),
                className 
             )}            
         >  
-            {Icon && ((typeof Icon === 'string') ? <img src={Icon} alt="image-logo" /> : <Icon/>)}  
+            {Icon && ((typeof Icon === 'string') ? <img src={Icon} alt="image-logo" /> : <Icon />)}  
             {textContent}
               
 =======
