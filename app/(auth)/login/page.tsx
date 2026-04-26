@@ -2,15 +2,16 @@
 
 import Button from "@/components/ui/Button/Button";
 import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
+import Spinner from "@/components/ui/Spinner/Spinner";
 import TextField from "@/components/ui/TextField/TextField";
 import { useAuth } from "@/hooks/useAuth";
 import { LoginProps, LoginSchema } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Lock, Mail } from "lucide-react";
+import { Lock, Mail, Icon } from 'lucide-react';
 import { Controller, useForm } from "react-hook-form";
 
 function LoginForm() {
-    const { login } = useAuth();
+    const { login, loading } = useAuth();
     const {notify} = useNotificationManager();
     
     const emailProps = {
@@ -54,7 +55,12 @@ function LoginForm() {
         />
         </div>
 
-        <Button type='submit' className='bg-foreground text-white w-full mt-6 py-1.5 rounded-lg' textContent='Sign In' />
+        <Button 
+            type='submit' 
+            className='bg-foreground text-white w-full mt-6 rounded-lg py-3' 
+            textContent={loading ? 'Logging in...' : 'Sign In'} 
+            Icon={loading ? ()=><Spinner scale="scale-60"/> : undefined }
+        />
         
     </form>
   )

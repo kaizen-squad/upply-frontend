@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, InputHTMLAttributes } from "react"
+import type { ButtonHTMLAttributes, FC, InputHTMLAttributes, JSX, ReactElement, ReactNode } from "react"
 
 export type ITextFieldProps = {
     type?: string,
@@ -16,7 +16,7 @@ export type IButtonProps = {
     type?: 'button' | 'submit',
     textContent: string,
     className?: string,
-    Icon?: React.FC<React.SVGProps<SVGSVGElement>> | string,
+    Icon?: React.FC<React.SVGProps<SVGSVGElement>> | string | React.FC<React.HTMLProps<HTMLElement>>,
     Iposition?: 'left' | 'right'
     onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
 } & ButtonHTMLAttributes<HTMLButtonElement>
