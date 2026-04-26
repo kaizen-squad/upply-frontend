@@ -1,6 +1,15 @@
 import { User } from "@/types/auth";
 import { create } from "zustand";
 
+type UserStoreProps = {
+    user: User | undefined,
+    setUser: (value: User)=>void
+}
+
+export const useUserStore = create<UserStoreProps>((set)=> ({
+    user: undefined,
+    setUser: (value: User)=> {set({user:value})}
+}))
 
 /**
  * Token store type

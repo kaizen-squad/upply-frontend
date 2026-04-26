@@ -3,8 +3,9 @@ import { LoginProps, RegisterProps } from "@/types/auth"
 import { AuthDataResponse } from '../types/auth';
 import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
 import { HTTPResponse } from "@/types";
-import  { useTokenStore } from "./store";
+import  { useTokenStore, useUserStore } from "./store";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 
 /**
@@ -16,9 +17,10 @@ import { useRouter } from "next/navigation";
  * @returns 
  */
 export const useAuth = () =>{
-
     const { notify } = useNotificationManager();
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
+
     const getLoggedIn = (response: HTTPResponse<AuthDataResponse>)=> {
         const { success, message } = response;
         const data:AuthDataResponse | null= response.data;
@@ -26,7 +28,7 @@ export const useAuth = () =>{
         if(success){
             try{
                 useTokenStore.setState({access_token:data.access_token});
-
+                useUserStore.setState({user: data.user});
                 router.push(`/${data.user.role}/dashboard`);
                 
             }catch(err){
@@ -37,20 +39,37 @@ export const useAuth = () =>{
     }
 
     const login = async(body:LoginProps) => {
-        const response: HTTPResponse<AuthDataResponse> = await apiFetch('api/auth/login', body, 'POST');
-        if(response)
-            getLoggedIn(response)
-        else
-            notify('Login Failed: An unexpected error occured.', 'error')
+        try{
+            setLoading(true);
+            const response: HTTPResponse<AuthDataResponse> = await apiFetch('api/auth/login', body, 'POST');
+            if(response)
+                getLoggedIn(response)
+            else
+                notify('Login Failed: An unexpected error occured.', 'error')
+        }catch(err){
+            notify('The server results in error while logging in!', 'error');
+        }finally{
+            setLoading(false)
+        }
     }
 
     const register = async (body: RegisterProps) =>{
-        const response: HTTPResponse<AuthDataResponse> = await apiFetch('api/auth/register', body, 'POST');
+        try{
+            setLoading(true)
+            const response: HTTPResponse<AuthDataResponse> = await apiFetch('api/auth/register', body, 'POST');
+           
+            if(response)
+                getLoggedIn(response)
+            else
+                notify('Registration Failed: An unexpected error occured.', 'error');
+
+        }catch(err){
+            notify('The server results in error while registering!', 'error');
+        }finally{
+            setLoading(false);
+        }
         
-        if(response)
-            getLoggedIn(response)
-        else
-            notify('Registration Failed: An unexpected error occured.', 'error')
+        
     }
 
     const logout = async () =>{
@@ -68,5 +87,5 @@ export const useAuth = () =>{
         }
     }
 
-    return { login, register, logout }
+    return { login, register, logout, loading }
 }

@@ -15,13 +15,13 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
 
     React.useEffect(() => {
       if (typeof value === 'string' && value && value !== selected) {
-        setSelected(value);
+        setSelected(value.toLowerCase());
       }
 
     }, [value, selected]);
 
     const handleSelectOption = (option: string) => {
-      setSelected(option);
+      setSelected(option.toLowerCase());
       setVisible(false);
 
       if (onChange) {
@@ -40,7 +40,7 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
           name={name.toLowerCase()}
           id={name.toLowerCase()}
           className='hidden'
-          value={selected.toLowerCase()}
+          value={selected}
           onChange={(e) => {
             setSelected(e.target.value);
             onChange?.(e);
@@ -48,7 +48,7 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
         >
           {placeholder && <option value="" disabled>{placeholder}</option>}
           {options.map((option, i) => (
-            <option key={i} value={option}>{option}</option>
+            <option key={i} value={option.toLowerCase()}>{}</option>
           ))}
         </select>
 
@@ -60,9 +60,9 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
         </div>
         { isVisible && <ul aria-expanded={isVisible} aria-haspopup="listbox" className='absolute rounded-md shadow-2xs border-[0.5px] border-gray-300 my-2 bg-white p-1 w-full z-1'>
             { options.map((option, index) => 
-            <li className={(selected === option ? 'bg-orange-500/80 ' : '') + 'py-1 px-2 hover:bg-gray-100 rounded-md cursor-pointer flex items-center justify-between'}  key={index} onClick={()=> handleSelectOption(option)}>
+            <li className={(selected === option.toLowerCase() ? 'bg-orange-500/80 ' : '') + 'py-1 px-2 hover:bg-gray-100 rounded-md cursor-pointer flex items-center justify-between'}  key={index} onClick={()=> handleSelectOption(option)}>
                <small>{option}</small> 
-               {selected === option && <span>✓</span>}
+               {selected === option.toLowerCase() && <span>✓</span>}
             </li>)}</ul> }
     </div>
     

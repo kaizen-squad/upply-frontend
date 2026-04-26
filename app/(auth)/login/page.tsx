@@ -1,16 +1,19 @@
 'use client'
 
 import Button from "@/components/ui/Button/Button";
+import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
+import Spinner from "@/components/ui/Spinner/Spinner";
 import TextField from "@/components/ui/TextField/TextField";
 import { useAuth } from "@/hooks/useAuth";
 import { LoginProps, LoginSchema } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Lock, Mail } from "lucide-react";
+import { Lock, Mail } from 'lucide-react';
 import { Controller, useForm } from "react-hook-form";
 
 function LoginForm() {
-    const {login} = useAuth();
-
+    const { login, loading } = useAuth();
+    const {notify} = useNotificationManager();
+    
     const emailProps = {
         type: 'email',
         label: 'Email',
@@ -32,9 +35,10 @@ function LoginForm() {
     const onSubmit = async (loginData: LoginProps)=> {
         await login(loginData);
     } 
+    const onError = ()=> notify('Veuillez entrez des données valides!', 'warning');
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, (err)=>console.log(err))} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200'>
+    <form onSubmit={handleSubmit(onSubmit, onError)} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200'>
         <h1 className='text-2xl font-bold'>Welcome back</h1>
         <p className='text-sm mt-4 text-gray-500'>Sign in to your account to manage your bookings</p>
         <Controller
@@ -51,7 +55,12 @@ function LoginForm() {
         />
         </div>
 
-        <Button type='submit' className='bg-foreground text-white w-full mt-6 py-1.5 rounded-lg' textContent='Sign In' />
+        <Button 
+            type='submit' 
+            className='bg-foreground text-white w-full mt-6 rounded-lg py-3' 
+            textContent={loading ? 'Logging in...' : 'Sign In'} 
+            Icon={loading ? ()=><Spinner scale="scale-60"/> : undefined }
+        />
         
     </form>
   )

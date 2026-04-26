@@ -7,6 +7,9 @@ import SelectField from '@/components/ui/SelectField/SelectField';
 import TextField from '@/components/ui/TextField/TextField';
 import { Lock, Mail, Phone, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
+import Button from '@/components/ui/Button/Button';
+import Spinner from '@/components/ui/Spinner/Spinner';
 
 
 function RegisterForm() {
@@ -15,16 +18,16 @@ function RegisterForm() {
     resolver: zodResolver(RegisterSchema),
     defaultValues: { role: 'client' }
   });
-
-  const {register} = useAuth();
+  const {notify}= useNotificationManager();
+  const {register, loading} = useAuth();
   
   const onSubmit = async (registerData:RegisterProps)=>{
       await register(registerData);
   }
+  const onError = ()=> notify('Veuillez entrez des données valides!', 'warning');
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, (err)=>console.log(err)
-    )} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200'>
+    <form onSubmit={handleSubmit(onSubmit, onError)} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200'>
         <div className='flex items-center justify-between'>
           <h1 className="font-bold text-2xl">Create Account</h1>
           <Controller 
@@ -33,7 +36,7 @@ function RegisterForm() {
               render={({field})=> <SelectField {...field} options={['Client', 'Prestataire']} name='role' />  }
           />
         </div> 
-        <p className="py-3">Join Upply now!</p>
+        <p className="py-3 font-semibold text-xl">Join Upply now!</p>
 
         <div className='flex gap-5 items-center my-2'>
             <Controller 
@@ -84,7 +87,13 @@ function RegisterForm() {
             <label htmlFor="agree" className="text-sm text-gray-600 ml-2">I agree to the <span className="text-(--sb-blue-300) cursor-pointer">Terms of Service</span> and <span className="text-(--sb-blue-300) cursor-pointer">Privacy Policy</span></label>
         </div>
 
-        <button type="submit" className='bg-background cursor-pointer text-white w-full mt-4 py-1.5 rounded-lg font-semibold hover:opacity-80 hover:scale-97 duration-200'>Create Account</button>
+        <Button 
+            type='submit' 
+            className='bg-foreground text-white w-full mt-6 rounded-lg py-3' 
+            textContent={loading ? 'Loading...' : 'Create account'} 
+            Icon={loading ? ()=><Spinner scale="scale-60"/> : undefined }
+        />
+
     </form>
   )
 }
