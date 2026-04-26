@@ -5,6 +5,7 @@
 /.pnp
 .pnp.*
 .yarn/*
+package-lock.json
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases

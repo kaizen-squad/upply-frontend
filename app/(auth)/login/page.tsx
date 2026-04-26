@@ -7,7 +7,7 @@ import TextField from "@/components/ui/TextField/TextField";
 import { useAuth } from "@/hooks/useAuth";
 import { LoginProps, LoginSchema } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Lock, Mail, Icon } from 'lucide-react';
+import { Lock, Mail } from 'lucide-react';
 import { Controller, useForm } from "react-hook-form";
 
 function LoginForm() {
