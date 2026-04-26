@@ -8,108 +8,6 @@ import { BookOpenCheck, Lightbulb, Loader, Plus, Zap } from 'lucide-react';
 
 const page = () => {
     const {tasks, loading, refetch} = useTasks('mine');
- const mockTasks: TaskProps[] =  [
-  {
-    id: "task_001",
-    client_id: "client_001",
-    prestataire_id: "prestataire_101",
-    title: "Création d'une API REST pour plateforme e-commerce",
-    description: "Développer une API REST complète avec authentification JWT, documentation Swagger, et endpoints pour la gestion des produits et commandes.",
-    budget: 1500,
-    deadline: "2026-05-15",
-    status: "EN_COURS"
-  },
-  {
-    id: "task_002",
-    client_id: "client_002",
-    prestataire_id: null,
-    title: "Design UI/UX pour application mobile fitness",
-    description: "Créer le design complet d'une application mobile fitness (iOS/Android) avec maquettes Figma, système de design, et prototypes interactifs.",
-    budget: 800,
-    deadline: "2026-04-30",
-    status: "OUVERTE"
-  },
-  {
-    id: "task_003",
-    client_id: "client_003",
-    prestataire_id: "prestataire_102",
-    title: "Migration base de données PostgreSQL vers MySQL",
-    description: "Migrer une base de données de 500GB avec scripts de conversion, validation des données, et optimisation des performances.",
-    budget: 2500,
-    deadline: "2026-05-20",
-    status: "LIVREE"
-  },
-  {
-    id: "task_004",
-    client_id: "client_001",
-    prestataire_id: "prestataire_103",
-    title: "Intégration API de paiement Stripe",
-    description: "Intégrer Stripe Connect pour permettre les paiements entre utilisateurs, gérer les webhooks, et implémenter le système d'escrow.",
-    budget: 1200,
-    deadline: "2026-04-25",
-    status: "VALIDEE"
-  },
-  {
-    id: "task_005",
-    client_id: "client_004",
-    prestataire_id: null,
-    title: "Optimisation SEO pour site vitrine",
-    description: "Audit SEO complet, optimisation des balises, amélioration des performances, et création de backlinks pour un site e-learning.",
-    budget: 600,
-    deadline: "2026-05-10",
-    status: "OUVERTE"
-  },
-  {
-    id: "task_006",
-    client_id: "client_005",
-    prestataire_id: "prestataire_104",
-    title: "Développement plugin WordPress personnalisé",
-    description: "Créer un plugin de réservation pour WordPress avec gestion des disponibilités, notifications email, et interface d'administration.",
-    budget: 950,
-    deadline: "2026-05-05",
-    status: "EN_COURS"
-  },
-  {
-    id: "task_007",
-    client_id: "client_002",
-    prestataire_id: "prestataire_105",
-    title: "Tests de sécurité et pénétration",
-    description: "Réaliser des tests d'intrusion sur une application web, fournir un rapport détaillé des vulnérabilités et recommandations.",
-    budget: 2000,
-    deadline: "2026-04-28",
-    status: "LIVREE"
-  },
-  {
-    id: "task_008",
-    client_id: "client_006",
-    prestataire_id: null,
-    title: "Création de contenu vidéo formation technique",
-    description: "Produire 5 vidéos tutorielles sur React.js (10-15 min chacune) avec montage, sous-titres, et miniatures personnalisées.",
-    budget: 750,
-    deadline: "2026-06-01",
-    status: "OUVERTE"
-  },
-  {
-    id: "task_009",
-    client_id: "client_003",
-    prestataire_id: "prestataire_106",
-    title: "Configuration CI/CD avec GitHub Actions",
-    description: "Mettre en place des pipelines CI/CD automatisés avec tests, linting, build, et déploiement sur Vercel/AWS.",
-    budget: 1100,
-    deadline: "2026-05-12",
-    status: "VALIDEE"
-  },
-  {
-    id: "task_010",
-    client_id: "client_007",
-    prestataire_id: "prestataire_107",
-    title: "Refonte architecture microservices",
-    description: "Refactoriser une application monolithique en microservices avec Docker, Kubernetes, et mise en place d'un API Gateway.",
-    budget: 3500,
-    deadline: "2026-06-15",
-    status: "EN_COURS"
-  }
-];
     const formatNumber = (number:number) => {
         return number < 10 ? `0${number}` : number;
     }
@@ -188,7 +86,7 @@ const page = () => {
                 
                 {
                     !loading ?
-                        <MissionBoard tasks={mockTasks} refetch={refetch} />
+                        <MissionBoard tasks={tasks} refetch={refetch} />
                     :
                         <div className='flex items-center gap-5 w-max m-auto mt-10'>
                             {/* En attendant l'etat de chargement designé */}

@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
  * @returns 
  */
 export const useAuth = () =>{
-
     const { notify } = useNotificationManager();
     const router = useRouter();
     const getLoggedIn = (response: HTTPResponse<AuthDataResponse>)=> {

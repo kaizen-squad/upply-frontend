@@ -45,19 +45,27 @@ export async function proxy(request: NextRequest) {
   
   // 3. Vérification des rôles sur routes spécifiques
   if (isLoggedIn) {
-    const userRole = request.cookies.get('user')?.value;
+    const userCookie = request.cookies.get('user')?.value;
+    if(userCookie){
+       const user: User = JSON.parse(userCookie);
+
+        // Client essayant d'accéder à une route prestataire
+      if (user.role === 'client' && prestataireRoutes.some(route => pathname.startsWith(route))) {
+        return NextResponse.redirect(new URL('/client/dashboard', request.url));
+      }
     
-    // Client essayant d'accéder à une route prestataire
-    if (userRole === 'client' && prestataireRoutes.some(route => pathname.startsWith(route))) {
-      return NextResponse.redirect(new URL('/client/dashboard', request.url));
-    }
-    
-    // Prestataire essayant d'accéder à une route client
-    if (userRole === 'prestataire' && clientRoutes.find(route => pathname.startsWith(route))) {
-      return NextResponse.redirect(new URL('/prestataire/dashboard', request.url));
+      // Prestataire essayant d'accéder à une route client
+      if (user.role === 'prestataire' && clientRoutes.find(route => pathname.startsWith(route))) {
+        return NextResponse.redirect(new URL('/prestataire/dashboard', request.url));
+      }
+    }else{
+        const response = NextResponse.redirect(new URL('/login', request.url));
+        response.cookies.delete('refresh_token');
+        response.cookies.delete('user');
+        return response;
     }
   }
-  
+     
   return NextResponse.next();
 }
 
