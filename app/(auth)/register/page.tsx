@@ -12,8 +12,6 @@ import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
 
 
-
-
 function RegisterForm() {
   const {handleSubmit, control} = useForm<RegisterProps>({
     mode: 'onChange',
