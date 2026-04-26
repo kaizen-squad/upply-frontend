@@ -13,7 +13,7 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
       {/* Image gauche */}
       <div className='w-[45%] bg-cover-beige hidden lg:block'>
         <Image 
-          src='/images/cover.jpg'
+          src='/Images/cover.jpg'
           className='h-screen m-auto'
           width={600}
           height={500}
