@@ -19,7 +19,7 @@ const page =  () => {
 
         {loading && 
             <div className="flex items-center flex-wrap gap-8 justify-center my-10">
-                {Array(8).fill(0).map((p, index)=> <TaskSkeleton key={index} />)}
+                {Array(9).fill(0).map((p, index)=> <TaskSkeleton key={index} />)}
             </div>
         }
 
@@ -42,7 +42,7 @@ const page =  () => {
 
         {
             (Boolean(tasks.length) && !loading) &&
-            <div className="flex items-center flex-wrap gap-8 justify-center my-10">
+            <div className="flex items-center flex-wrap gap-5 justify-center my-10">
                 {tasks.map((task)=><Task key={task.id} task={task} />)}
             </div>
         }
