@@ -1,7 +1,7 @@
 'use client'
 import Tab from '@/components/ui/Tabs/Tab'
 import Image from 'next/image'
-import {  usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { FC, ReactNode } from 'react'
 
 const layout: FC<{children:ReactNode}> = ({children}) => {
