@@ -8,6 +8,8 @@ import TextField from '@/components/ui/TextField/TextField';
 import { Lock, Mail, Phone, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
+import Button from '@/components/ui/Button/Button';
+import Spinner from '@/components/ui/Spinner/Spinner';
 
 
 
@@ -18,7 +20,7 @@ function RegisterForm() {
     defaultValues: { role: 'client' }
   });
   const {notify}= useNotificationManager();
-  const {register} = useAuth();
+  const {register, loading} = useAuth();
   
   const onSubmit = async (registerData:RegisterProps)=>{
       await register(registerData);
@@ -35,7 +37,7 @@ function RegisterForm() {
               render={({field})=> <SelectField {...field} options={['Client', 'Prestataire']} name='role' />  }
           />
         </div> 
-        <p className="py-3">Join Upply now!</p>
+        <p className="py-3 font-semibold text-xl">Join Upply now!</p>
 
         <div className='flex gap-5 items-center my-2'>
             <Controller 
@@ -86,7 +88,13 @@ function RegisterForm() {
             <label htmlFor="agree" className="text-sm text-gray-600 ml-2">I agree to the <span className="text-(--sb-blue-300) cursor-pointer">Terms of Service</span> and <span className="text-(--sb-blue-300) cursor-pointer">Privacy Policy</span></label>
         </div>
 
-        <button type="submit" className='bg-background cursor-pointer text-white w-full mt-4 py-1.5 rounded-lg font-semibold hover:opacity-80 hover:scale-97 duration-200'>Create Account</button>
+        <Button 
+            type='submit' 
+            className='bg-foreground text-white w-full mt-6 rounded-lg py-3' 
+            textContent={loading ? 'Loading...' : 'Create account'} 
+            Icon={loading ? ()=><Spinner scale="scale-60"/> : undefined }
+        />
+
     </form>
   )
 }
