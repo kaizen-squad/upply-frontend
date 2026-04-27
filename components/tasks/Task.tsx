@@ -3,6 +3,7 @@ import type { TaskProps } from "@/types"
 import { FC } from "react"
 import Button from "../ui/Button/Button";
 import { useRouter } from "next/navigation";
+import FlagTask from "./FlagTask";
 
 export const flagColor ={
         OUVERTE: 'scorpion-gray-37',
@@ -19,7 +20,7 @@ const Task: FC<{task:TaskProps}> = ({task}) => {
     <div className="bg-white-solid border-2 border-gray-200 shadow-2xs w-[280px] rounded-sm">
         <div className="p-5">
             <div className="flex justify-end">
-                <small className="px-2 py-0.5 rounded-xs w-max text-white-solid scale-95" style={{backgroundColor: `var(--${flagColor[status]})`}}>{status}</small>
+                <FlagTask status={status} />
             </div>
             <p className="text-xl font-medium my-3">{title}</p>
             <p className="text-sm text-santa-gray my-3 line-clamp-2">{description}</p>
