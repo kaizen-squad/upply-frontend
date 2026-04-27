@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --cover-beige: #f2eee9;
+  --bg-woodsmoke-gray-8: #141414;
+  --alabaster-gray-98: #FAFAFA;
+  --alizarin-crimson-red-51: #DC2626;
+  --athens-gray-96: #F4F4F5;
+  --gallery-gray-93: #EEEEEE;
+  --iron-gray-90: #E4E4E7;
+  --iron-2-gray-84: #D4D4D8;
+  --jumbo-gray-46: #71717A;
+  --santa-gray: #A1A1AA;
+  --scarpa-flow-gray-34: #52525B;
+  --scorpion-gray-37: #5F5E5E;
+  --white-solid: #FFFFFF;
+  --woodsmoke-gray-10: #18181B;
+  --green-success:#2E7D32;
+  --orange-alert: #EF6C00;
+  --header-height: 96px;
+  --main-height: calc(100vh - 76px);
+  --sidebar-width: 230px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-cover-beige: var(--cover-beige);
+  --color-bg-footer: var(--bg-footer);
+  --color-alabaster-gray-98: var(--alabaster-gray-98);
+  --color-alizarin-crimson-red-51: var(--alizarin-crimson-red-51);
+  --color-athens-gray-96: var(--athens-gray-96);
+  --color-gallery-gray-93: var(--gallery-gray-93);
+  --color--iron-gray-90: var(--iron-gray-90);
+  --color-iron-2-gray-84: var(--iron-2-gray-84);
+  --color-jumbo-gray-46: var(--jumbo-gray-46);
+  --color-santa-gray: var(--santa-gray);
+  --color-scarpa-flow-gray-34: var(--scarpa-flow-gray-34);
+  --color-scorpion-gray-37: var(--scorpion-gray-37);
+  --color-white-solid: var(--white-solid);
+  --color-woodsmoke-gray-10: var(--woodsmoke-gray-10);  
+  --color-woodsmoke-gray-8: var(--woodsmoke-gray-8);  
+  --color-green-success: var(--green-success);
+  --color-orange-alert: var(--orange-alert);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --radius-sidebar-width: var(--sidebar-width)
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #171717;
+    --cover-beige: #f2eee9;
+    --woodsmoke-gray-8: #141414;
+    --alabaster-gray-98: #FAFAFA;
+    --alizarin-crimson-red-51: #DC2626;
+    --athens-gray-96: #F4F4F5;
+    --gallery-gray-93:#EEEEEE;
+    --iron-gray-90: #E4E4E7;
+    --iron-2-gray-84: #D4D4D8;
+    --jumbo-gray-46: #71717A;
+    --santa-gray: #A1A1AA;
+    --scarpa-flow-gray-34: #52525B;
+    --scorpion-gray-37: #5F5E5E;
+    --white-solid: #FFFFFF;
+    --green-success:#2E7D32;
+    --orange-alert: #EF6C00;
+    --woodsmoke-gray-10: #18181B;
+    --sidebar-width: 270px;
+    --header-height: 96px;
+    --main-height: calc(100vh - 96px)
+  }
+
+  footer{
+    @apply bg-woodsmoke-gray-10
+  } 
+  h1{
+    @apply text-3xl font-bold  
+  }
+  h2{
+    @apply text-xl font-semibold
+  }
+  h3{
+    @apply text-[1rem] font-semibold
+  }
+
+  @layer utilities {
+    /* Chrome, Safari, Edge, Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    
+    /* Firefox */
+    .no-scrollbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;  /* IE and Edge */
+    }
+  }
+}
+

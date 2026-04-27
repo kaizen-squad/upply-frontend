@@ -1,0 +1,12 @@
+.slide-left{
+    animation: slideLeft 0.5s forwards ease-in-out;
+}
+@keyframes slideLeft {
+    from{
+        opacity: 0;
+        transform: translateX(100px);
+    }to{
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
