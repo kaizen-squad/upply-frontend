@@ -15,7 +15,7 @@ export interface HTTPResponse<T>{
     status: number
 }
 
-type TaskStatus = 'OUVERTE' | 'EN_COURS' | 'LIVREE' | 'VALIDEE'
+export type TaskStatus = 'OUVERTE' | 'EN_COURS' | 'LIVREE' | 'VALIDEE'
 
 export interface TaskProps {
   id: string
@@ -26,6 +26,7 @@ export interface TaskProps {
   budget: number
   deadline: string // YYYY-MM-DD
   status: TaskStatus
+  created_at?: string
 }
 
 export const TaskFormProps = z.object({
@@ -35,3 +36,20 @@ export const TaskFormProps = z.object({
     deadline: z.string().date()
 });
 export type TaskFormType = z.infer<typeof TaskFormProps>;
+
+type ApplicationStatus = 'EN_ATTENTE' | 'ACCEPTEE' | 'REJETEE'
+
+export interface Application {
+  id?: string
+  task_id: string
+  prestataire_id: string
+  message: string
+  status: ApplicationStatus
+}
+
+export const ApplicationFormSchema = z.object({
+    message: z.string().min(20, 'Soumettez une description concise de votre besoin!'),
+    task_id: z.string()
+});
+
+export type ApplicationFormType = z.infer<typeof ApplicationFormSchema>

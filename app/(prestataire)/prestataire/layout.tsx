@@ -24,7 +24,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
                 </Overlay> }
             </div>
             <div className="pt-5 w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
-                <div className="pb-10 px-10">
+                <div className="pb-10 w-[95%] m-auto">
                     {children}
                 </div>
             </div>
