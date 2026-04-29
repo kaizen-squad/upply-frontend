@@ -94,8 +94,12 @@ export function useApplication(): UseApplicationReturn {
         }catch(err){
             notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non soumise!', 'error');
         }finally{
-          setLoading(false)
+          setLoading(false);
         }
+    }
+
+    const getApplication = async ()=>{
+      
     }
 
     return {applyTotask, application, loading}

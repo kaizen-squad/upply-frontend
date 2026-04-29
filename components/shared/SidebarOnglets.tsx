@@ -30,7 +30,7 @@ const SidebarOnglets:FC<Onglets> = (onglets) => {
                         entry.map(({text, iconPath, redirect}, index)=> <li key={index}
                         className={cn(
                             'flex items-center duration-300 gap-5 text-scarpa-flow-gray-34 py-3 px-5  border-l-alizarin-crimson-red-51 cursor-pointer  w-full hover:text-black',
-                            pathname.endsWith(redirect) 
+                            (redirect && pathname.includes(redirect))
                             ? 'bg-gallery-gray-93 w-full border-l-6' 
                             : 'hover:border-l-6 hover:bg-gallery-gray-93'
                         )}
