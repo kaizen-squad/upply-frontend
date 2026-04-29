@@ -37,7 +37,7 @@ export const TaskFormProps = z.object({
 });
 export type TaskFormType = z.infer<typeof TaskFormProps>;
 
-type ApplicationStatus = 'EN_ATTENTE' | 'ACCEPTEE' | 'REJETEE'
+export type ApplicationStatus = 'EN_ATTENTE' | 'ACCEPTEE' | 'REJETEE'
 
 export interface Application {
   id?: string
@@ -45,11 +45,17 @@ export interface Application {
   prestataire_id: string
   message: string
   status: ApplicationStatus
+  created_at: string
 }
 
 export const ApplicationFormSchema = z.object({
-    message: z.string().min(20, 'Soumettez une description concise de votre besoin!'),
+    message: z.string().min(20, 'Soyez bon vendeur de vous même!'),
     task_id: z.string()
 });
 
 export type ApplicationFormType = z.infer<typeof ApplicationFormSchema>
+
+interface ApplicationResponse extends TaskProps{
+  applied_at: string
+  application_status: string
+}

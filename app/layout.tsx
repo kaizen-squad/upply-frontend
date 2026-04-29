@@ -3,6 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NotificationProvider from "@/components/ui/Notification/NotificationProvider";
 import NotificationContainer from "@/components/ui/Notification/NotificationContainer";
+import { cookies } from "next/headers";
+import { useUserStore } from "@/hooks/store";
+import { User } from "@/types/auth";
+import { redirect } from "next/navigation";
+import ClientAuthProvider from "./ClientAuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,11 +24,21 @@ export const metadata: Metadata = {
   description: "",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const cookieStore = await cookies();
+  const userCookie = cookieStore.get('user');
+  let user = null;
+  if (userCookie?.value) {
+    try {
+      user = JSON.parse(userCookie.value);
+    } catch {}
+  }
+
   return (
     <html
       lang="en"
@@ -32,7 +47,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <div id="notification-root"></div>
         <NotificationProvider> 
+          <ClientAuthProvider initialUser={user}>
             {children}
+          </ClientAuthProvider>
            <NotificationContainer/>
         </NotificationProvider>
        
