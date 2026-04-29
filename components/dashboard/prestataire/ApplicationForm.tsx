@@ -1,6 +1,7 @@
 import Button from '@/components/ui/Button/Button'
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Textarea } from '@/components/ui/Textarea/Textarea'
+import { useUserStore } from '@/hooks/store';
 import { useApplication } from '@/hooks/useTasks';
 import { formatFrenchDateIntl } from '@/lib/utils';
 import {  ApplicationFormSchema, ApplicationFormType, ApplicationResponse, TaskProps } from '@/types';
