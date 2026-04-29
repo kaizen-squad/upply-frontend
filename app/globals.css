@@ -70,8 +70,8 @@
     --orange-alert: #EF6C00;
     --woodsmoke-gray-10: #18181B;
     --sidebar-width: 270px;
-    --header-height: 96px;
-    --main-height: calc(100vh - 96px)
+    --header-height: 80px;
+    --main-height: calc(100vh - 80px)
   }
 
   footer{

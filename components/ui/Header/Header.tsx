@@ -10,8 +10,8 @@ const Header:FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpened:Dispat
         mode: 'onChange',
     });
   return (
-    <header className='min-h-19 relative bg-white z-50'>
-        <form className='hidden sm:flex sm:gap-10 md:gap-[20%] py-4 bg-gallery-gray-93 shadow-2xs border-b border-b-gray-200 px-10 items-center'>
+    <header className='h-(--header-height) relative bg-white z-50'>
+        <form className='h-(--header-height) hidden sm:flex sm:gap-10 md:gap-[20%] py-4 bg-gallery-gray-93 shadow-2xs border-b border-b-gray-200 px-10 items-center'>
             <Image
                 src={'/Assets/UpplySVG.svg'}
                 loading='eager'

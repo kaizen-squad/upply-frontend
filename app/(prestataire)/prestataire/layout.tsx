@@ -23,8 +23,8 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
                     <SidebarPrestataireMobile isMobileSidebarOpened={isMobileSidebarOpened} setIsMobileSidebarOpened={setIsMobileSidebarOpened}/>
                 </Overlay> }
             </div>
-            <div className="pt-5 w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
-                <div className="pb-10 w-[95%] m-auto">
+            <div className="w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
+                <div className="w-[95%] m-auto">
                     {children}
                 </div>
             </div>
