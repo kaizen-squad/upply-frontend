@@ -10,7 +10,7 @@ export const flagColor ={
 
 const FlagTask:FC<{status:TaskStatus}> = ({status}) => {
   return (
-        <small className="px-2 py-0.5 rounded-xs w-max text-white-solid scale-95" style={{backgroundColor: `var(--${flagColor[status]})`}}>{status}</small>
+        <small className="px-2 py-1 rounded-xs w-max text-white-solid scale-95 max-h-max" style={{backgroundColor: `var(--${flagColor[status]})`}}>{status.replace('_', ' ')}</small>
   )
 }
 
