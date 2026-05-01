@@ -40,7 +40,7 @@ const ReviewPage = () => {
                 </div>
               </div>
             </div>
-            <ReviewForm/>
+            <ReviewForm task_id={task.id} />
         </div>
           <div>
             <div className='flex-col gap-5 hidden md:flex'>
@@ -65,9 +65,9 @@ const ReviewPage = () => {
                   </div>
                     <hr className='border border-gray-300 w-full my-3' />
                   <ul className='text-scarpa-flow-gray-34 marker:text-blue-600 marker:font-bold pl-5'>
-                    <li className=" before:pr-3 before:content-['■'] before:left-0 before:text-lg">Communication</li>
-                    <li className=" before:pr-3 before:content-['■'] before:text-lg">Respect des délais</li>
-                    <li className=" before:pr-3 before:content-['■'] before:text-lg">Qualité du travail</li>
+                    <li className="before:pr-3 before:content-['■'] before:left-0 before:text-lg">Communication</li>
+                    <li className="before:pr-3 before:content-['■'] before:text-lg">Respect des délais</li>
+                    <li className="before:pr-3 before:content-['■'] before:text-lg">Qualité du travail</li>
                   </ul>
               </div>
 
