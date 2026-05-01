@@ -90,3 +90,12 @@ export interface Review {
   rating: number // 1-5
   comment: string | null
 }
+
+export const ReviewSchema = z.object({
+  task_id: z.string(),
+  reviewee_id: z.string(),
+  rating: z.number(),
+  comment: z.string().optional()
+})
+
+export type ReviewProps = z.infer<typeof ReviewSchema>;
