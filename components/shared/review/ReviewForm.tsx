@@ -1,13 +1,34 @@
 import Button from "@/components/ui/Button/Button";
 import { Textarea } from "@/components/ui/Textarea/Textarea";
+import { ReviewProps, ReviewSchema } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { FC } from "react";
 import { Controller, useForm } from "react-hook-form"
 import Rating from "react-ratings-star";
+import { useTasksContext } from "../tasks/TaskProvider";
+import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
 
-const ReviewForm = () => {
-    const {control, handleSubmit, formState: {isValid, isSubmitting}} = useForm();
+const ReviewForm: FC<{task_id: string}> = ({task_id}) => {
+    const {reviewPrestataire} = useTasksContext();
+    const {notify} = useNotificationManager();
+    const {control, handleSubmit, formState: {isValid, isSubmitting}} = useForm<ReviewProps>({
+        resolver: zodResolver(ReviewSchema),
+        defaultValues:{
+            task_id: task_id
+        }
+    });
+    
+    const onSubmit = async (data: ReviewProps) => {
+        await reviewPrestataire(data);
+    }
+
+    const onError = () => {
+        notify('Les étoiles sont nécessaires a la notation.', 'warning');
+    }
+
   return (
-    <form className="bg-white-solid p-5 py-7 border md:shadow-none shadow-[5px_5px_1px_1px] shadow-gray-950">
+    <form onSubmit={handleSubmit(onSubmit, onError)} className="bg-white-solid p-5 py-7 border md:shadow-none shadow-[5px_5px_1px_1px] shadow-gray-950">
         <h2>Notez votre collaborateur</h2>
         <div className="mt-5">
             <Controller

@@ -1,7 +1,7 @@
 // hooks/useTasks.ts
 import { useState, useEffect } from 'react';
 import apiFetch from '@/lib/api';
-import type { ApplicationFormType, Deliverable, TaskFormType, TaskProps } from '@/types';
+import type { ApplicationFormType, Deliverable, Review, ReviewProps, TaskFormType, TaskProps } from '@/types';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Application, DeliveryFormProps } from '../types/index';
 
@@ -9,8 +9,9 @@ interface UseTasksReturn {
   tasks: TaskProps[];
   loading: boolean;
   refetch: (id:string | undefined) => Promise<void>;
-  createTask: (taskData: TaskFormType)=> Promise<void>;
-  deliverTask: (deliverData: DeliveryFormProps)=> Promise<boolean>;
+  createTask: (taskData: TaskFormType) => Promise<void>;
+  deliverTask: (deliverData: DeliveryFormProps) => Promise<boolean>;
+  reviewPrestataire: (reviewData:ReviewProps) => Promise<void>
 }
 
 export const budgetCurrency = 'FCFA'
@@ -31,7 +32,7 @@ export function useTasks(id:string|undefined, skip:boolean=false): UseTasksRetur
       }
       else{
          throw new Error(response.message) 
-    }
+      }
     } catch (err) {
       notify(err instanceof Error ? err.message : 'Erreur lors du chargement.', 'error')
     } finally {
@@ -56,7 +57,7 @@ export function useTasks(id:string|undefined, skip:boolean=false): UseTasksRetur
   const deliverTask = async (deliveryData:DeliveryFormProps) => {
     try{
       setLoading(true);
-      const delivery = await apiFetch<Deliverable>(`api/tasks/${deliveryData.task_id}/deliver`, deliverTask, 'POST');
+      const delivery = await apiFetch<Deliverable>(`api/tasks/${deliveryData.task_id}/deliver`, deliveryData, 'POST');
       if(delivery.success && delivery.status === 201){
         notify('Livrable soumis! En attente de review.', 'success');
         return true
@@ -68,6 +69,21 @@ export function useTasks(id:string|undefined, skip:boolean=false): UseTasksRetur
       setLoading(false)
     }
   }
+
+  const reviewPrestataire = async (reviewData:ReviewProps) => {
+    try{
+      setLoading(true);
+        const delivery = await apiFetch<Review>(`api/tasks/${reviewData.task_id}/review`, reviewData, 'POST');
+        if(delivery.success && delivery.status === 201){
+          notify('Commentaire soumis. Merci de choisir Upply.', 'success');
+        }else throw new Error(delivery.message)
+      }catch(err){
+        notify(err instanceof Error ? err.message : 'Un erreur est survenue lors de la soumission du commentaire', 'error');
+      }finally{
+        setLoading(false)
+      }
+  }
+
 
   useEffect(() => {
     if(skip) return;
@@ -81,6 +97,7 @@ export function useTasks(id:string|undefined, skip:boolean=false): UseTasksRetur
     refetch: (id:string | undefined)=> fetchTasks(id), 
     createTask,
     deliverTask, 
+    reviewPrestataire
   };
 }
 
