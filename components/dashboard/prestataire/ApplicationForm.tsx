@@ -97,7 +97,6 @@ const ApplicationForm:FC<{task: ApplicationResponse}> = ({task}) => {
                         </div>
                         <div className='border h-2 mt-1' style={{background: applicationRangeBarColor[task.application_status]}}></div>
                     </div>
-
                 </div>
                 {/* {
                     task.application_status === 'EN_ATTENTE' && 

@@ -3,7 +3,6 @@ import MissionBoard from '@/components/dashboard/client/MissionBoard';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { useTasks } from '@/hooks/useTasks';
-import { TaskProps } from '@/types';
 import { BookOpenCheck, Lightbulb, Plus, Zap } from 'lucide-react';
 
 const page = () => {
