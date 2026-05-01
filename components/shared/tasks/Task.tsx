@@ -1,7 +1,7 @@
 'use client'
 import type { TaskProps } from "@/types"
 import { FC } from "react"
-import Button from "../ui/Button/Button";
+import Button from "../../ui/Button/Button";
 import { useRouter } from "next/navigation";
 import FlagTask from "./FlagTask";
 

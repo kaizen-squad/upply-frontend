@@ -1,18 +1,19 @@
 'use client'
 import Button from '@/components/ui/Button/Button';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
+import Spinner from '@/components/ui/Spinner/Spinner';
 import { Textarea } from '@/components/ui/Textarea/Textarea';
 import TextField from '@/components/ui/TextField/TextField';
-import { useManageTasks } from '@/hooks/useTasks';
+import { useTasks } from '@/hooks/useTasks';
 import { TaskFormProps, TaskFormType } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HandCoins } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form'
 
 const TaskForm = () => {
-    const {loading, createTask} = useManageTasks();
+    const { createTask} = useTasks(undefined, true);
     const {notify} = useNotificationManager();
-    const {control, handleSubmit} = useForm<TaskFormType>({
+    const {control, handleSubmit, formState:{isValid, isSubmitting}} = useForm<TaskFormType>({
         mode:'onChange',
         resolver: zodResolver(TaskFormProps)
     });
@@ -89,9 +90,11 @@ const TaskForm = () => {
         <div className='mt-25 w-full'>
             <hr className='border-gray-200 w-full' />
             <Button
+                disabled={!isValid}
                 type='submit'
-                textContent='Publier la mission'
+                textContent={isSubmitting ? 'Loading...' : 'Publier la mission'}
                 className='bg-alizarin-crimson-red-51 text-white-solid font-medium rounded-md py-2.5 px-5 mt-5 flex justify-self-end mb-5'
+                isLoading={isSubmitting}
             />
         </div>
     </form>
