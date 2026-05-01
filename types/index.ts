@@ -81,3 +81,12 @@ export const DeliveryFormSchema = z.object({
 });
 
 export type DeliveryFormProps = z.infer<typeof DeliveryFormSchema>
+
+export interface Review {
+  id: string
+  task_id: string
+  reviewer_id: string
+  reviewee_id: string
+  rating: number // 1-5
+  comment: string | null
+}
