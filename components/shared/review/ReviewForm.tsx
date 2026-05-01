@@ -15,7 +15,8 @@ const ReviewForm: FC<{task_id: string}> = ({task_id}) => {
     const {control, handleSubmit, formState: {isValid, isSubmitting}} = useForm<ReviewProps>({
         resolver: zodResolver(ReviewSchema),
         defaultValues:{
-            task_id: task_id
+            task_id: task_id,
+            reviewee_id: '' 
         }
     });
     
