@@ -4,10 +4,7 @@ import { FC } from "react"
 import Button from "../../ui/Button/Button";
 import { useRouter } from "next/navigation";
 import FlagTask from "./FlagTask";
-<<<<<<< HEAD
 import { budgetCurrency } from "@/hooks/useTasks";
-=======
->>>>>>> 49d1066 (Added delivery page and submission for prestataire)
 
 export const flagColor ={
         OUVERTE: 'scorpion-gray-37',
@@ -32,11 +29,7 @@ const Task: FC<{task:TaskProps}> = ({task}) => {
             <div className="mt-5">
                 <div className="flex items-center justify-between">
                     <p className="text-scorpion-gray-37 text-[0.85rem]">REMUNERATION</p>
-<<<<<<< HEAD
                     <p className="text-lg text-alizarin-crimson-red-51 font-semibold">{budget} {budgetCurrency}</p>
-=======
-                    <p className="text-lg text-alizarin-crimson-red-51 font-semibold">{budget}.00 €</p>
->>>>>>> 49d1066 (Added delivery page and submission for prestataire)
                 </div>
                 <div className="flex items-center justify-between mt-2">
                     <p className="text-scorpion-gray-37 text-[0.85rem]">ECHEANCE</p>
@@ -49,11 +42,7 @@ const Task: FC<{task:TaskProps}> = ({task}) => {
             <Button 
                 className="block w-[85%] m-auto py-2.5 bg-woodsmoke-gray-10 text-white-solid rounded-sm"
                 textContent="Voir la tâche"
-<<<<<<< HEAD
                 onClick={()=> router.push(`/tasks/${id}`)}
-=======
-                onClick={()=> router.push(`/dashboard/tasks/${id}`)}
->>>>>>> 49d1066 (Added delivery page and submission for prestataire)
             />
         </div>
     </div>
