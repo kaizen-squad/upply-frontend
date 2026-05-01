@@ -16,7 +16,8 @@ export type IButtonProps = {
     type?: 'button' | 'submit',
     textContent: string,
     className?: string,
-    Icon?: React.FC<React.SVGProps<SVGSVGElement>> | string | React.FC<React.HTMLProps<HTMLElement>>,
+    isLoading?: boolean,
+    Icon?: React.FC<React.SVGProps<SVGSVGElement>> | string | React.FC<React.HTMLProps<HTMLElement>> | undefined,
     Iposition?: 'left' | 'right'
     onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
 } & ButtonHTMLAttributes<HTMLButtonElement>

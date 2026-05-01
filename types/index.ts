@@ -55,7 +55,29 @@ export const ApplicationFormSchema = z.object({
 
 export type ApplicationFormType = z.infer<typeof ApplicationFormSchema>
 
-interface ApplicationResponse extends TaskProps{
+export interface ApplicationResponse extends TaskProps{
   applied_at: string
-  application_status: string
+  application_status: ApplicationStatus
 }
+
+export  interface Deliverable {
+  id: string
+  task_id: string
+  prestataire_id: string
+  content: string
+  file_path: string | null
+  submitted_at: string
+}
+
+export const DeliveryFormSchema = z.object({
+  task_id: z.string(),
+  content: z.string(),
+  file: z.instanceof(File)
+    .refine((file) => file.size <= 5 * 1024 * 1024, 'Le fichier ne doit pas dépasser 5 Mo')
+    .refine(
+      (file) => ['image/jpeg', 'image/png', 'application/pdf'].includes(file.type),
+      'Format accepté : JPG, PNG ou PDF'
+    ),
+});
+
+export type DeliveryFormProps = z.infer<typeof DeliveryFormSchema>

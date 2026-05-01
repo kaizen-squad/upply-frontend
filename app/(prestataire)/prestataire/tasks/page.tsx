@@ -1,6 +1,6 @@
 'use client'
-import Task from "@/components/tasks/Task"
-import { TaskSkeleton } from "@/components/tasks/TaskSkeleton"
+import Task from "@/components/shared/tasks/Task"
+import { TaskSkeleton } from "@/components/shared/tasks/TaskSkeleton"
 import Button from "@/components/ui/Button/Button"
 import { useTasks } from "@/hooks/useTasks"
 import { RotateCw } from "lucide-react"

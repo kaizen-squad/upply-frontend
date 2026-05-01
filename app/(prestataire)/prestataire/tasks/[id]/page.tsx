@@ -1,5 +1,5 @@
 'use client'
-import FlagTask from "@/components/tasks/FlagTask";
+import FlagTask from "@/components/shared/tasks/FlagTask";
 import { useTasks } from "@/hooks/useTasks";
 import { formatFrenchDateIntl, formatRelativeTime } from "@/lib/utils";
 import Image from "next/image";
@@ -7,21 +7,11 @@ import { useEffect } from "react";
 import ApplicationForm from "@/components/dashboard/prestataire/ApplicationForm";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import { TaskProps } from "@/types";
+import { ApplicationResponse } from '../../../../../types/index';
 
 const page: React.FC<{params:Promise<{id:string}>}> = ({params}) => {
     const {tasks:[], refetch, loading} = useTasks(undefined, true);
-    const tasksA:TaskProps[] = [
-  {
-    id: 'task_001',
-    client_id: 'client_001',
-    prestataire_id: 'prestataire_101',
-    title: 'Création API REST pour application de réservation',
-    description: 'Développer une API complète avec authentification JWT, documentation Swagger, endpoints pour gérer les réservations, utilisateurs et paiements.',
-    budget: 2500,
-    deadline: '2026-06-15',
-    status: 'EN_COURS',
-    created_at: '2026-04-01T10:30:00Z',
-  },
+    const tasksA = [
   {
     id: 'task_002',
     client_id: 'client_002',
@@ -123,15 +113,20 @@ const page: React.FC<{params:Promise<{id:string}>}> = ({params}) => {
   },
 ];
 
-const task = tasksA[0];
+const task:ApplicationResponse =  {
+    id: 'task_001',
+    client_id: 'client_001',
+    prestataire_id: 'prestataire_101',
+    title: 'Création API REST pour application de réservation',
+    description: 'Développer une API complète avec authentification JWT, documentation Swagger, endpoints pour gérer les réservations, utilisateurs et paiements.',
+    budget: 2500,
+    deadline: '2026-06-15',
+    status: 'EN_COURS',
+    created_at: '2026-04-01T10:30:00Z',
+    applied_at: '2026-04-01T10:30:00Z',
+    application_status: 'EN_ATTENTE'
+  };
 
-    useEffect(()=>{
-      const getTask = async()=> {
-        const {id}= await params;
-        refetch(id)
-      }
-      getTask();
-    }, [params]);
 
   return (
     <div className="py-10">
@@ -205,7 +200,7 @@ const task = tasksA[0];
 
               {/* Right */}
                 <div className="flex flex-col gap-7">
-                  <ApplicationForm task={tasksA[0]} />
+                  <ApplicationForm task={task} />
                   <div className="bg-woodsmoke-gray-10 p-5">
                       <div className="flex items-center gap-4 text-white">
                          <div className="px-4 py-2 bg-alizarin-crimson-red-51 font-black">U</div>
