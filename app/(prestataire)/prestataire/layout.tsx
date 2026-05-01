@@ -1,6 +1,7 @@
 'use client'
 import SidebarPrestataire from '@/components/dashboard/prestataire/SidebarPrestataire';
 import SidebarPrestataireMobile from '@/components/dashboard/prestataire/SidebarPrestataireMobile';
+import ReviewPage from '@/components/shared/review/ReviewPage';
 import Footer from '@/components/ui/Footer/Footer';
 import FooterMobile from '@/components/ui/Footer/FooterMobile';
 import Header from '@/components/ui/Header/Header';
@@ -25,7 +26,8 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
             </div>
             <div className="w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
                 <div className="w-[95%] m-auto">
-                    {children}
+                    {/* {children} */}
+                    <ReviewPage/>
                 </div>
             </div>
         </div>

@@ -13,6 +13,8 @@ interface UseTasksReturn {
   deliverTask: (deliverData: DeliveryFormProps)=> Promise<boolean>;
 }
 
+export const budgetCurrency = 'FCFA'
+
 export function useTasks(id:string|undefined, skip:boolean=false): UseTasksReturn {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
   const [loading, setLoading] = useState(true);
