@@ -1,5 +1,5 @@
 'use client'
-import { flagColor } from '@/components/tasks/Task'
+import { flagColor } from '@/components/shared/tasks/Task'
 import Button from '@/components/ui/Button/Button'
 import { TaskProps } from '@/types'
 import { ArrowRight, Loader } from 'lucide-react'
@@ -79,7 +79,6 @@ const MissionBoard:React.FC<{tasks: TaskProps[], refetch: (id:string)=>void}> = 
                         Icon={ArrowRight}
                         Iposition='right'
                         className='bg-alizarin-crimson-red-51 rounded-sm py-3 px-5 text-white w-max m-auto mt-5'
-
                     />
                 </div>
             </div>

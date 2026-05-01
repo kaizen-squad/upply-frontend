@@ -1,14 +1,16 @@
 // hooks/useTasks.ts
 import { useState, useEffect } from 'react';
 import apiFetch from '@/lib/api';
-import type { ApplicationFormType, HTTPResponse, TaskFormType, TaskProps } from '@/types';
+import type { ApplicationFormType, Deliverable, TaskFormType, TaskProps } from '@/types';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
-import { Application } from '../types/index';
+import { Application, DeliveryFormProps } from '../types/index';
 
 interface UseTasksReturn {
   tasks: TaskProps[];
   loading: boolean;
   refetch: (id:string | undefined) => Promise<void>;
+  createTask: (taskData: TaskFormType)=> Promise<void>;
+  deliverTask: (deliverData: DeliveryFormProps)=> Promise<boolean>;
 }
 
 export function useTasks(id:string|undefined, skip:boolean=false): UseTasksReturn {
@@ -17,9 +19,9 @@ export function useTasks(id:string|undefined, skip:boolean=false): UseTasksRetur
   const {notify} = useNotificationManager();
 
   const fetchTasks = async (id:string | undefined) => {
-    setLoading(true);
-    
-    try {
+   
+    try { 
+      setLoading(true);
       const response = await apiFetch<TaskProps[] | TaskProps>(`api/tasks${id ? `/${id}` : ''}`);
       if(response.data){
         const data:TaskProps[] = Array(1).fill(response.data).flat(Infinity)
@@ -34,43 +36,52 @@ export function useTasks(id:string|undefined, skip:boolean=false): UseTasksRetur
       setLoading(false);
     }
   };
+
+  const createTask = async (taskData:TaskFormType) => {
+    try{
+        setLoading(true);
+        const newTask = await apiFetch<object>('api/tasks', taskData, 'POST');
+        if(newTask.success)
+            notify('Nouvelle tache ajoutée.', 'success');
+          else throw new Error(newTask.message);
+      }catch(err){
+        notify(err instanceof Error ? err.message : 'Erreur lors de la création de la tache.', 'error');
+      }finally{
+        setLoading(false)
+      }
+  }
+
+  const deliverTask = async (deliveryData:DeliveryFormProps) => {
+    try{
+      setLoading(true);
+      const delivery = await apiFetch<Deliverable>(`api/tasks/${deliveryData.task_id}/deliver`, deliverTask, 'POST');
+      if(delivery.success && delivery.status === 201){
+        notify('Livrable soumis! En attente de review.', 'success');
+        return true
+      }else throw new Error(delivery.message)
+    }catch(err){
+      notify(err instanceof Error ? err.message : 'Livrable non soumis. Un erreur est survenue', 'error');
+      return false;
+    }finally{
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     if(skip) return;
 
     fetchTasks(id);
   }, []);
 
-  return { tasks, loading, refetch: (id:string | undefined)=> fetchTasks(id) };
+  return { 
+    tasks, 
+    loading,
+    refetch: (id:string | undefined)=> fetchTasks(id), 
+    createTask,
+    deliverTask, 
+  };
 }
 
-interface UseManageTaskReturn {
-  tasks: TaskProps[];
-  loading: boolean;
-  createTask: (task:TaskFormType)=> void,
-}
-
-export function useManageTasks(): UseManageTaskReturn {
-    const [tasks, setTasks] = useState<TaskProps[]>([]);
-    const [loading, setLoading] = useState(true);
-    const {notify} = useNotificationManager();
-
-    const createTask = async (taskData:TaskFormType) => {
-        try{
-            setLoading(true);
-            const newTask = await apiFetch<object>('api/tasks', taskData, 'POST');
-            if(newTask.success)
-                notify('Nouvelle tache ajoutée.', 'success');
-            else throw new Error(newTask.message ?? 'Une erreur est survenue!');
-
-        }catch(err){
-            notify(err instanceof Error ? err.message : 'Erreur lors de la création de la tache.', 'error');
-        }finally{
-            setLoading(false)
-        }
-    }
-
-    return {tasks, loading, createTask}
-}
 
 interface UseApplicationReturn {
   application: Application[],
@@ -86,7 +97,7 @@ export function useApplication(): UseApplicationReturn {
    const applyTotask = async (applyData: ApplicationFormType) => {
         try{
           setLoading(true);
-          const applyresponse = await apiFetch<Application>(`api/tasks/${applyData.task_id}/apply`);
+          const applyresponse = await apiFetch<Application>(`api/tasks/${applyData.task_id}/apply`, applyData, 'POST');
           
           if(Number(applyresponse.status) === 201 && applyresponse.success)
             notify('Votre candidature a été soumise avec succès.', 'success');
@@ -103,4 +114,4 @@ export function useApplication(): UseApplicationReturn {
     }
 
     return {applyTotask, application, loading}
-}
+  }

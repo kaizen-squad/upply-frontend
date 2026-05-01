@@ -4,21 +4,23 @@ import { Textarea } from '@/components/ui/Textarea/Textarea'
 import { useUserStore } from '@/hooks/store';
 import { useApplication } from '@/hooks/useTasks';
 import { formatFrenchDateIntl } from '@/lib/utils';
-import {  ApplicationFormSchema, ApplicationFormType, TaskProps } from '@/types';
+import {  ApplicationFormSchema, ApplicationFormType, ApplicationResponse, TaskProps } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CircleAlert } from 'lucide-react'
 import Image from 'next/image';
 import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ApplicationStatus } from '../../../types/index';
 
-const ApplicationForm:FC<{task: TaskProps}> = ({task}) => {
+const ApplicationForm:FC<{task: ApplicationResponse}> = ({task}) => {
     const {notify} = useNotificationManager();
     const {applyTotask} = useApplication();
     const {user} = useUserStore();
-    const {control, handleSubmit} = useForm<ApplicationFormType>({
+    const {control, handleSubmit, formState:{isValid, isSubmitting}} = useForm<ApplicationFormType>({
         mode: 'onChange',
-        resolver: zodResolver(ApplicationFormSchema)
+        resolver: zodResolver(ApplicationFormSchema),
+        defaultValues: {
+            task_id: task.id
+        }
     });
     
     const onSubmit = async (data: ApplicationFormType)=> {
@@ -54,14 +56,6 @@ const ApplicationForm:FC<{task: TaskProps}> = ({task}) => {
                             error={error?.message}
                         />}
                 />  
-                <Controller
-                    name='task_id'
-                    control={control}
-                    defaultValue={task.id}
-                    render={()=> 
-                        <input type="hidden" id="task_id" value={task.id} />}
-                />
-                
 
                 <div className='flex gap-2 items-center py-2 px-5 border-l-5 border-l-scarpa-flow-gray-34 my-3 bg-gallery-gray-93 text-scarpa-flow-gray-34'>
                     <CircleAlert width={50}/>
@@ -69,9 +63,11 @@ const ApplicationForm:FC<{task: TaskProps}> = ({task}) => {
                 </div>
 
                 <Button
+                    disabled={!isValid}
                     type='submit'
                     textContent='Envoyer ma candidature'
                     className='w-full bg-alizarin-crimson-red-51 py-3.5 text-white font-bold rounded-sm shadow-[5px_5px_1px_0] shadow-gallery-gray-93 mt-5'
+                    isLoading={isSubmitting}
                 />
             </div> 
         }
@@ -87,7 +83,7 @@ const ApplicationForm:FC<{task: TaskProps}> = ({task}) => {
                     className='w-max m-auto'
                 />
                 <p className='font-bold mt-3'>Candidature envoyée</p>
-                <p className='text-scarpa-flow-gray-34 mt-2'>Vous avez postulé à cette mission le {formatFrenchDateIntl(task.created_at)}</p>
+                <p className='text-scarpa-flow-gray-34 mt-2'>Vous avez postulé à cette mission le {formatFrenchDateIntl(task.applied_at)}</p>
 
                 <hr className='mt-7 mb-5 border-gray-300' />
 
@@ -96,11 +92,10 @@ const ApplicationForm:FC<{task: TaskProps}> = ({task}) => {
                         <small>STATUT DE l'EXAMEN</small>
                         <small>{task.status.replace('_', ' ')}</small>
                     </div>
-                    <div className='border h-2 mt-1' style={{background: applicationRangeBarColor[task.status]}}></div>
+                    <div className='border h-2 mt-1' style={{background: applicationRangeBarColor[task.application_status]}}></div>
                 </div>
             </div>
         }
-        
     </form>
   )
 }
