@@ -30,10 +30,10 @@ export interface TaskProps {
 }
 
 export const TaskFormProps = z.object({
-    title: z.string().min(3, {error: 'Entrez un nom convenable!'}),
-    description: z.string().min(10, {error: 'Une description est nécessaire!'}),
-    budget: z.string().regex(/^\d+$/, 'Le budget est obligatoire'),
-    deadline: z.string().date()
+  title: z.string().min(3, {error: 'Entrez un nom convenable!'}),
+  description: z.string().min(10, {error: 'Une description est nécessaire!'}),
+  budget: z.string().regex(/^\d+$/, 'Le budget est obligatoire'),
+  deadline: z.string().date()
 });
 export type TaskFormType = z.infer<typeof TaskFormProps>;
 
@@ -99,3 +99,22 @@ export const ReviewSchema = z.object({
 })
 
 export type ReviewProps = z.infer<typeof ReviewSchema>;
+
+export type ApplicationCardProps = {
+  mission_title:string,
+  status_application:ApplicationStatus,
+  applied_at: string,
+  budget_mission:number
+}
+
+export type statistics = {
+  waiting_budget:string,
+  waiting_applications: string, 
+  active_missions: string
+}
+
+export type PDashboardData = {
+  tasks: TaskProps[],
+  applications: ApplicationCardProps[],
+  statistics: statistics
+}
