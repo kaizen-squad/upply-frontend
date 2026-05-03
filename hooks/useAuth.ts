@@ -1,3 +1,4 @@
+'use client'
 import apiFetch from "@/lib/api"
 import { LoginProps, RegisterProps } from "@/types/auth"
 import { AuthDataResponse } from '../types/auth';
