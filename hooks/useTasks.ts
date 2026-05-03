@@ -1,4 +1,4 @@
-// hooks/useTasks.ts
+'use client'
 import { useState, useEffect } from 'react';
 import apiFetch from '@/lib/api';
 import type { ApplicationFormType, Deliverable, Review, ReviewProps, TaskFormType, TaskProps } from '@/types';
@@ -18,7 +18,7 @@ export const budgetCurrency = 'FCFA'
 
 export function useTasks(id:string|undefined, skip:boolean=false): UseTasksReturn {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const {notify} = useNotificationManager();
 
   const fetchTasks = async (id:string | undefined) => {

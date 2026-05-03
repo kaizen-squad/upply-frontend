@@ -26,8 +26,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
             </div>
             <div className="w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
                 <div className="w-[95%] m-auto">
-                    {/* {children} */}
-                    <ReviewPage/>
+                    {children}
                 </div>
             </div>
         </div>
