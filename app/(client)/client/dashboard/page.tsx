@@ -3,8 +3,7 @@ import MissionBoard from '@/components/dashboard/client/MissionBoard';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { useTasks } from '@/hooks/useTasks';
-import { TaskProps } from '@/types';
-import { BookOpenCheck, Lightbulb, Loader, Plus, Zap } from 'lucide-react';
+import { BookOpenCheck, Lightbulb, Plus, Zap } from 'lucide-react';
 
 const page = () => {
     const {tasks, loading, refetch} = useTasks('mine');
@@ -149,9 +148,7 @@ const page = () => {
                                         </div>
                                         <div className='h-1.5 w-full border-2 border-gray-300' style={{background: bg}}></div>
                                     </div>)
-                                }
-                                
-                                
+                                } 
                             </div>
                         </div>
 
@@ -166,9 +163,7 @@ const page = () => {
                     </div>
                 </div>
             }
-        </div>
-        
-            
+        </div>     
     </div>
   )
 }

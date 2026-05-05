@@ -1,6 +1,6 @@
 import { TaskProps } from '@/types'
 import { FC } from 'react'
-import { formatFrenchDateIntl } from '../../../lib/utils';
+import { formatFrenchDateIntl } from '@/lib/utils';
 import { budgetCurrency } from '@/hooks/useTasks';
 import Button from '@/components/ui/Button/Button';
 import { useMediaQuery } from '@reactuses/core';

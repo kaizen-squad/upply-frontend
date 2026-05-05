@@ -3,9 +3,8 @@ import { Controller, useForm } from 'react-hook-form'
 import TextField from '../TextField/TextField'
 import { Search } from 'lucide-react'
 import Image from 'next/image'
-import { Dispatch, FC, SetStateAction } from 'react'
 
-const Header:FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpened:Dispatch<SetStateAction<boolean>>}> = ({isMobileSidebarOpened, setIsMobileSidebarOpened}) => {
+const Header = () => {
     const {control, handleSubmit} = useForm<{search:string}>({
         mode: 'onChange',
     });
@@ -30,50 +29,7 @@ const Header:FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpened:Dispat
                     {...field}
                 />}
             />
-
-            <button 
-                type='button'
-                className='sm:flex md:hidden items-center justify-center rounded-full cursor-pointer duration-200 hover:bg-gray-200'
-                onClick={()=> {
-                    if(!isMobileSidebarOpened)
-                        setIsMobileSidebarOpened(true)
-                }}>
-                <Image
-                    src={'/Assets/User.svg'}
-                    alt='sidebar'
-                    width={60}
-                    height={60}
-                    loading='eager'
-                />
-            </button>
         </form>
-
-        {/* Header Mobile */}
-
-        <div className='h-(--header-height) flex items-center justify-between px-5 py-3 sm:hidden border-b border-b-gallery-gray-93 z-50 relative bg-white'>
-            <Image
-                src={'/Assets/UpplySVG.svg'}
-                loading='eager'
-                width={80}
-                height={80}
-                alt='upply-logo'
-            />
-            <button 
-                className='flex items-center justify-center rounded-full cursor-pointer duration-200 hover:bg-gray-200'
-                onClick={()=> {
-                    if(!isMobileSidebarOpened)
-                        setIsMobileSidebarOpened(true)
-                }}>
-                <Image
-                    src={'/Assets/User.svg'}
-                    alt='sidebar'
-                    width={40}
-                    height={40}
-                    loading='eager'
-                />
-            </button>
-            
-        </div>
     </header>
     
   )
