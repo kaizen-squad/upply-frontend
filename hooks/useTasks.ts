@@ -136,7 +136,7 @@ export function useApplication(): UseApplicationReturn {
     const deleteApplication = async (application_id:string) => {
       try{
           setLoading(true);
-          const applyresponse = await apiFetch<null>(`api/applications/cancel`, application_id, 'DELETE');
+          const applyresponse = await apiFetch<null>(`api/applications/cancel`, {id:application_id}, 'DELETE');
           
           if(applyresponse.success)
             notify('Votre candidature a été retirée.', 'success');
