@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@reactuses/core": "^6.3.1",
     "@tailwindcss/postcss": "^4.2.4",
     "axios": "^1.15.0",
     "clsx": "^2.1.1",

@@ -108,9 +108,9 @@ export type ApplicationCardProps = {
 }
 
 export type statistics = {
-  waiting_budget:string,
-  waiting_applications: string, 
-  active_missions: string
+  waiting_budget:number,
+  waiting_applications: number, 
+  active_missions: number
 }
 
 export type PDashboardData = {
