@@ -20,7 +20,7 @@ export async function proxy(request: NextRequest) {
   
   // 1. Non authentifié sur route protégée entraine redirection login
   if (!isLoggedIn && !isPublicPath) {
-    // return NextResponse.redirect(new URL('/', request.url));
+    // return NextResponse.redirect(new URL('/login', request.url));
   }
   
   // 2. Authentifié sur route publique entraine redirection dashboard
@@ -31,9 +31,9 @@ export async function proxy(request: NextRequest) {
     if(userCookie){
       const user: User = JSON.parse(userCookie);
       if (user && user.role === 'client') {
-        return NextResponse.redirect(new URL('/client/dashboard', request.url));
+        return NextResponse.redirect(new URL('/client', request.url));
       } else if (user.role === 'prestataire') {
-          return NextResponse.redirect(new URL('/prestataire/dashboard', request.url));
+          return NextResponse.redirect(new URL('/prestataire', request.url));
       }
     }
     // Fallback: logout si pas de rôle

@@ -4,7 +4,7 @@ import { Dispatch, FC, SetStateAction } from 'react'
 const HeaderMobile : FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpened:Dispatch<SetStateAction<boolean>>}> = ({isMobileSidebarOpened, setIsMobileSidebarOpened})=> {
   return (
     <header>
-        <div className='h-(--header-height) flex items-center justify-between px-5 py-3 sm:hidden border-b border-b-gallery-gray-93 z-50 relative bg-white'>
+        <div className='h-(--header-height) flex items-center justify-between px-5 py-3 border-b border-b-gallery-gray-93 z-50 relative bg-white'>
             <Image
                 src={'/Assets/UpplySVG.svg'}
                 loading='eager'

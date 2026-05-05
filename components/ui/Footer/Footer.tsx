@@ -26,7 +26,7 @@ const Footer = () => {
   }
 
   return (
-    <footer className='text-white-solid pt-15 hidden md:block'>
+    <footer className='text-white-solid pt-15'>
       {/* Section principale avec liens */}
       <div className="w-[90%] mx-auto">
         {/* Version Desktop (lg et plus) */}
