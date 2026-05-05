@@ -9,8 +9,6 @@ import { Dispatch, FC, SetStateAction } from 'react';
 
 const SiderbarMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpened:Dispatch<SetStateAction<boolean>>, onglets: Onglets}> = ({isMobileSidebarOpened, setIsMobileSidebarOpened, onglets}) => {
     const {user}=useUserStore();    
-    const router = useRouter();
-    const pathname = usePathname();
 
   return (
     <aside className='absolute right-0 z-1 bg-white top-(--header-height) mt-2 w-[80%]'>

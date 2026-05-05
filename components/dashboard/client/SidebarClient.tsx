@@ -21,7 +21,7 @@ const SidebarClient = () => {
         ]
     }
   return (
-    <aside className='pt-8 w-(--sidebar-width) shadow-2xs border-r-2 border-r-gray-200 h-(--main-height) relative left-0 top-0'>
+    <aside className='pt-8 min-w-(--sidebar-width) shadow-2xs border-r-2 border-r-gray-200 h-(--main-height) relative left-0 top-0'>
         <SidebarOnglets {...onglets} />
         <div className='px-4 absolute bottom-5 w-full pt-5 border-t-2 border-t-gray-300'>
             <div className='flex items-center gap-1 p-2 border border-gray-300'>
