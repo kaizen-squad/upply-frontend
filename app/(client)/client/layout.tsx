@@ -11,11 +11,7 @@ import { ReactNode, useState } from 'react';
 
 const layout:React.FC<{children:ReactNode}> = ({children}) => {
     const [isMobileSidebarOpened, setIsMobileSidebarOpened] = useState(false);
-<<<<<<< HEAD
     const isMobile = useMediaQuery('(max-width: 800px)', true);
-=======
-    const isMobile = useMediaQuery('(max-width: 650px)');
->>>>>>> d64a8fd (Resolve responsive rendering logic with useMediaQuery)
   return (
     <div>
         {
