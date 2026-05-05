@@ -10,11 +10,11 @@ import { CircleAlert } from 'lucide-react'
 import Image from 'next/image';
 import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { tasksA } from '../../../lib/data';
 
 const ApplicationForm:FC<{task: ApplicationResponse}> = ({task}) => {
     const {notify} = useNotificationManager();
     const {applyTotask} = useApplication();
-    const {user} = useUserStore();
     const {control, handleSubmit, formState:{isValid, isSubmitting}} = useForm<ApplicationFormType>({
         mode: 'onChange',
         resolver: zodResolver(ApplicationFormSchema),
@@ -32,8 +32,8 @@ const ApplicationForm:FC<{task: ApplicationResponse}> = ({task}) => {
     }
 
     const applicationRangeBarColor: {EN_ATTENTE:string, ACCEPTEE: string, REJETEE:string} = {
-        EN_ATTENTE: '',
-        ACCEPTEE: '',
+        EN_ATTENTE: 'linear-gradient(to right, var(--alizarin-crimson-red-51) 33%, #fff 1%)',
+        ACCEPTEE: 'linear-gradient(to right, var(--orange-alert) 100%, #fff 1%)',
         REJETEE: ''
     }
 
@@ -42,7 +42,7 @@ const ApplicationForm:FC<{task: ApplicationResponse}> = ({task}) => {
         <h2 className='my-2 mb-4'>POSTULER À CETTE MISSION</h2>
         
         { 
-            (user?.id && !(task.prestataire_id === user?.id)) && 
+            !task.applied_at && 
             <div>
                 <Controller
                     name='message'
@@ -51,7 +51,7 @@ const ApplicationForm:FC<{task: ApplicationResponse}> = ({task}) => {
                         <Textarea
                             label='VOTRE MESSAGE DE MOTIVATION (OBLIGATOIRE)'
                             placeholder='Expliquez brièvement votre expérience pertinente...'
-                            className='h-30 border border-gray-200 bg-gallery-gray-93 border-none md:bg-white md:border-2 rounded-none p-4'
+                            className='h-30 border border-gray-200 bg-gray-100 border-none md:border-2 rounded-none p-4'
                             {...field} 
                             error={error?.message}
                         />}
@@ -73,7 +73,7 @@ const ApplicationForm:FC<{task: ApplicationResponse}> = ({task}) => {
         }
 
         {
-            !(user?.id && task.prestataire_id === user?.id) &&
+           (task.applied_at && task.application_status) &&
             <div className='text-center border-2 rounded-sm shadow-2xs py-6 px-3 bg-athens-gray-96'>
                 <Image
                     src={'/Assets/Success_Check.svg'}
@@ -90,7 +90,7 @@ const ApplicationForm:FC<{task: ApplicationResponse}> = ({task}) => {
                 <div>
                     <div className='flex items-center justify-between'>
                         <small>STATUT DE l'EXAMEN</small>
-                        <small>{task.status.replace('_', ' ')}</small>
+                        <small>{task.application_status.replace('_', ' ')}</small>
                     </div>
                     <div className='border h-2 mt-1' style={{background: applicationRangeBarColor[task.application_status]}}></div>
                 </div>

@@ -56,8 +56,8 @@ export const ApplicationFormSchema = z.object({
 export type ApplicationFormType = z.infer<typeof ApplicationFormSchema>
 
 export interface ApplicationResponse extends TaskProps{
-  applied_at: string
-  application_status: ApplicationStatus
+  applied_at: string | undefined
+  application_status: ApplicationStatus | undefined
 }
 
 export  interface Deliverable {

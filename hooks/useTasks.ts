@@ -1,12 +1,12 @@
 'use client'
 import { useState, useEffect } from 'react';
 import apiFetch from '@/lib/api';
-import type { ApplicationFormType, Deliverable, Review, ReviewProps, TaskFormType, TaskProps } from '@/types';
+import type { ApplicationFormType, ApplicationResponse, Deliverable, Review, ReviewProps, TaskFormType, TaskProps } from '@/types';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Application, DeliveryFormProps } from '@/types/index';
 
-interface UseTasksReturn {
-  tasks: TaskProps[];
+export interface UseTasksReturn<T = ApplicationResponse | TaskProps> {
+  tasks: T[];
   loading: boolean;
   refetch: (id:string | undefined) => Promise<void>;
   createTask: (taskData: TaskFormType) => Promise<void>;
@@ -16,18 +16,18 @@ interface UseTasksReturn {
 
 export const budgetCurrency = 'FCFA'
 
-export function useTasks(id:string|undefined, skip:boolean=false): UseTasksReturn {
-  const [tasks, setTasks] = useState<TaskProps[]>([]);
+export function useTasks<T = ApplicationResponse | TaskProps>(id:string|undefined, skip:boolean=false): UseTasksReturn<T> {
+  const [tasks, setTasks] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
   const {notify} = useNotificationManager();
-
   const fetchTasks = async (id:string | undefined) => {
    
     try { 
       setLoading(true);
-      const response = await apiFetch<TaskProps[] | TaskProps>(`api/tasks${id ? `/${id}` : ''}`);
+
+      const response = await apiFetch<T[]>(`api/tasks${id ? `/${id}` : ''}`);
       if(response.data){
-        const data:TaskProps[] = Array(1).fill(response.data).flat(Infinity)
+        const data:T[] = Array(1).fill(response.data).flat(Infinity)
         setTasks(data);
       }
       else{

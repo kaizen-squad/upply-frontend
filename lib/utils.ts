@@ -18,7 +18,7 @@ export function cn(...inputs: ClassValue[]) {
  * @returns Chaîne formattée (ex: "Posté à l'instant", "Posté il y a 3 jours")
  */
 export function formatRelativeTime(dateString: string): string {
-  const date = new Date(dateString);
+  const date = new Date(dateString.substring(0,10));
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffSecs = Math.floor(diffMs / 1000);
@@ -73,9 +73,9 @@ export function formatRelativeTime(dateString: string): string {
  * @returns Chaîne formatée (ex: "03 Mai 2026") ou chaîne vide si invalide
  */
 export function formatFrenchDateIntl(dateStr: string): string {
-  if (!dateStr || !dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) return '';
+  if (!dateStr || !dateStr.substring(0,10).match(/^\d{4}-\d{2}-\d{2}$/)) return '';
 
-  const [year, month, day] = dateStr.split('-').map(Number);
+  const [year, month, day] = dateStr.substring(0,10).split('-').map(Number);
   const date = new Date(year, month - 1, day);
 
   if (isNaN(date.getTime())) return '';
