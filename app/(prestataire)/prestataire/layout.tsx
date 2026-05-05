@@ -1,7 +1,6 @@
 'use client'
 import SidebarPrestataire from '@/components/dashboard/prestataire/SidebarPrestataire';
 import SidebarPrestataireMobile from '@/components/dashboard/prestataire/SidebarPrestataireMobile';
-import ReviewPage from '@/components/shared/review/ReviewPage';
 import Footer from '@/components/ui/Footer/Footer';
 import FooterMobile from '@/components/ui/Footer/FooterMobile';
 import Header from '@/components/ui/Header/Header';
