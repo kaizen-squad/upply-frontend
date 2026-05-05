@@ -1,4 +1,4 @@
-import { ApplicationStatus, TaskStatus } from "@/types"
+import { ApplicationStatus } from "@/types"
 import { FC } from "react"
 
 export const flagColor ={

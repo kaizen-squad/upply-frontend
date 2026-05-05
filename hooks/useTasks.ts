@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import apiFetch from '@/lib/api';
 import type { ApplicationFormType, Deliverable, Review, ReviewProps, TaskFormType, TaskProps } from '@/types';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
-import { Application, DeliveryFormProps } from '../types/index';
+import { Application, DeliveryFormProps } from '@/types/index';
 
 interface UseTasksReturn {
   tasks: TaskProps[];
