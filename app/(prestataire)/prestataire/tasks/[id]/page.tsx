@@ -8,21 +8,21 @@ import { ApplicationResponse } from '@/types/index';
 import { useTasksContext } from "@/components/shared/tasks/TaskProvider";
 
 const page: React.FC<{params:Promise<{id:string}>}> = ({params}) => {
-    const {tasks: [task], refetch, loading} = useTasksContext<ApplicationResponse>();
+    const {tasks: [], refetch, loading} = useTasksContext<ApplicationResponse>();
 
-    // const task:ApplicationResponse =  {
-    //     id: 'task_001',
-    //     client_id: 'client_001',
-    //     prestataire_id: 'prestataire_101',
-    //     title: 'Création API REST pour application de réservation',
-    //     description: 'Développer une API complète avec authentification JWT, documentation Swagger, endpoints pour gérer les réservations, utilisateurs et paiements.',
-    //     budget: 2500,
-    //     deadline: '2026-06-15',
-    //     status: 'EN_COURS',
-    //     created_at: '2026-04-01T10:30:00Z',
-    //     applied_at: '',
-    //     application_status: undefined
-    //   };
+    const task:ApplicationResponse =  {
+        id: 'task_001',
+        client_id: 'client_001',
+        prestataire_id: 'prestataire_101',
+        title: 'Création API REST pour application de réservation',
+        description: 'Développer une API complète avec authentification JWT, documentation Swagger, endpoints pour gérer les réservations, utilisateurs et paiements.',
+        budget: 2500,
+        deadline: '2026-06-15',
+        status: 'EN_COURS',
+        created_at: '2026-04-01T10:30:00Z',
+        applied_at: '2026-04-01T10:30:00Z',
+        application_status: 'ACCEPTEE'
+      };
 
   return (       
      <>     

@@ -1,7 +1,6 @@
 import Button from '@/components/ui/Button/Button'
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Textarea } from '@/components/ui/Textarea/Textarea'
-import { useUserStore } from '@/hooks/store';
 import { useApplication } from '@/hooks/useTasks';
 import { formatFrenchDateIntl } from '@/lib/utils';
 import {  ApplicationFormSchema, ApplicationFormType, ApplicationResponse, TaskProps } from '@/types';
@@ -10,11 +9,13 @@ import { CircleAlert } from 'lucide-react'
 import Image from 'next/image';
 import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { tasksA } from '../../../lib/data';
+import { useRouter } from 'next/navigation';
 
 const ApplicationForm:FC<{task: ApplicationResponse}> = ({task}) => {
     const {notify} = useNotificationManager();
     const {applyTotask} = useApplication();
+    const router = useRouter();
+
     const {control, handleSubmit, formState:{isValid, isSubmitting}} = useForm<ApplicationFormType>({
         mode: 'onChange',
         resolver: zodResolver(ApplicationFormSchema),
@@ -74,27 +75,46 @@ const ApplicationForm:FC<{task: ApplicationResponse}> = ({task}) => {
 
         {
            (task.applied_at && task.application_status) &&
-            <div className='text-center border-2 rounded-sm shadow-2xs py-6 px-3 bg-athens-gray-96'>
-                <Image
-                    src={'/Assets/Success_Check.svg'}
-                    alt={'success'}
-                    width={50}
-                    height={50}
-                    className='w-max m-auto'
-                />
-                <p className='font-bold mt-3'>Candidature envoyée</p>
-                <p className='text-scarpa-flow-gray-34 mt-2'>Vous avez postulé à cette mission le {formatFrenchDateIntl(task.applied_at)}</p>
+           <div>
+                <div className='text-center border-2 rounded-sm shadow-2xs mt-10 py-6 px-3 bg-athens-gray-96'>
+                    <Image
+                        src={'/Assets/Success_Check.svg'}
+                        alt={'success'}
+                        width={50}
+                        height={50}
+                        className='w-max m-auto'
+                    />
+                    <p className='font-bold mt-3'>Candidature envoyée</p>
+                    <p className='text-scarpa-flow-gray-34 mt-2'>Vous avez postulé à cette mission le {formatFrenchDateIntl(task.applied_at)}</p>
 
-                <hr className='mt-7 mb-5 border-gray-300' />
+                    <hr className='mt-7 mb-5 border-gray-300' />
 
-                <div>
-                    <div className='flex items-center justify-between'>
-                        <small>STATUT DE l'EXAMEN</small>
-                        <small>{task.application_status.replace('_', ' ')}</small>
+                    <div>
+                        <div className='flex items-center justify-between'>
+                            <small>STATUT DE l'EXAMEN</small>
+                            <small>{task.application_status.replace('_', ' ')}</small>
+                        </div>
+                        <div className='border h-2 mt-1' style={{background: applicationRangeBarColor[task.application_status]}}></div>
                     </div>
-                    <div className='border h-2 mt-1' style={{background: applicationRangeBarColor[task.application_status]}}></div>
+
                 </div>
-            </div>
+                {/* {
+                    task.application_status === 'EN_ATTENTE' && 
+                    <Button
+                        textContent="Retirer ma candidature"
+                        className='w-full bg-alizarin-crimson-red-51 py-3.5 text-white font-bold rounded-sm shadow-[5px_5px_1px_0] shadow-gallery-gray-93 mt-10'
+                        onClick={()=>}
+                    />
+                } */}
+                {
+                    task.application_status === 'ACCEPTEE' && 
+                    <Button
+                        textContent="Livrer le travail"
+                        className='w-full bg-alizarin-crimson-red-51 py-3.5 text-white font-bold rounded-sm shadow-[5px_5px_1px_0] shadow-gallery-gray-93 mt-10'
+                        onClick={()=>router.push(`/prestataire/tasks/${task.id}/deliver`)}
+                    />
+                }
+           </div>
         }
     </form>
   )
