@@ -106,6 +106,7 @@ interface UseApplicationReturn {
   application: Application[],
   loading: boolean,
   applyTotask: (applyData: ApplicationFormType) => Promise<void>,
+  deleteApplication: (application_id:string) => Promise<void>
 } 
 
 export function useApplication(): UseApplicationReturn {
@@ -132,5 +133,20 @@ export function useApplication(): UseApplicationReturn {
       
     }
 
-    return {applyTotask, application, loading}
+    const deleteApplication = async (application_id:string) => {
+      try{
+          setLoading(true);
+          const applyresponse = await apiFetch<null>(`api/applications/cancel`, application_id, 'DELETE');
+          
+          if(applyresponse.success)
+            notify('Votre candidature a été retirée.', 'success');
+         throw new Error(applyresponse.message) 
+        }catch(err){
+            notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non retirée!', 'error');
+        }finally{
+          setLoading(false);
+        }
+    }
+
+    return {applyTotask, application, loading, deleteApplication}
   }
