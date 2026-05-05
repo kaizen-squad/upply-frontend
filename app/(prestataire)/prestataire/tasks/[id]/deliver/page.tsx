@@ -2,12 +2,23 @@
 import DeliverForm from '@/components/dashboard/client/DeliverForm';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import Button from '@/components/ui/Button/Button';
+import Spinner from '@/components/ui/Spinner/Spinner';
 import { ApplicationResponse, TaskProps } from '@/types';
 import { LockKeyhole, Zap, CircleCheck } from 'lucide-react';
+import { notFound, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const page= () => {
     const {tasks:[task]} = useTasksContext<ApplicationResponse>();
-  return (
+    const router = useRouter();
+
+    useEffect(()=>{
+        if(!task)
+            return router.push('/not-found')
+    }, [])
+
+  return task ? (
+    
     <div className='py-10'>
         <h1>Soumettre mon Livrable</h1>
         <p>Complétez les informations ci-dessous pour valider la livrables.</p>
@@ -27,7 +38,7 @@ const page= () => {
         </div>
 
         <div className='p-6 border-2 mt-6 bg-white-solid'>
-            <DeliverForm task_id={task.id} />
+            <DeliverForm task_id={task?.id} />
         </div>
         
         <div className='border-2 bg-white-solid flex flex-col lg:grid lg:grid-rows-2 lg:grid-cols-2 xl:grid-rows-1 xl:grid-cols-3 gap-5 mt-5 p-5'>
@@ -59,6 +70,15 @@ const page= () => {
             </div>
 
         </div>
+    </div>
+  ) : 
+  (
+    <div className="h-(--main-height) w-full flex">
+        <div className="flex gap-3 items-center w-max h-max m-auto">
+            <Spinner/>
+            <p>Loading..</p>
+        </div>
+        
     </div>
   )
 }
