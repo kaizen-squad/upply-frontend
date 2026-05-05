@@ -4,33 +4,43 @@ import SiderbarClientMobile from '@/components/dashboard/client/SidebarClientMob
 import Footer from '@/components/ui/Footer/Footer';
 import FooterMobile from '@/components/ui/Footer/FooterMobile';
 import Header from '@/components/ui/Header/Header';
+import HeaderMobile from '@/components/ui/Header/HeaderMobile';
 import { Overlay } from '@/components/ui/Overlay/Overlay';
+import { useMediaQuery } from '@reactuses/core';
 import { ReactNode, useState } from 'react';
 
 const layout:React.FC<{children:ReactNode}> = ({children}) => {
     const [isMobileSidebarOpened, setIsMobileSidebarOpened] = useState(false);
-
+    const isMobile = useMediaQuery('(max-width: 650px)');
   return (
     <div>
-        <Header isMobileSidebarOpened={isMobileSidebarOpened} setIsMobileSidebarOpened={setIsMobileSidebarOpened} />
+        {
+            isMobile ? 
+                <HeaderMobile isMobileSidebarOpened={isMobileSidebarOpened} setIsMobileSidebarOpened={setIsMobileSidebarOpened} />
+                :
+                <Header/>
+        }
         <div className="flex h-(--main-height) overflow-y-hidden">
-            <div className=" hidden md:block">
-                <SidebarClient/>
-            </div>
-            <div className='md:hidden'>
-                {isMobileSidebarOpened && 
-                <Overlay isOpen={isMobileSidebarOpened} onClose={()=>{}}>
-                    <SiderbarClientMobile isMobileSidebarOpened={isMobileSidebarOpened} setIsMobileSidebarOpened={setIsMobileSidebarOpened}/>
-                </Overlay> }
-            </div>
+            {
+                isMobile ? 
+                    <div className='md:hidden'>
+                        {
+                            isMobileSidebarOpened && 
+                            <Overlay isOpen={isMobileSidebarOpened} onClose={()=>{}}>
+                                <SiderbarClientMobile isMobileSidebarOpened={isMobileSidebarOpened} setIsMobileSidebarOpened={setIsMobileSidebarOpened}/>
+                            </Overlay> 
+                        }
+                    </div>
+                :
+                    <SidebarClient/>
+            }
             <div className="pt-5 w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
                 <div className="pb-10">
                     {children}
                 </div>
             </div>
         </div>
-        <Footer/>
-        <FooterMobile/>
+        { isMobile ? <FooterMobile/> : <Footer/> }
     </div>
   )
 }

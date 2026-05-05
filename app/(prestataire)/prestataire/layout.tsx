@@ -1,37 +1,48 @@
 'use client'
 import SidebarPrestataire from '@/components/dashboard/prestataire/SidebarPrestataire';
 import SidebarPrestataireMobile from '@/components/dashboard/prestataire/SidebarPrestataireMobile';
-import ReviewPage from '@/components/shared/review/ReviewPage';
 import Footer from '@/components/ui/Footer/Footer';
 import FooterMobile from '@/components/ui/Footer/FooterMobile';
 import Header from '@/components/ui/Header/Header';
+import HeaderMobile from '@/components/ui/Header/HeaderMobile';
 import { Overlay } from '@/components/ui/Overlay/Overlay';
+import { useMediaQuery } from '@reactuses/core';
 import { ReactNode, useState } from 'react';
 
 const layout:React.FC<{children:ReactNode}> = ({children}) => {
     const [isMobileSidebarOpened, setIsMobileSidebarOpened] = useState(false);
+    const isMobile = useMediaQuery('(max-width: 650px)');
 
   return (
     <div>
-        <Header isMobileSidebarOpened={isMobileSidebarOpened} setIsMobileSidebarOpened={setIsMobileSidebarOpened} />
+        {
+            isMobile ? 
+                <HeaderMobile isMobileSidebarOpened={isMobileSidebarOpened} setIsMobileSidebarOpened={setIsMobileSidebarOpened} />
+                :
+                <Header/>
+        }
         <div className="flex h-(--main-height) overflow-y-hidden">
-            <div className=" hidden md:block">
+            {
+                isMobile ? 
+                <div>
+                     {
+                        isMobileSidebarOpened && 
+                        <Overlay isOpen={isMobileSidebarOpened} onClose={()=>{}}>
+                            <SidebarPrestataireMobile isMobileSidebarOpened={isMobileSidebarOpened} setIsMobileSidebarOpened={setIsMobileSidebarOpened}/>
+                        </Overlay> 
+                    }
+                </div>
+                :
                 <SidebarPrestataire/>
-            </div>
-            <div className='md:hidden'>
-                {isMobileSidebarOpened && 
-                <Overlay isOpen={isMobileSidebarOpened} onClose={()=>{}}>
-                    <SidebarPrestataireMobile isMobileSidebarOpened={isMobileSidebarOpened} setIsMobileSidebarOpened={setIsMobileSidebarOpened}/>
-                </Overlay> }
-            </div>
+            }   
             <div className="w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
                 <div className="w-[95%] m-auto">
                     {children}
                 </div>
             </div>
         </div>
-        <Footer/>
-        <FooterMobile/>
+        { isMobile ? <FooterMobile/> : <Footer/> }
+        
     </div>
   )
 }
