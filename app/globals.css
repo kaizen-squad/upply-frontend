@@ -101,6 +101,10 @@
       -ms-overflow-style: none;  /* IE and Edge */
     }
   }
+
+  @theme{
+    --breakpoint-xs: 570px;
+  }
 }
 
   footer{
