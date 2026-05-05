@@ -19,6 +19,7 @@ const page = () => {
     const [dashboardData, setDashboardData] = useState<PDashboardData | undefined>(undefined);
     const [loading, setLoading] = useState(false);
     const {notify} = useNotificationManager();
+
     useEffect(()=>{
         const loadDashboard = async ()=> {
             try{
@@ -114,7 +115,7 @@ const page = () => {
                                 {   dashboardData?.applications.length ? 
                                         dashboardData?.applications.map((application)=> <ApplicationCard application={application} />)
                                     :
-                                        <div className="text-center py-5 bg-white border shadow-2xs mt-7">
+                                        <div className="text-center py-5 bg-white border shadow-2xs">
                                             Aucune candidature
                                         </div>
                                 }

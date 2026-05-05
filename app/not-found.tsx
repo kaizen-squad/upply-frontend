@@ -13,7 +13,7 @@ const NotFound = () => {
                 alt='empty-page'
                 width={100}
                 height={100}
-                className='scale-500 translate-x-21 -translate-y-10'
+                className='scale-500 m-auto -translate-y-10'
             />
             <div className="relative z-2" >
                 <p className="my-4 font-semibold text-gray-500 text-3xl">PAGE NOT FOUND !</p>

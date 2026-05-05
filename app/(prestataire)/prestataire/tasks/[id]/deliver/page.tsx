@@ -2,15 +2,11 @@
 import DeliverForm from '@/components/dashboard/client/DeliverForm';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import Button from '@/components/ui/Button/Button';
-import { TaskProps } from '@/types';
+import { ApplicationResponse, TaskProps } from '@/types';
 import { LockKeyhole, Zap, CircleCheck } from 'lucide-react';
-import Image from 'next/image';
-import { useState } from 'react';
-import { tasksA } from '@/lib/data';
 
 const page= () => {
-    const {tasks} = useTasksContext();
-    const task = tasksA[0]
+    const {tasks:[task]} = useTasksContext<ApplicationResponse>();
   return (
     <div className='py-10'>
         <h1>Soumettre mon Livrable</h1>

@@ -8,7 +8,7 @@ const SidebarPrestataire = () => {
     const {user} = useUserStore();
     const onglets :Onglets = {
         ACCUEIL: [
-            {text: 'Tableau de bord', iconPath:'LayoutDashboard.svg', redirect:'/prestataire/dashoard'}
+            {text: 'Tableau de bord', iconPath:'LayoutDashboard.svg', redirect:'/prestataire/dashboard'}
         ],
         OPPORTUNITES: [
             {text: 'Marché des missions', iconPath:'MissionsCenter.svg', redirect:'/prestataire/tasks'},
