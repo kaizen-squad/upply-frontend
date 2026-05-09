@@ -105,4 +105,38 @@
 
   @theme{
     --breakpoint-xs: 570px;
+<<<<<<< HEAD
   }
+=======
+  }
+
+  footer{
+    @apply bg-woodsmoke-gray-10
+  } 
+  h1{
+    @apply text-3xl font-bold  
+  }
+  h2{
+    @apply text-xl font-semibold
+  }
+  h3{
+    @apply text-[1rem] font-semibold
+  }
+
+  @layer utilities {
+    /* Chrome, Safari, Edge, Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    
+    /* Firefox */
+    .no-scrollbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;  /* IE and Edge */
+    }
+  }
+
+  @theme{
+    --breakpoint-xs: 570px;
+  }
+>>>>>>> e9ad22f (Github review fixed)
