@@ -96,3 +96,31 @@ export function commissionPlateform(budget: number): number {
 export function getInitials (name: string): string {
   return name.split(' ').map(w=> w[0]).join('').toUpperCase()
 }
+
+/**
+ * Utility function to build FormData for file upload
+ * @param data Object containing fields and files
+ * @returns FormData ready to send
+ */
+export function buildFormData(data: Record<string, any>): FormData {
+  const formData = new FormData();
+  
+  Object.entries(data).forEach(([key, value]) => {
+    if (value instanceof File || value instanceof Blob) {
+      formData.append(key, value);
+    } else if (value && typeof value === 'object' && !Array.isArray(value)) {
+      // For nested objects, send as JSON string
+      formData.append(key, JSON.stringify(value));
+    } else if (Array.isArray(value)) {
+      // For arrays, send each item with same key
+      value.forEach((item) => {
+        formData.append(key, item);
+      });
+    } else {
+      formData.append(key, String(value));
+    }
+  });
+  
+  return formData;
+}
+

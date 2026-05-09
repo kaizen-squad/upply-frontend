@@ -1,4 +1,4 @@
-import z from "zod";
+import {z} from "zod";
 import { AuthDataResponse, RefreshTokenResponse } from "./auth";
 
 
@@ -32,7 +32,7 @@ export interface TaskProps {
 export const TaskFormProps = z.object({
   title: z.string().min(3, {error: 'Entrez un nom convenable!'}),
   description: z.string().min(10, {error: 'Une description est nécessaire!'}),
-  budget: z.string().regex(/^\d+$/, 'Le budget est obligatoire'),
+  budget: z.number().min(0, {error:'Le budget est obligatoire'}),
   deadline: z.string().date()
 });
 export type TaskFormType = z.infer<typeof TaskFormProps>;

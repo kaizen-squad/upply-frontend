@@ -16,7 +16,7 @@ const SidebarPrestataireMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileS
             {text: 'Soumettre Livrable', iconPath:'DeliverablesTruck.svg', redirect:'/prestataire/deliverables'}
         ], 
         FINANCES: [
-            {text: 'Mes Facturations', iconPath:'BillingPocket.svg', redirect:'prestataire/billing'}
+            {text: 'Mes Facturations', iconPath:'BillingPocket.svg', redirect:'/prestataire/billing'}
         ]
     }
 

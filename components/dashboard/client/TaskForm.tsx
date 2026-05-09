@@ -61,7 +61,8 @@ const TaskForm = () => {
                 name='budget'
                 control={control}
                 render={({field, fieldState:{error}})=>
-                    <TextField  
+                    <TextField 
+                        type="number" 
                         placeholder='0'
                         label='Budget (FCFA)'
                         className='py-2.5 rounded-none'

@@ -1,10 +1,8 @@
 import SidebarOnglets, { Onglets } from '@/components/shared/SidebarOnglets';
 import Button from '@/components/ui/Button/Button';
 import { useUserStore } from '@/hooks/store'
-import { cn } from '@/lib/utils';
 import { X } from 'lucide-react'
 import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation';
 import { Dispatch, FC, SetStateAction } from 'react';
 
 const SiderbarMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpened:Dispatch<SetStateAction<boolean>>, onglets: Onglets}> = ({isMobileSidebarOpened, setIsMobileSidebarOpened, onglets}) => {

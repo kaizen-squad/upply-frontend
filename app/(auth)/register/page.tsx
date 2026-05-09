@@ -92,7 +92,7 @@ function RegisterForm() {
             type='submit' 
             className='bg-foreground text-white w-full mt-6 rounded-lg py-3' 
             textContent={loading ? 'Loading...' : 'Create account'} 
-            Icon={loading ? ()=><Spinner scale="scale-60"/> : undefined }
+            Icon={loading ? ()=><Spinner size={8} /> : undefined }
         />
 
     </form>
