@@ -29,7 +29,6 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-cover-beige: var(--cover-beige);
-  --color-bg-footer: var(--bg-footer);
   --color-alabaster-gray-98: var(--alabaster-gray-98);
   --color-alizarin-crimson-red-51: var(--alizarin-crimson-red-51);
   --color-athens-gray-96: var(--athens-gray-96);
@@ -76,6 +75,7 @@
     --header-height: 80px;
     --main-height: calc(100vh - 80px)
   }
+}
 
   footer{
     @apply bg-woodsmoke-gray-10
@@ -106,5 +106,3 @@
   @theme{
     --breakpoint-xs: 570px;
   }
-}
-

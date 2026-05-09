@@ -5,11 +5,11 @@ import type { ITextFieldProps } from '../types';
 import { cn } from '@/lib/utils';
 
 const TextField: FC<ITextFieldProps> = ( { type, id, label, value, className, placeholder, onChange, errorMessage, Icon, Eposition='top', ...props } ) => {
-        const textFieldId = id || label?.toLowerCase().replace(/\s/g, '-');
+        const textFieldId = props.name || id || label?.toLowerCase().replace(/\s/g, '-');
     return ( 
         <div className='flex flex-col gap-2 w-full'>  
             {label && <div className='flex justify-between w-full'>
-                <label htmlFor={props.name} className={cn('font-bold ', errorMessage ? 'text-red-600' : '') }>{label}</label>
+                <label htmlFor={textFieldId} className={cn('font-bold ', errorMessage ? 'text-red-600' : '') }>{label}</label>
                 {(errorMessage && Eposition ==='top') && <small className='text-red-500'>{errorMessage}</small>}
             </div>}              
            
@@ -18,7 +18,7 @@ const TextField: FC<ITextFieldProps> = ( { type, id, label, value, className, pl
                 <input 
                     {...props} 
                     value={value ?? ''} 
-                    type={type ?? 'text'} id={props.name} 
+                    type={type ?? 'text'} id={textFieldId} 
                     className={cn(
                                 'block max-w-full w-full px-3 py-[5px] shadow-2xs rounded-lg border-[0.5px] border-gray-300 outline-2 ', 
                                 errorMessage 

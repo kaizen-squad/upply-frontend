@@ -42,7 +42,7 @@ const Task: FC<{task:TaskProps}> = ({task}) => {
             <Button 
                 className="block w-[85%] m-auto py-2.5 bg-woodsmoke-gray-10 text-white-solid rounded-sm"
                 textContent="Voir la tâche"
-                onClick={()=> router.push(`/dashboard/tasks/${id}`)}
+                onClick={()=> router.push(`/tasks/${id}`)}
             />
         </div>
     </div>

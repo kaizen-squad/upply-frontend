@@ -1,11 +1,7 @@
 'use client'
 import Tab from '@/components/ui/Tabs/Tab'
 import Image from 'next/image'
-<<<<<<< HEAD
 import { usePathname, useRouter } from 'next/navigation'
-=======
-import {  usePathname, useRouter } from 'next/navigation'
->>>>>>> c005e8b (update gitignore)
 import { FC, ReactNode } from 'react'
 
 const layout: FC<{children:ReactNode}> = ({children}) => {
@@ -14,7 +10,7 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
   return (
     <div className='flex h-screen'>
       
-      {/* Left Image */}
+      {/* Image gauche */}
       <div className='w-[45%] bg-cover-beige hidden lg:block'>
         <Image 
           src='/images/cover.jpg'
@@ -37,7 +33,7 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
         />
       </div>
       
-      {/* Forms Zone */}
+      {/* Zone de formulaire */}
       <div className='w-[80%] md:w-[60%] lg:w-[40%] m-auto flex flex-col h-max'>
         <Tab options={['Login', 'Register']} current={pathname?.includes('login') ? 'Login' : 'Register'} onclick={(e)=> {
             router.push((e.currentTarget.id  === 'Login') ? '/login' : '/register')

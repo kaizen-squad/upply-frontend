@@ -4,6 +4,7 @@ import apiFetch from '@/lib/api';
 import type { ApplicationFormType, ApplicationResponse, Deliverable, Review, ReviewProps, TaskFormType, TaskProps } from '@/types';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Application, DeliveryFormProps } from '@/types/index';
+import { buildFormData } from '@/lib/utils';
 
 export interface UseTasksReturn<T = ApplicationResponse | TaskProps> {
   tasks: T[];
@@ -43,7 +44,8 @@ export function useTasks<T = ApplicationResponse | TaskProps>(id:string|undefine
   const createTask = async (taskData:TaskFormType) => {
     try{
         setLoading(true);
-        const newTask = await apiFetch<object>('api/tasks', taskData, 'POST');
+        const data = buildFormData(taskData);
+        const newTask = await apiFetch<object>('api/tasks', data, 'POST');
         if(newTask.success)
             notify('Nouvelle tache ajoutée.', 'success');
           else throw new Error(newTask.message);
@@ -121,7 +123,7 @@ export function useApplication(): UseApplicationReturn {
           
           if(Number(applyresponse.status) === 201 && applyresponse.success)
             notify('Votre candidature a été soumise avec succès.', 'success');
-         throw new Error(applyresponse.message) 
+          else throw new Error(applyresponse.message) 
         }catch(err){
             notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non soumise!', 'error');
         }finally{
@@ -140,7 +142,7 @@ export function useApplication(): UseApplicationReturn {
           
           if(applyresponse.success)
             notify('Votre candidature a été retirée.', 'success');
-         throw new Error(applyresponse.message) 
+          else throw new Error(applyresponse.message) 
         }catch(err){
             notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non retirée!', 'error');
         }finally{
