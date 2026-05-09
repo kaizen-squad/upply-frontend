@@ -35,7 +35,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
                     <SidebarClient/>
             }
             <div className="pt-5 w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
-                <div className="pb-10">
+                <div className="pb-10 m-auto w-[95%]">
                     {children}
                 </div>
             </div>
