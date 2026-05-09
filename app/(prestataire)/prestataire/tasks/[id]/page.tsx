@@ -7,26 +7,12 @@ import Spinner from "@/components/ui/Spinner/Spinner";
 import { ApplicationResponse } from '@/types/index';
 import { useTasksContext } from "@/components/shared/tasks/TaskProvider";
 
-const page: React.FC<{params:Promise<{id:string}>}> = ({params}) => {
-    const {tasks: [], refetch, loading} = useTasksContext<ApplicationResponse>();
-
-    const task:ApplicationResponse =  {
-        id: 'task_001',
-        client_id: 'client_001',
-        prestataire_id: 'prestataire_101',
-        title: 'Création API REST pour application de réservation',
-        description: 'Développer une API complète avec authentification JWT, documentation Swagger, endpoints pour gérer les réservations, utilisateurs et paiements.',
-        budget: 2500,
-        deadline: '2026-06-15',
-        status: 'EN_COURS',
-        created_at: '2026-04-01T10:30:00Z',
-        applied_at: '2026-04-01T10:30:00Z',
-        application_status: 'ACCEPTEE'
-      };
+const page = () => {
+    const {tasks: [task], refetch, loading} = useTasksContext<ApplicationResponse>();
 
   return (       
      <>     
-     {/* While loading */}
+     {/* Chargement */}
         {  
         loading ? 
           <div className=" h-(--main-height) w-full flex">
@@ -37,7 +23,7 @@ const page: React.FC<{params:Promise<{id:string}>}> = ({params}) => {
           </div>
           :
           <div className="py-10">
-            {/* When it's ok */}
+            {/* Lorsque c'est ok */}
             {
               (!loading && task) &&
               <div>
@@ -66,7 +52,7 @@ const page: React.FC<{params:Promise<{id:string}>}> = ({params}) => {
                       width={15}
                       height={15}
                       alt="deadline-icon"
-                      src={'/Assets/Deadline_icon.svg'}
+                      src={'/Assets/Deadline_Icon.svg'}
                     />
                     <p>{formatFrenchDateIntl(task.deadline)}</p>
                   </div>
@@ -74,7 +60,7 @@ const page: React.FC<{params:Promise<{id:string}>}> = ({params}) => {
                 
 
                 <div className="mt-7 grid xl:grid-cols-[60%_38%] lg:gap-[2%] gap-7">
-                  {/* left */}
+                  {/* A gauche */}
                     <div>
                         <div className="hidden md:grid grid-cols-2 bg-white border-2 text-center">
                             <div className="py-10 px-12">
@@ -94,7 +80,7 @@ const page: React.FC<{params:Promise<{id:string}>}> = ({params}) => {
 
                     </div>
 
-                  {/* Right */}
+                  {/* A droite */}
                     <div className="flex flex-col gap-7">
                       <ApplicationForm task={task} />
                       <div className="bg-woodsmoke-gray-10 p-5">
@@ -119,7 +105,7 @@ const page: React.FC<{params:Promise<{id:string}>}> = ({params}) => {
               </div>
             }
 
-            {/* When ther is error */}
+            {/* Lorsqu'il y a une erreur */}
             
             { 
               !task?.id &&

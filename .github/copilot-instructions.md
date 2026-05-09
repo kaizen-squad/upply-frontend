@@ -115,9 +115,10 @@ Toute implémentation qui duplique cette logique dans un composant est une erreu
 
 ---
 
-npm run dev
+## Types TypeScript — Modèles de référence
 
 ```typescript
+
 type Role = 'client' | 'prestataire'
 
 type TaskStatus = 'OUVERTE' | 'EN_COURS' | 'LIVREE' | 'VALIDEE'

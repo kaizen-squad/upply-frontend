@@ -6,28 +6,47 @@ import { Overlay } from '@/components/ui/Overlay/Overlay';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { budgetCurrency } from '@/hooks/useTasks';
 import apiFetch from '@/lib/api';
-import { deliverablesWithVariedFiles, tasksA } from '@/lib/data';
+import { tasksA } from '@/lib/data';
 import { commissionPlateform, formatFrenchDateIntl, getInitials } from '@/lib/utils';
 import { DeliverableDTO, TaskProps } from '@/types';
-import { ArrowRight, BadgeCheck, Check, CheckCircle2, Shield } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Shield } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Rating from 'react-ratings-star';
 
-const matchExtBgColor = {
-    pdf: {
-        bg: '#FECACA',
-        text: '#DC2626'
-    },
-    jpg: {
-        bg: '#BFDBFE',
-        text: '#2563EB'
-    },
-    zip: {
-        bg: '#FEF08A',
-        text: '#A16207'
-    }
-}
+const matchExtBgColor: Record<string, { bg: string; text: string }> = {
+  pdf: {
+    bg: '#FECACA',
+    text: '#DC2626'
+  },
+  jpg: {
+    bg: '#BFDBFE',
+    text: '#2563EB'
+  },
+  jpeg: {
+    bg: '#BFDBFE',
+    text: '#2563EB'
+  },
+  png: {
+    bg: '#BFDBFE',
+    text: '#2563EB'
+  },
+  zip: {
+    bg: '#FEF08A',
+    text: '#A16207'
+  },
+  // Fallback par défaut
+  default: {
+    bg: '#E5E7EB',
+    text: '#4B5563'
+  }
+};
+
+// Fonction pour extraire l'extension du fichier
+const getFileExtension = (fileType: string): string => {
+  const extension = fileType.split('/').pop() || fileType;
+  return extension.toLowerCase();
+};
 
 const page = () => {
     const [deliverable, setDeliverable] = useState<DeliverableDTO | undefined>(undefined);
@@ -61,20 +80,23 @@ const page = () => {
             </div>
         )
     else
-        if(deliverablesWithVariedFiles[0])
+        if(deliverable){
+                const fileExtension = getFileExtension(deliverable.file.file_type);
+                const fileColors = matchExtBgColor[fileExtension] || matchExtBgColor.default;
+
             return (
                 <div className="md:py-6">
                     <h1 className="hidden md:block">Révision du Livrable</h1>
                    
                     <div className="md:hidden flex items-center gap-3 bg-white shadow-2xs border border-gray-300 rounded-sm p-4">
-                        <div className="h-max p-3 rounded-full border border-gray-300 bg-gray-100 font-bold text-center text-xl">{getInitials(deliverablesWithVariedFiles[0].prestataire.name)}</div>
+                        <div className="h-max p-3 rounded-full border border-gray-300 bg-gray-100 font-bold text-center text-xl">{getInitials(deliverable.prestataire.name)}</div>
                         <div>
                             <small className="text-santa-gray">Livrable soumis par</small>
-                            <p className="text-scarpa-flow-gray-34 font-semibold">{deliverablesWithVariedFiles[0].prestataire.name}</p>
+                            <p className="text-scarpa-flow-gray-34 font-semibold">{deliverable.prestataire.name}</p>
                         </div>
                     </div>
 
-                    <p className="my-2 text-scarpa-flow-gray-34 hidden md:block">Livrable soumis par <span className="font-bold">{deliverablesWithVariedFiles[0].prestataire.name}</span></p>
+                    <p className="my-2 text-scarpa-flow-gray-34 hidden md:block">Livrable soumis par <span className="font-bold">{deliverable.prestataire.name}</span></p>
                     
                     <div className="xl:grid xl:grid-cols-[65%_1fr] gap-10 mt-5">
                         <div>
@@ -92,7 +114,7 @@ const page = () => {
 
                                 <div className="py-6 px-8">
                                     <p className="text-2xl font-semibold">Description</p>
-                                    <p className="text-scarpa-flow-gray-34">{deliverablesWithVariedFiles[0].content}</p>
+                                    <p className="text-scarpa-flow-gray-34">{deliverable.content}</p>
                                 </div>
 
                                 <div className="px-8 pb-5">
@@ -100,11 +122,11 @@ const page = () => {
                                     <div className="p-5 border border-gray-200 mt-5">
                                         <div className="flex gap-3 items-stretch">
                                             <div style={{
-                                                backgroundColor: matchExtBgColor[deliverablesWithVariedFiles[0].file.file_type].bg, 
-                                                color: matchExtBgColor[deliverablesWithVariedFiles[0].file.file_type].text, borderColor: matchExtBgColor[deliverablesWithVariedFiles[0].file.file_type]}} className="p-2 font-semibold flex items-center border">{deliverablesWithVariedFiles[0].file.file_type.toUpperCase()}</div>
+                                                backgroundColor: matchExtBgColor[deliverable.file.file_type].bg, 
+                                                color: matchExtBgColor[deliverable.file.file_type].text, borderColor: matchExtBgColor[deliverable.file.file_type].text}} className="p-2 font-semibold flex items-center border">{deliverable.file.file_type.toUpperCase()}</div>
                                             <div>
-                                                <a title="Download file" download={true} href={`${deliverablesWithVariedFiles[0].file.file_url}`} className="font-semibold duration-200 hover:text-alizarin-crimson-red-51">{deliverablesWithVariedFiles[0].file.file_name}</a>
-                                                <p className="text-scarpa-flow-gray-34">{deliverablesWithVariedFiles[0].file.file_size} • Envoyé le <span>{formatFrenchDateIntl(deliverablesWithVariedFiles[0].created_at)}</span></p>
+                                                <a title="Download file" download={true} href={`${deliverable.file.file_url}`} className="font-semibold duration-200 hover:text-alizarin-crimson-red-51">{deliverable.file.file_name}</a>
+                                                <p className="text-scarpa-flow-gray-34">{deliverable.file.file_size} • Envoyé le <span>{formatFrenchDateIntl(deliverable.created_at)}</span></p>
                                             </div>
                                         </div>
                                     </div>
@@ -151,20 +173,20 @@ const page = () => {
                                 <h3 className="p-5 border-b border-b-gray-300 bg-gray-100 rounded-t-sm text-scarpa-flow-gray-34">A PROPOS DU PRESTATAIRE</h3>
                                 <div>
                                     <div className="items-center gap-2 mt-5 ml-5 hidden md:flex">
-                                        <div className="h-max p-2 px-3 rounded-xs border border-gray-300 bg-gray-100 font-bold text-center text-xl">{getInitials(deliverablesWithVariedFiles[0].prestataire.name)}</div>
-                                        <p className="text-scarpa-flow-gray-34 font-semibold">{deliverablesWithVariedFiles[0].prestataire.name}</p>
+                                        <div className="h-max p-2 px-3 rounded-xs border border-gray-300 bg-gray-100 font-bold text-center text-xl">{getInitials(deliverable.prestataire.name)}</div>
+                                        <p className="text-scarpa-flow-gray-34 font-semibold">{deliverable.prestataire.name}</p>
                                     </div>
 
                                     <div className="rounded-xs border border-gray-300 mt-5 mx-5 p-5 py-2 pb-3 bg-gray-50">
                                         <small className="text-scarpa-flow-gray-34 font-bold">NOTE GLOBALE</small>
                                         <div className="flex items-center justify-between mt-2 ">
                                             <Rating
-                                                value={deliverablesWithVariedFiles[0].prestataire.rating_avg}
+                                                value={deliverable.prestataire.rating_avg}
                                                 size={25}
                                                 fullColor="var(--yellow)"  
                                                 isSelectable={false}
                                             />
-                                            <p> <span className="text-xl font-bold">{deliverablesWithVariedFiles[0].prestataire.rating_avg}</span> <span className="text-scarpa-flow-gray-34">/5</span></p>   
+                                            <p> <span className="text-xl font-bold">{deliverable.prestataire.rating_avg}</span> <span className="text-scarpa-flow-gray-34">/5</span></p>   
                                         </div>
                                     </div>
                                 </div>
@@ -203,6 +225,7 @@ const page = () => {
                     
                 </div>
             )
+        }
         else 
             return (
                 // Error state : API return error (Show a global error state component)

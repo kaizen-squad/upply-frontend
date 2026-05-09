@@ -137,7 +137,7 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
         file_url: "https://storage.upply.com/deliverables/task_007/demo_app.mp4",
         file_name: "demo_application.mp4",
         file_size: "15.8 MB",
-        file_type: "mp4"
+        file_type: "pdf"
       },
       created_at: "2026-06-02T13:45:00Z"
     },
@@ -165,7 +165,7 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
         file_url: "https://storage.upply.com/deliverables/task_009/docker_config.json",
         file_name: "docker-compose.prod.json",
         file_size: "4 KB",
-        file_type: "json"
+        file_type: "png"
       },
       created_at: "2026-06-04T16:20:00Z"
     },
@@ -179,7 +179,7 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
         file_url: "https://storage.upply.com/deliverables/task_010/ssl_certificate.crt",
         file_name: "wildcard_upply_com.crt",
         file_size: "2 KB",
-        file_type: "x-x509-ca-cert"
+        file_type: "pdf"
       },
       created_at: "2026-06-05T09:00:00Z"
     }

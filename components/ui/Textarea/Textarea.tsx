@@ -12,13 +12,13 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, label, error, optional, id, disabled, required, ...props }, ref) => {
-    const textareaId = id || label?.toLowerCase().replace(/\s/g, '-');
+    const textareaId = props.name || id || label?.toLowerCase().replace(/\s/g, '-');
     return (
       <div className="w-full space-y-1.5">
         {/* Label */}
         {label && (
           <label
-            htmlFor={props.name}
+            htmlFor={textareaId}
             className={cn(
               'block text-md font-bold text-gray-700',
               disabled && 'text-gray-400',
@@ -40,7 +40,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {/* Textarea */}
         <textarea
           ref={ref}
-          id={props.name}
+          id={textareaId}
           className={cn(
             // Base styles
             'w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 outline-2 outline-transparent',

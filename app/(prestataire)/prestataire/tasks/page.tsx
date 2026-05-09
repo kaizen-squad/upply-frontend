@@ -61,7 +61,7 @@ const page =  () => {
                     Icon={RotateCw} 
                     textContent="Rafraîchir la page" 
                     className={"w-max m-auto mt-8 items-center gap-3 text-white-solid rounded-sm bg-alizarin-crimson-red-51 px-6 py-3 font-semibold hidden sm:flex "}
-                    onClick={()=>refetch()}
+                    onClick={()=>refetch(undefined)}
                 />
             </div>
         }
