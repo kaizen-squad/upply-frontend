@@ -70,6 +70,26 @@ export  interface Deliverable {
   submitted_at: string
 }
 
+export type FileType = 'pdf' | 'png' | 'jpg' | 'zip'
+export type FileUpply = {
+  file_url: string,
+  file_name: string,
+  file_size: string,
+  file_type: FileType
+}
+
+export type InfoUser = {
+  name: string,
+  rating_avg: number,
+}
+
+export interface DeliverableDTO {
+  content: string,
+  prestataire: InfoUser,
+  file: FileUpply
+  created_at: string
+}
+
 export const DeliveryFormSchema = z.object({
   task_id: z.string(),
   content: z.string(),

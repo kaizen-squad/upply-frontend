@@ -86,3 +86,13 @@ export function formatFrenchDateIntl(dateStr: string): string {
     year: 'numeric',
   }).format(date);
 }
+
+  const commission = 0.1;
+
+export function commissionPlateform(budget: number): number {
+  return budget * commission
+}
+
+export function getInitials (name: string): string {
+  return name.split(' ').map(w=> w[0]).join('').toUpperCase()
+}
