@@ -115,7 +115,7 @@ Toute implémentation qui duplique cette logique dans un composant est une erreu
 
 ---
 
-npm run dev
+## Types TypeScript — Modèles de référence
 
 ```typescript
 
