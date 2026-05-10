@@ -7,7 +7,9 @@ import { HTTPResponse } from "@/types";
 import  { useTokenStore, useUserStore } from "./store";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { configDotenv } from "dotenv";
 
+configDotenv(); // Load environment variables from .env file
 
 /**
  * The hook used to manage the authentication.
@@ -42,7 +44,7 @@ export const useAuth = () =>{
     const login = async(body:LoginProps) => {
         try{
             setLoading(true);
-            const response: HTTPResponse<AuthDataResponse> = await apiFetch('http://localhost:3000/api/auth/login', body, 'POST');
+            const response: HTTPResponse<AuthDataResponse> = await apiFetch(`${process.env.NEXT_PUBLIC_API_BFF}/api/auth/login`, body, 'POST');
             if(response)
                 getLoggedIn(response)
             else
@@ -57,7 +59,7 @@ export const useAuth = () =>{
     const register = async (body: RegisterProps) =>{
         try{
             setLoading(true)
-            const response: HTTPResponse<AuthDataResponse> = await apiFetch('http://localhost:3000/api/auth/register', body, 'POST');
+            const response: HTTPResponse<AuthDataResponse> = await apiFetch(`${process.env.NEXT_PUBLIC_API_BFF}/api/auth/register`, body, 'POST');
            
             if(response)
                 getLoggedIn(response);
@@ -75,7 +77,7 @@ export const useAuth = () =>{
 
     const logout = async () =>{
         try{
-            const response = await apiFetch('http://localhost:3000/api/auth/logout', {}, 'POST');
+            const response = await apiFetch(`${process.env.NEXT_PUBLIC_API_BFF}/api/auth/logout`, {}, 'POST');
             if(!response){
                 notify('An unexpected error occured.', 'error')
             }

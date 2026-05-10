@@ -78,7 +78,7 @@ instance.interceptors.response.use(
             isRefreshing= true;
 
             try{
-                const response = await instance.post('/api/auth/refresh', {})
+                const response = await instance.post(`${process.env.NEXT_PUBLIC_API_BFF}/api/auth/refresh`, {})
                 const { access_token } : { access_token: string } = response.data;
                 
                 useTokenStore.setState({access_token:access_token});
