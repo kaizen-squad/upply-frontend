@@ -97,7 +97,7 @@ const page = () => {
                             
                             {
                                 !loading ?
-                                    <MissionBoard tasks={tasks} refetch={loadDashboard} />
+                                    <MissionBoard tasks={tasks} loadDashboard={loadDashboard} />
                                 :
                                     <div className='flex items-center gap-5 w-max m-auto mt-10'>
                                         {/* En attendant l'etat de chargement designé */}
