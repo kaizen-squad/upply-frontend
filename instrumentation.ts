@@ -16,7 +16,7 @@ export async function register() {
           setTimeout(() => reject(new Error('Timeout après 5 secondes')), 5000);
         });
         
-        const apiPromise = apiFetch<null>('api/health');
+        const apiPromise = apiFetch<null>('health');
         
         const response = await Promise.race([apiPromise, timeoutPromise]) as Awaited<typeof apiPromise>;
         
