@@ -38,7 +38,7 @@ function LoginForm() {
     const onError = ()=> notify('Veuillez entrez des données valides!', 'warning');
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200'>
+    <form onSubmit={handleSubmit(onSubmit, onError)} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200 opacity'>
         <h1 className='text-2xl font-bold'>Welcome back</h1>
         <p className='text-sm mt-4 text-gray-500'>Sign in to your account to manage your bookings</p>
         <Controller
