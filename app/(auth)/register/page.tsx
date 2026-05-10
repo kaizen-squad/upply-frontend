@@ -27,7 +27,7 @@ function RegisterForm() {
   const onError = ()=> notify('Veuillez entrez des données valides!', 'warning');
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200'>
+    <form onSubmit={handleSubmit(onSubmit, onError)} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200 opacity'>
         <div className='flex items-center justify-between'>
           <h1 className="font-bold text-2xl">Create Account</h1>
           <Controller 

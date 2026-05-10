@@ -136,3 +136,25 @@
   @theme{
     --breakpoint-xs: 570px;
   }
+
+  .opacity{
+    animation: opacity .4s forwards ease-in-out;
+  }
+  @keyframes opacity {
+    from{
+      opacity: 0;
+    }to {
+      opacity: 100%;
+    }
+  }
+
+  .height{
+    animation: height .4s forwards ease-in-out;
+  }
+  @keyframes height {
+    from{
+      height: 0;
+    }to {
+      height: 100%;
+    }
+  }
