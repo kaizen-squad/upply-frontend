@@ -31,7 +31,6 @@ export async function POST(request: Request) {
   cookieStore.delete('refresh_token');
   
   return NextResponse.json(
-    { message: 'Refresh failed' },
-    { status: 401 }
+    response
   );
 }
