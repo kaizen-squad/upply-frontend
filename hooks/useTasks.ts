@@ -1,7 +1,7 @@
-'use client'
-import { useState, useEffect } from 'react';
++'use client'
+import { useState, useEffect, useCallback } from 'react';
 import apiFetch from '@/lib/api';
-import type { ApplicationFormType, ApplicationResponse, Deliverable, Review, ReviewProps, TaskFormType, TaskProps } from '@/types';
+import type { ApplicationFormType, ApplicationResponse, CDashboardData, Deliverable, PDashboardData, Review, ReviewProps, TaskFormType, TaskProps } from '@/types';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Application, DeliveryFormProps } from '@/types/index';
 import { buildFormData } from '@/lib/utils';
@@ -21,6 +21,8 @@ export function useTasks<T = ApplicationResponse | TaskProps>(id:string|undefine
   const [tasks, setTasks] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
   const {notify} = useNotificationManager();
+
+
   const fetchTasks = async (id:string | undefined) => {
    
     try { 
@@ -151,4 +153,51 @@ export function useApplication(): UseApplicationReturn {
     }
 
     return {applyTotask, application, loading, deleteApplication}
-  }
+}
+
+
+export interface UseDashboardReturn<T = CDashboardData | PDashboardData| undefined> {
+  loading: boolean
+  dashboardData: T | undefined
+  loadDashboard: () => void,
+  error: string | null
+}
+
+export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
+  role: 'client' | 'prestataire' = 'client'
+): UseDashboardReturn<T> {
+  const [loading, setLoading] = useState(false);
+  const [dashboardData, setDashboardData] = useState<T | undefined>(undefined);
+  const [error, setError] = useState<string | null>(null);
+  const { notify } = useNotificationManager();
+
+  const loadDashboard = useCallback(async () => {
+    if (loading) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await apiFetch<T>(`api/dashboard/${role}`);
+      
+      if (response.success) {
+        setDashboardData(response.data);
+      } else {
+        throw new Error(response.message || 'Erreur de chargement');
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Une erreur est survenue lors du chargement';
+      setError(message);
+      notify(message, 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [role, loading, notify]);
+
+  return {
+    loadDashboard,
+    loading,
+    dashboardData,
+    error,
+  };
+}

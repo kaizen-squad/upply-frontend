@@ -128,7 +128,7 @@ export type ApplicationCardProps = {
   budget_mission:number
 }
 
-export type statistics = {
+export type Pstatistics = {
   waiting_budget:number,
   waiting_applications: number, 
   active_missions: number
@@ -137,6 +137,18 @@ export type statistics = {
 export type PDashboardData = {
   tasks: TaskProps[],
   applications: ApplicationCardProps[],
-  statistics: statistics
+  statistics: Pstatistics
+}
+
+export type CStatistics = {
+  opened: number,
+  pending: number,
+  validated: number,
+  total_spent: number
+}
+
+export type CDashboardData = {
+  tasks: TaskProps[],
+  statistics: CStatistics
 }
 

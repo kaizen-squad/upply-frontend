@@ -6,7 +6,7 @@ import { useMediaQuery } from '@reactuses/core';
 import { ArrowRight, Loader } from 'lucide-react'
 import React from 'react'
 
-const MissionBoard:React.FC<{tasks: TaskProps[], refetch: (id:string)=>void}> = ({tasks, refetch}) => {
+const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({tasks, loadDashboard}) => {
     const isMobile = useMediaQuery('(max-width: 1024px)');
 
   return (
@@ -18,7 +18,7 @@ const MissionBoard:React.FC<{tasks: TaskProps[], refetch: (id:string)=>void}> = 
                     <h2 className='my-3'>MISSIONS RECENTES</h2>
                     <button 
                         className='flex bg-alizarin-crimson-red-51 rounded-md text-white-solid font-semibold text-xl items-center px-4 py-2 gap-3 scale-80 cursor-pointer duration-200 hover:opacity-80 hover:scale-77'
-                        onClick={()=>refetch('mine')}
+                        onClick={()=>loadDashboard()}
                     >
                         <span className=''>Refresh</span>
                         <Loader width={19} strokeWidth={3} />
