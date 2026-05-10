@@ -12,12 +12,12 @@ const ClientAuthProvider: FC<{children:ReactNode, initialUser: User | undefined}
 
     useEffect(() => {
 
-        // if (initialUser?.id) {
-        //     setUser(initialUser);
-        // } else if (window.location.pathname !== "/login") {
-        //     router.push("/login");
-        // }
-        // setLoading(false);
+        if (initialUser?.id) {
+            setUser(initialUser);
+        } else if (window.location.pathname !== "/login") {
+            router.push("/login");
+        }
+        setLoading(false);
 
     }, [initialUser, setUser, router]);
 
