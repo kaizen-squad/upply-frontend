@@ -71,13 +71,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Exclut tous les chemins commençant par :
-     * - api (routes API)
-     * - _next/static (fichiers statiques générés par Next.js pour le JS/CSS)
-     * - _next/image (fichiers optimisés par Next.js)
-     * - favicon.ico, public (fichiers dans le dossier 'public')
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico|public).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|images|fonts|icons|videos|docs|.*\\.(?:jpg|jpeg|gif|png|svg|webp|ico|css|js|woff|woff2|ttf|eot)).*)',
   ],
 };
