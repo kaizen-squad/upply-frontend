@@ -10,7 +10,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
-export const publicAccessRoutes=[
+export const publicAccessRoutes = [
   'login',
   'register',
   'refresh'
@@ -18,6 +18,10 @@ export const publicAccessRoutes=[
 
 let isRefreshing = false;
 let queue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; }[] = [];
+
+const isAbsoluteUrl = (url?: string): boolean => {
+  return typeof url === 'string' && /^(?:[a-z][a-z\d+\-.]*:)?\/\//i.test(url);
+};
 
 /**
  * The instance in charge of all HTTP request accross the app
@@ -27,7 +31,7 @@ const instance = axios.create({
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
     },    
-    withCredentials: true
+    withCredentials: true,
 });
 
 /**
@@ -35,7 +39,10 @@ const instance = axios.create({
  * Check https://axios-http.com/docs/interceptors for more info.
  */
 instance.interceptors.request.use((config)=> {
-    
+    if (isAbsoluteUrl(config.url)) {
+      config.baseURL = undefined;
+    }
+
     if(config.url && !publicAccessRoutes.find((route)=>config.url?.includes(route))){
         const access_token = useTokenStore.getState().access_token;
         if(access_token)
