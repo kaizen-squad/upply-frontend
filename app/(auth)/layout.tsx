@@ -10,7 +10,7 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
   return (
     <div className='flex h-screen flex-col gap-10 lg:flex-row my-auto'>
 
-      <div className="lg:w-full h-max lg:h-screen my-auto flex flex-col gap-15 lg:flex-row lg:gap-0">
+      <div className="lg:w-full h-max lg:h-screen my-auto flex flex-col gap-10 lg:flex-row lg:gap-0">
          {/* Image gauche */}
         <div className='w-[45%] bg-cover-beige hidden lg:block'>
           <Image 

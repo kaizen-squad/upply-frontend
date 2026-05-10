@@ -10,7 +10,7 @@ import { HandCoins } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form'
 
 const TaskForm = () => {
-    const { createTask} = useTasks(undefined, true);
+    const {createTask} = useTasks(undefined, true);
     const {notify} = useNotificationManager();
     const {control, handleSubmit, formState:{isValid, isSubmitting}} = useForm<TaskFormType>({
         mode:'onChange',
