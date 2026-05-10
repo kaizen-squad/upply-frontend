@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { ApplicationResponse, TaskProps } from '@/types';
 import { LockKeyhole, Zap, CircleCheck } from 'lucide-react';
-import { notFound, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const page= () => {

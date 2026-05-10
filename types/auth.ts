@@ -1,4 +1,4 @@
-import z from 'zod/v4';
+import z, { minLength } from 'zod/v4';
 
 /**
  * Login form fields schema with zod validation.
@@ -16,7 +16,7 @@ export const RegisterSchema = z.object({
     name: z.string().min(2,{error:'Too small !'}),
     email: z.email(),
     password: z.string().min(8, {error:'8 characters minimum!'}),
-    phone: z.string().regex(/^\+\d{10,15}$/, {message: 'Format attendu: +1234567890'}),
+    phone: z.string().min(10, {message: 'Ex: 1234567890'}),
     confirmPassword: z.string()
 }).refine( data => data.password === data.confirmPassword,
     {
