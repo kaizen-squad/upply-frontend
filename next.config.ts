@@ -2,7 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  reactStrictMode: false
+  reactStrictMode: false,
+  experimental:{
+    instrumentationHook:true
+  }
 };
 
 export default nextConfig;
