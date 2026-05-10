@@ -42,7 +42,7 @@ export const useAuth = () =>{
     const login = async(body:LoginProps) => {
         try{
             setLoading(true);
-            const response: HTTPResponse<AuthDataResponse> = await apiFetch('/api/auth/login', body, 'POST');
+            const response: HTTPResponse<AuthDataResponse> = await apiFetch('http://localhost:3000/api/auth/login', body, 'POST');
             if(response)
                 getLoggedIn(response)
             else
@@ -57,10 +57,10 @@ export const useAuth = () =>{
     const register = async (body: RegisterProps) =>{
         try{
             setLoading(true)
-            const response: HTTPResponse<AuthDataResponse> = await apiFetch('/api/auth/register', body, 'POST');
+            const response: HTTPResponse<AuthDataResponse> = await apiFetch('http://localhost:3000/api/auth/register', body, 'POST');
            
             if(response)
-                getLoggedIn(response)
+                getLoggedIn(response);
             else
                 notify('Registration Failed: An unexpected error occured.', 'error');
 
@@ -75,7 +75,7 @@ export const useAuth = () =>{
 
     const logout = async () =>{
         try{
-            const response = await apiFetch('/api/auth/logout', {}, 'POST');
+            const response = await apiFetch('http://localhost:3000/api/auth/logout', {}, 'POST');
             if(!response){
                 notify('An unexpected error occured.', 'error')
             }

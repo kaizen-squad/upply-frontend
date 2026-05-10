@@ -1,6 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
+import is from "zod/v4/locales/is.cjs";
 
 /**
  * The opened routes which any client can reach whithout authorization, except refresh token where the token is checked directly from the http cookie 
@@ -27,11 +28,12 @@ const isAbsoluteUrl = (url?: string): boolean => {
  * The instance in charge of all HTTP request accross the app
  */
 const instance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/`,
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
     },    
     withCredentials: true,
+    allowAbsoluteUrls: true,
 });
 
 /**
@@ -39,9 +41,6 @@ const instance = axios.create({
  * Check https://axios-http.com/docs/interceptors for more info.
  */
 instance.interceptors.request.use((config)=> {
-    if (isAbsoluteUrl(config.url)) {
-      config.baseURL = undefined;
-    }
 
     if(config.url && !publicAccessRoutes.find((route)=>config.url?.includes(route))){
         const access_token = useTokenStore.getState().access_token;

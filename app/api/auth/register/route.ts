@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     
   const body = await request.json();
   
-  const response:HTTPResponse<AuthDataResponse> = await apiFetch(`register`, body, 'POST');
+  const response: HTTPResponse<AuthDataResponse> = await apiFetch(`register`, body, 'POST');
     
   const {data} = response;
 
@@ -39,5 +39,5 @@ export async function POST(request: Request) {
     });
   }
   
-  return NextResponse.json(data, { status: response.status });
+  return NextResponse.json(response);
 }
