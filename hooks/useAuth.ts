@@ -7,9 +7,6 @@ import { HTTPResponse } from "@/types";
 import  { useTokenStore, useUserStore } from "./store";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { configDotenv } from "dotenv";
-
-configDotenv(); // Load environment variables from .env file
 
 /**
  * The hook used to manage the authentication.
