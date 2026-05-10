@@ -4,9 +4,6 @@ import "./globals.css";
 import NotificationProvider from "@/components/ui/Notification/NotificationProvider";
 import NotificationContainer from "@/components/ui/Notification/NotificationContainer";
 import { cookies } from "next/headers";
-import { useUserStore } from "@/hooks/store";
-import { User } from "@/types/auth";
-import { redirect } from "next/navigation";
 import ClientAuthProvider from "./ClientAuthProvider";
 
 const geistSans = Geist({
