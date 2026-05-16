@@ -15,7 +15,7 @@ export const useUserStore = create<UserStoreProps>((set)=> ({
  * Token store type
  */
 type TokenStoreProps = {
-    access_token: undefined | string,
+    accessToken: undefined | string,
     setAccessToken: (token: string | undefined)=> void
 }
 
@@ -23,7 +23,7 @@ type TokenStoreProps = {
  * Store used to save the access token.
  */
 export const useTokenStore = create<TokenStoreProps>((set)=>({
-    access_token: undefined,
-    setAccessToken: (value)=>{set(()=>({access_token: value}))}
+    accessToken: undefined,
+    setAccessToken: (value)=>{set(()=>({accessToken: value}))}
 }));
 

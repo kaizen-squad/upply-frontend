@@ -12,11 +12,14 @@ const ClientAuthProvider: FC<{children:ReactNode, initialUser: User | undefined}
     const router = useRouter();
 
     useEffect(() => {
-        
-        if (initialUser?.id) {
+        console.debug('[ClientAuthProvider] initialUser', initialUser, 'pathname', window.location.pathname);
+
+        if (initialUser?.name) {
             setUser(initialUser);
-        } else if (window.location.pathname !== "/login") {
-            router.push("/login");
+        } else if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
+            console.debug('[ClientAuthProvider] redirecting to /login');
+            debugger
+            router.push("/logout");
         }
         setLoading(false);
 

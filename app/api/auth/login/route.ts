@@ -11,12 +11,11 @@ export async function POST(request: Request) {
   
   const {data}= response;
 
-  if (response.success && data.refresh_token) {
-
+  if (response.success && data.refreshToken) {
     // Set cookies
     const cookieStore = await cookies();
     
-    cookieStore.set('refresh_token', data.refresh_token, {
+    cookieStore.set('refreshToken', data.refreshToken, {
       httpOnly: true,      
       secure: process.env.NODE_ENV === 'production', 
       sameSite: 'lax',     
@@ -31,10 +30,8 @@ export async function POST(request: Request) {
         maxAge: 7 * 24 * 60 * 60, // 7 jours
         path: '/',  
     });
-     
-    return NextResponse.json({
-        access_token: data.access_token, user: data.user
-    });
+     delete response.data.accessToken;
+    return NextResponse.json(response);
   }
   
   return NextResponse.json(response);

@@ -17,11 +17,12 @@ export const RegisterSchema = z.object({
     email: z.email(),
     password: z.string().min(8, {error:'8 characters minimum!'}),
     phone: z.string().min(10, {message: 'Ex: 1234567890'}),
-    confirmPassword: z.string()
-}).refine( data => data.password === data.confirmPassword,
+    password_confirmation: z.string(),
+    rating_avg: z.number().optional()
+}).refine( data => data.password === data.password_confirmation,
     {
         error: "Passwords do not match!",
-        path: ['confirmPassword'],
+        path: ['password_confirmation'],
     }
 );
 
@@ -53,11 +54,11 @@ export type User = {
  * Expected Auth Response format. 
  */
 export type AuthDataResponse = {
-    access_token: string,
-    refresh_token: string,
+    accessToken?: string,
+    refreshToken: string,
     user: User
 }
 
 export type RefreshTokenResponse = {
-    access_token: string
+    accessToken: string
 }
