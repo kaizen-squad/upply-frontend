@@ -10,7 +10,7 @@ export async function POST() {
     
   if(response.success){
     // Delete the cookies
-    cookieStore.delete('refresh_token');
+    cookieStore.delete('refreshToken');
     cookieStore.delete('user');
 
     return NextResponse.json({ success: true });

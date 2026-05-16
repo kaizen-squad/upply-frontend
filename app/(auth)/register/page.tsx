@@ -16,7 +16,7 @@ function RegisterForm() {
   const {handleSubmit, control} = useForm<RegisterProps>({
     mode: 'onChange',
     resolver: zodResolver(RegisterSchema),
-    defaultValues: { role: 'client' }
+    defaultValues: { role: 'client', rating_avg: 1.11 }
   });
   const {notify}= useNotificationManager();
   const {register, loading} = useAuth();
@@ -75,8 +75,8 @@ function RegisterForm() {
         <div className='my-2'>
             <Controller 
               control={control}
-              name='confirmPassword'
-              render={({field, fieldState: {error}})=> <TextField name='confirmPassword' value={field.value}
+              name='password_confirmation'
+              render={({field, fieldState: {error}})=> <TextField name='password_confirmation' value={field.value}
                 onChange={field.onChange} type='password' errorMessage={field.value && error?.message} label="Confirm Password" placeholder="Re-enter your password" Icon={Lock}/>}
             />
         </div>

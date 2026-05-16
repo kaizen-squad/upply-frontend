@@ -4,11 +4,12 @@ import Button from '@/components/ui/Button/Button'
 import { TaskProps } from '@/types'
 import { useMediaQuery } from '@reactuses/core';
 import { ArrowRight, Loader } from 'lucide-react'
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({tasks, loadDashboard}) => {
     const isMobile = useMediaQuery('(max-width: 1024px)');
-
+    const router = useRouter();
   return (
     <div>
         {
@@ -84,6 +85,7 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                         Icon={ArrowRight}
                         Iposition='right'
                         className='bg-alizarin-crimson-red-51 rounded-sm py-3 px-5 text-white w-max m-auto mt-5'
+                        onClick={()=> router.push('/client/tasks/new')}
                     />
                 </div>
             </div>
