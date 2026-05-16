@@ -4,7 +4,6 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
       {
         id: 'task_001',
         client_id: 'client_001',
-        prestataire_id: 'prestataire_101',
         title: 'Création API REST pour application de réservation',
         description: 'Développer une API complète avec authentification JWT, documentation Swagger, endpoints pour gérer les réservations, utilisateurs et paiements.',
         budget: 2500,
@@ -15,7 +14,6 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
       {
         id: 'task_002',
         client_id: 'client_002',
-        prestataire_id: null,
         title: 'Refonte UI/UX du tableau de bord utilisateur',
         description: 'Redesign complet de l’interface dashboard avec maquettes Figma, intégration responsive et optimisation des performances.',
         budget: 1200,
@@ -26,7 +24,6 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
       {
         id: 'task_003',
         client_id: 'client_003',
-        prestataire_id: 'prestataire_102',
         title: 'Migration base de données PostgreSQL vers MySQL',
         description: 'Migrer 500Go de données avec scripts de conversion, validation des données et mise en place de réplication.',
         budget: 3800,
@@ -37,7 +34,6 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
       {
         id: 'task_004',
         client_id: 'client_001',
-        prestataire_id: null,
         title: 'Intégration du widget de paiement FedaPay',
         description: 'Intégrer FedaPay checkout.js sur la page de paiement, gérer les webhooks et implémenter l’escrow.',
         budget: 950,
@@ -48,7 +44,6 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
       {
         id: 'task_005',
         client_id: 'client_004',
-        prestataire_id: 'prestataire_103',
         title: 'Optimisation SEO pour site e-commerce',
         description: 'Audit SEO technique, optimisation des balises, amélioration des temps de chargement, création de backlinks.',
         budget: 700,
@@ -59,7 +54,6 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
       {
         id: 'task_006',
         client_id: 'client_005',
-        prestataire_id: 'prestataire_104',
         title: 'Développement d’un plugin WordPress sur mesure',
         description: 'Plugin de synchronisation des produits entre WooCommerce et un ERP externe via API REST.',
         budget: 1800,
@@ -70,7 +64,6 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
       {
         id: 'task_007',
         client_id: 'client_006',
-        prestataire_id: null,
         title: 'Tests de sécurité et pentest applicatif',
         description: 'Réaliser des tests d’intrusion, fournir un rapport de vulnérabilités avec recommandations.',
         budget: 2200,
@@ -81,7 +74,6 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
       {
         id: 'task_008',
         client_id: 'client_002',
-        prestataire_id: 'prestataire_105',
         title: 'Création de contenu vidéo pour formation React',
         description: 'Produire 5 tutoriels vidéo (10-15 min) sur React.js avec montage, sous-titres et miniatures.',
         budget: 850,
@@ -92,7 +84,6 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
       {
         id: 'task_009',
         client_id: 'client_007',
-        prestataire_id: 'prestataire_106',
         title: 'Mise en place CI/CD avec GitHub Actions',
         description: 'Configurer des pipelines automatiques de test, linting, build et déploiement sur Vercel.',
         budget: 1100,
@@ -103,7 +94,6 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
       {
         id: 'task_010',
         client_id: 'client_008',
-        prestataire_id: null,
         title: 'Design d’une application mobile fitness',
         description: 'Création des maquettes UI/UX, design system et prototypes interactifs pour iOS/Android.',
         budget: 1450,
