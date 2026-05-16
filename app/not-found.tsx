@@ -1,10 +1,12 @@
 'use client'
 import Button from '@/components/ui/Button/Button';
+import { useUserStore } from '@/hooks/store';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 const NotFound = () => {
     const router = useRouter();
+    const role = useUserStore(state => state.user?.role);
   return (
     <div className="h-screen w-screen flex" >
         <div className="h-max m-auto text-center" >
@@ -20,7 +22,7 @@ const NotFound = () => {
                 <Button
                     textContent="Retour a l'acceuil"
                     className="py-3 px-6 rounded-md bg-alizarin-crimson-red-51 text-white-solid font-semibold w-max m-auto"
-                    onClick={()=> router.push('/dashboard')}
+                    onClick={()=> router.push(`/${role}/dashboard`)}
                 />
             </div>
            

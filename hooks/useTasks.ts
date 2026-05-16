@@ -47,7 +47,9 @@ export function useTasks<T = ApplicationResponse | TaskProps>(id:string|undefine
     try{
         setLoading(true);
         const data = buildFormData(taskData);
-        const newTask = await apiFetch<object>('api/tasks', data, 'POST');
+        const newTask = await apiFetch<TaskProps>('tasks', data, 'POST');
+        console.debug('createTask response', newTask);
+        debugger;
         if(newTask.success)
             notify('Nouvelle tache ajoutée.', 'success');
           else throw new Error(newTask.message);
@@ -61,7 +63,7 @@ export function useTasks<T = ApplicationResponse | TaskProps>(id:string|undefine
   const deliverTask = async (deliveryData:DeliveryFormProps) => {
     try{
       setLoading(true);
-      const delivery = await apiFetch<Deliverable>(`api/tasks/${deliveryData.task_id}/deliver`, deliveryData, 'POST');
+      const delivery = await apiFetch<Deliverable>(`/tasks/${deliveryData.task_id}/deliver`, deliveryData, 'POST');
       if(delivery.success && delivery.status === 201){
         notify('Livrable soumis! En attente de review.', 'success');
         return true

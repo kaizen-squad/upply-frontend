@@ -20,7 +20,6 @@ export type TaskStatus = 'OUVERTE' | 'EN_COURS' | 'LIVREE' | 'VALIDEE'
 export interface TaskProps {
   id: string
   client_id: string
-  prestataire_id: string | null
   title: string
   description: string
   budget: number
@@ -32,7 +31,7 @@ export interface TaskProps {
 export const TaskFormProps = z.object({
   title: z.string().min(3, {error: 'Entrez un nom convenable!'}),
   description: z.string().min(10, {error: 'Une description est nécessaire!'}),
-  budget: z.number().min(0, {error:'Le budget est obligatoire'}),
+  budget: z.string().regex(/^\d+$/, {error: 'Le budget doit être un nombre valide'}),
   deadline: z.string().date()
 });
 export type TaskFormType = z.infer<typeof TaskFormProps>;
@@ -71,6 +70,7 @@ export  interface Deliverable {
 }
 
 export type FileType = 'pdf' | 'png' | 'jpg' | 'zip'
+
 export type FileUpply = {
   file_url: string,
   file_name: string,

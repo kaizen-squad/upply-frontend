@@ -4,39 +4,20 @@ import FlagApplication from "@/components/dashboard/prestataire/FlagApplication"
 import TaskCard from "@/components/dashboard/prestataire/TaskCard"
 import FlagTask from "@/components/shared/tasks/FlagTask"
 import Button from "@/components/ui/Button/Button"
-import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager"
 import Spinner from "@/components/ui/Spinner/Spinner"
-import { budgetCurrency } from "@/hooks/useTasks"
-import apiFetch from "@/lib/api"
+import { budgetCurrency, useDashboard } from "@/hooks/useTasks"
 import { cn } from "@/lib/utils"
 import {  PDashboardData } from "@/types"
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 
 const page = () => {
-    const [dashboardData, setDashboardData] = useState<PDashboardData | undefined>(undefined);
-    const [loading, setLoading] = useState(false);
-    const {notify} = useNotificationManager();
-
+    const { dashboardData, loading, loadDashboard } =  useDashboard<PDashboardData>();
     useEffect(()=>{
-        const loadDashboard = async ()=> {
-            try{
-                setLoading(true);
-                const response = await apiFetch<PDashboardData>('api/dashboard/prestataire');
-                if(response.success){
-                    setDashboardData(response.data)
-                }else throw new Error(response.message)
-            }catch(err){
-                notify(err instanceof Error ? err.message : 'Une erreur est survenue lors du chargement!', 'error')
-            }finally{
-                setLoading(false);
-            }
-        }
-
         loadDashboard();
-    }, [])
+    }, []);
 
   return (
     <div className="flex w-full h-full min-h-(--main-height)">

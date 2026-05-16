@@ -7,6 +7,7 @@ import { FC, ReactNode } from 'react'
 const layout: FC<{children:ReactNode}> = ({children}) => {
   const pathname = usePathname();
   const router = useRouter();
+  console.log('Current pathname:', pathname);
   return (
     <div className='flex h-screen flex-col gap-10 lg:flex-row my-auto'>
 

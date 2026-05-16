@@ -14,8 +14,8 @@ export const flagColor ={
 }
 
 const Task: FC<{task:TaskProps}> = ({task}) => {
-    const {id, client_id, prestataire_id, title, description, budget, deadline, status} = task;
-    
+    const {id, client_id, title, description, budget, deadline, status} = task;
+
     const router = useRouter();
   return (
     <div className="bg-white-solid border-2 border-gray-200 shadow-2xs w-[280px] rounded-sm">
@@ -42,7 +42,7 @@ const Task: FC<{task:TaskProps}> = ({task}) => {
             <Button 
                 className="block w-[85%] m-auto py-2.5 bg-woodsmoke-gray-10 text-white-solid rounded-sm"
                 textContent="Voir la tâche"
-                onClick={()=> router.push(`/tasks/${id}`)}
+                onClick={()=> router.push(`/prestataire/tasks/${id}`)}
             />
         </div>
     </div>

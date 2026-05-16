@@ -20,11 +20,13 @@ export async function proxy(request: NextRequest) {
   
   // 1. Non authentifié sur route protégée entraine redirection login
   if (!isLoggedIn && !isPublicPath) {
+    console.debug('[middleware] not logged in, redirect to /login', pathname);
     return NextResponse.redirect(new URL('/login', request.url));
   }
   
   // 2. Authentifié sur route publique entraine redirection dashboard
   if (isLoggedIn && isPublicPath) {
+    console.debug('[middleware] logged in on public page, redirect to dashboard', pathname);
     // Récupérer le rôle depuis un cookie (défini au login)
     const userCookie= request.cookies.get('user')?.value;
 
@@ -38,7 +40,7 @@ export async function proxy(request: NextRequest) {
     }
     // Fallback: logout si pas de rôle
     const response = NextResponse.redirect(new URL('/login', request.url));
-    response.cookies.delete('refresh_token');
+    response.cookies.delete('refreshToken');
     response.cookies.delete('user');
     return response;
   }
@@ -51,21 +53,21 @@ export async function proxy(request: NextRequest) {
 
         // Client essayant d'accéder à une route prestataire
       if (user.role === 'client' && prestataireRoutes.some(route => pathname.startsWith(route))) {
-        return NextResponse.redirect(new URL('/client/dashboard', request.url));
+        return NextResponse.redirect(new URL('/client', request.url));
       }
     
       // Prestataire essayant d'accéder à une route client
       if (user.role === 'prestataire' && clientRoutes.find(route => pathname.startsWith(route))) {
-        return NextResponse.redirect(new URL('/prestataire/dashboard', request.url));
+        return NextResponse.redirect(new URL('/prestataire', request.url));
       }
     }else{
         const response = NextResponse.redirect(new URL('/login', request.url));
-        response.cookies.delete('refresh_token');
+        response.cookies.delete('refreshToken');
         response.cookies.delete('user');
         return response;
     }
   }
-     
+     console.log('Access granted to:', pathname);
   return NextResponse.next();
 }
 

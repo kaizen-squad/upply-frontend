@@ -11,9 +11,8 @@ import useNotificationManager from '@/components/ui/Notification/hooks/useNotifi
 import Image from 'next/image';
 
 const page = () => {
-    const [loading, setLoading] = useState(true);
-    const {notify} = useNotificationManager();
-    const {loadDashboard, dashboardData} = useDashboard<CDashboardData>('client');
+
+    const {loadDashboard, dashboardData, loading} = useDashboard<CDashboardData>('client');
 
     const {tasks = [], statistics = {opened: 0, pending: 0, validated: 0}} = dashboardData || {};
 

@@ -33,7 +33,10 @@ export default async function RootLayout({
   if (userCookie?.value) {
     try {
       user = JSON.parse(userCookie.value);
-    } catch {}
+      console.log('[RootLayout] Parsed user from cookie', user);
+    } catch {
+      console.error('Failed to parse user cookie');
+    }
   }
 
   return (

@@ -1,7 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
-import is from "zod/v4/locales/is.cjs";
 
 /**
  * The opened routes which any client can reach whithout authorization, except refresh token where the token is checked directly from the http cookie 
@@ -20,9 +19,6 @@ export const publicAccessRoutes = [
 let isRefreshing = false;
 let queue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; }[] = [];
 
-const isAbsoluteUrl = (url?: string): boolean => {
-  return typeof url === 'string' && /^(?:[a-z][a-z\d+\-.]*:)?\/\//i.test(url);
-};
 
 /**
  * The instance in charge of all HTTP request accross the app
@@ -67,8 +63,8 @@ instance.interceptors.response.use(
             if(isRefreshing){
                 return new Promise((resolve, reject)=>{
                     queue.push({resolve, reject});
-                }).then(token => {
-                    config.headers.Authorization = `Bearer ${token}`
+                }).then(accessToken => {
+                    config.headers.Authorization = `Bearer ${accessToken}`;
                     return instance(config);
                 }).catch(err => {
                     return Promise.reject(err);
@@ -79,20 +75,22 @@ instance.interceptors.response.use(
 
             try{
                 const response = await instance.post(`${process.env.NEXT_PUBLIC_API_BFF}/api/auth/refresh`, {})
-                const { access_token } : { access_token: string } = response.data;
+                const { accessToken } : { accessToken: string } = response.data;
                 
-                useTokenStore.setState({access_token:access_token});
-                queue.forEach(p => p.resolve(access_token));
+                useTokenStore.setState({accessToken:accessToken});
+                queue.forEach(p => p.resolve(accessToken));
                 queue = [];
-                config.headers.Authorization = `Bearer ${access_token}`;
+                config.headers.Authorization = `Bearer ${accessToken}`;
                 return instance(config)
 
             }catch(err){
 
                 queue.forEach(p => p.reject());
                 queue = [];
+                console.error('[api] refresh token failed', err);
 
                 if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+                    console.debug('[api] redirecting to /login due to refresh failure');
                     window.location.href = '/login';
                 }
                 return Promise.reject(err);
@@ -106,6 +104,8 @@ instance.interceptors.response.use(
         return Promise.reject(error);
 });
 
+const isNextBackendRoute = (url: string) => url.startsWith('/');
+
 /**
  * The fetch agent use for all request accross the app
  * @param url the endpoint to reach
@@ -118,9 +118,19 @@ export default async function apiFetch<T> (url: string, body?: object | undefine
     if(!method)
         method = 'GET';
 
+    const requestConfig: Omit<InternalAxiosRequestConfig, 'headers'> = {
+        url,
+        method,
+        data: body,
+    };
+
+    if (isNextBackendRoute(url)) {
+        requestConfig.baseURL = '';
+    }
+
     try{
 
-        const res: HTTPResponse<T> = await instance({url, method, data:body},)
+        const res: HTTPResponse<T> = await instance(requestConfig)
         .then((response)=> response.data);
 
         return res;
