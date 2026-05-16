@@ -41,7 +41,7 @@ instance.interceptors.request.use((config)=> {
     if(config.url && !publicAccessRoutes.find((route)=>config.url?.includes(route))){
         const access_token = useTokenStore.getState().access_token;
         if(access_token)
-            config.headers.Authorization = `Bearer ${access_token}`
+            config.headers.Authorization = `Bearer ${accessToken}`
     }
 
     return config;
