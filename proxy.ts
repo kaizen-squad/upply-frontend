@@ -5,7 +5,7 @@ import { User } from './types/auth';
 
 
 export async function proxy(request: NextRequest) {
-  const refreshToken = request.cookies.get('refresh_token');
+  const refreshToken = request.cookies.get('refreshToken');
   const isLoggedIn = !!refreshToken;
   
   const { pathname } = request.nextUrl;

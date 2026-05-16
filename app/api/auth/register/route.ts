@@ -14,11 +14,11 @@ export async function POST(request: Request) {
   
   const {data} = response;
 
-  if (response.success && data.refresh_token) {
+  if (response.success && data.refreshToken) {
     //Configure the cookies needed for the user session
     const cookieStore = await cookies();
     
-    cookieStore.set('refresh_token', data.refresh_token, {
+    cookieStore.set('refreshToken', data.refreshToken, {
       httpOnly: true,      
       secure: process.env.NODE_ENV === 'production', // HTTPS in prod
       sameSite: 'lax',     
@@ -34,9 +34,9 @@ export async function POST(request: Request) {
         path: '/',  
     });
     
-    // return only the access_token 
+    // return only the accessToken 
     return NextResponse.json({
-        access_token: data.access_token, user: data.user
+        accessToken: data.accessToken, user: data.user
     });
   }
   

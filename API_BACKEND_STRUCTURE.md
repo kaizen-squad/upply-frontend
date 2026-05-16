@@ -40,12 +40,12 @@ Ce document recense les appels API utilisés dans le projet et les formats de do
 - `id: string`
 
 #### `AuthDataResponse`
-- `access_token: string`
-- `refresh_token: string`
+- `accessToken: string`
+- `refreshToken: string`
 - `user: User`
 
 #### `RefreshTokenResponse`
-- `access_token: string`
+- `accessToken: string`
 
 ### Tâches et candidatures
 
@@ -120,31 +120,31 @@ Ce document recense les appels API utilisés dans le projet et les formats de do
 - Corps attendu : `LoginProps`
 - Wrapper de réponse : `HTTPResponse<AuthDataResponse>`
 - Réponse interne en succès :
-  - `access_token: string`
+  - `accessToken: string`
   - `user: User`
-- Effet secondaire : création des cookies `refresh_token` et `user`
+- Effet secondaire : création des cookies `refreshToken` et `user`
 
 ### 2. `POST /api/auth/register`
 - Usage frontend : `hooks/useAuth.ts`
 - Corps attendu : `RegisterProps`
 - Wrapper de réponse : `HTTPResponse<AuthDataResponse>`
 - Réponse interne en succès :
-  - `access_token: string`
+  - `accessToken: string`
   - `user: User`
-- Effet secondaire : création des cookies `refresh_token` et `user`
+- Effet secondaire : création des cookies `refreshToken` et `user`
 
 ### 3. `POST /api/auth/refresh`
 - Usage interne : rafraîchissement token via cookie HttpOnly
-- Corps interne envoyé au backend distant : `{ refresh_token: string }`
+- Corps interne envoyé au backend distant : `{ refreshToken: string }`
 - Wrapper de réponse : `HTTPResponse<RefreshTokenResponse>`
 - Réponse interne en succès :
-  - `access_token: string`
+  - `accessToken: string`
 
 ### 4. `POST /api/auth/logout`
 - Usage frontend : `hooks/useAuth.ts`
 - Corps attendu : aucun (`{}` envoyé)
 - Retour attendu du backend distant : `HTTPResponse<any>`
-- Effet secondaire en succès : suppression des cookies `refresh_token` et `user`
+- Effet secondaire en succès : suppression des cookies `refreshToken` et `user`
 
 ---
 
@@ -164,7 +164,7 @@ Ces endpoints sont utilisés lorsqu’on appelle `apiFetch` avec une URL ne comm
 
 ### 7. `POST refresh`
 - Requête interne envoyée au backend distant depuis `app/api/auth/refresh/route.ts`
-- Corps attendu : `{ refresh_token: string }`
+- Corps attendu : `{ refreshToken: string }`
 - Réponse attendue : `HTTPResponse<RefreshTokenResponse>`
 
 ### 8. `POST logout`
