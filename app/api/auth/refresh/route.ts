@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
   if (response.success) {
     return NextResponse.json({
-      access_token: data.accessToken
+      accessToken: data.accessToken
     });
   }
   
