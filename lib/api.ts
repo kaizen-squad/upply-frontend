@@ -39,8 +39,8 @@ const instance = axios.create({
 instance.interceptors.request.use((config)=> {
 
     if(config.url && !publicAccessRoutes.find((route)=>config.url?.includes(route))){
-        const access_token = useTokenStore.getState().access_token;
-        if(access_token)
+        const accessToken = useTokenStore.getState().accessToken;
+        if(accessToken)
             config.headers.Authorization = `Bearer ${accessToken}`
     }
 
