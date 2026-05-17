@@ -1,12 +1,12 @@
 'use client'
-import SidebarOnglets, { Onglets } from '@/components/shared/SidebarOnglets';
+import SidebarOnglets, { SidebarOngletsProps } from '@/components/shared/SidebarOnglets';
 import Button from '@/components/ui/Button/Button'
 import { useUserStore } from '@/hooks/store';
 import Image from 'next/image'
 
 const SidebarPrestataire = () => {
     const {user} = useUserStore();
-    const onglets :Onglets = {
+    const onglets :SidebarOngletsProps['onglets'] = {
         ACCUEIL: [
             {text: 'Tableau de bord', iconPath:'LayoutDashboard.svg', redirect:'/prestataire/dashboard'}
         ],
@@ -22,7 +22,7 @@ const SidebarPrestataire = () => {
     }
   return (
     <aside className='pt-8 min-w-(--sidebar-width) shadow-2xs border-r-2 border-r-gray-200 h-(--main-height) relative left-0 top-0' >
-        <SidebarOnglets {...onglets} />
+        <SidebarOnglets onglets={onglets} />
         <div className='px-4 absolute bottom-5 w-full pt-5 border-t-2 border-t-gray-300'>
             <div>
                 <div className='flex items-center gap-1'>

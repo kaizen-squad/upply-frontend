@@ -2,13 +2,9 @@
 import MissionBoard from '@/components/dashboard/client/MissionBoard';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
-import { useDashboard, useTasks } from '@/hooks/useTasks';
+import { useDashboard } from '@/hooks/useTasks';
 import { BookOpenCheck, Lightbulb, Plus, Zap } from 'lucide-react';
 import { CDashboardData } from '@/types/index';
-import { useEffect, useState } from 'react';
-import apiFetch from '@/lib/api';
-import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
-import Image from 'next/image';
 
 const page = () => {
 
@@ -23,7 +19,7 @@ const page = () => {
     
         return (
                 
-                <div className='block grid-cols-[67%_3%_30%] m-auto w-[90%] lg:w-[95%] lg:m-auto xl:grid'>
+                <div className='block grid-cols-[67%_3%_30%] m-auto w-[95%] lg:m-auto xl:grid'>
                     <div>
                         <div className='md:flex items-center justify-between'>
                             <div>

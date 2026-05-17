@@ -12,10 +12,11 @@ type OngletItem = {
   redirect: string;
 };
 
-export type Onglets = {
-  [category: string]: OngletItem[];
+export type SidebarOngletsProps = {
+  onglets: Record<string, OngletItem[]>;
+  setIsMobileSidebarOpened?: React.Dispatch<React.SetStateAction<boolean>>;
 };
-const SidebarOnglets:FC<Onglets> = (onglets) => {
+const SidebarOnglets: FC<SidebarOngletsProps> = ({ onglets, setIsMobileSidebarOpened }) => {
     const router = useRouter();
     const pathname = usePathname();
 
@@ -34,7 +35,10 @@ const SidebarOnglets:FC<Onglets> = (onglets) => {
                             ? 'bg-gallery-gray-93 w-full border-l-6' 
                             : 'hover:border-l-6 hover:bg-gallery-gray-93'
                         )}
-                        onClick={()=> router.push(redirect)}
+                        onClick={()=> {
+                            router.push(redirect);                         
+                            setIsMobileSidebarOpened?.(false);}
+                        }
                     >
                         <Image
                             src={`/Assets/${iconPath}`}

@@ -1,13 +1,14 @@
-import SidebarOnglets, { Onglets } from '@/components/shared/SidebarOnglets';
+import SidebarOnglets, {SidebarOngletsProps} from '@/components/shared/SidebarOnglets';
 import Button from '@/components/ui/Button/Button';
 import { useUserStore } from '@/hooks/store'
+import { useAuth } from '@/hooks/useAuth';
 import { X } from 'lucide-react'
 import Image from 'next/image'
 import { Dispatch, FC, SetStateAction } from 'react';
 
-const SiderbarMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpened:Dispatch<SetStateAction<boolean>>, onglets: Onglets}> = ({isMobileSidebarOpened, setIsMobileSidebarOpened, onglets}) => {
+const SiderbarMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpened:Dispatch<SetStateAction<boolean>>, onglets: SidebarOngletsProps['onglets']}> = ({isMobileSidebarOpened, setIsMobileSidebarOpened, onglets}) => {
     const {user}=useUserStore();    
-
+    const {logout} = useAuth();
   return (
     <aside className='absolute right-0 z-1 bg-white top-(--header-height) mt-2 w-[80%]'>
         <div className='pt-5'>
@@ -34,7 +35,7 @@ const SiderbarMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpen
             </div>
         </div>
         <div>
-            <SidebarOnglets {...onglets} />
+            <SidebarOnglets onglets={onglets} setIsMobileSidebarOpened={setIsMobileSidebarOpened} />
         </div>
 
         <div>
@@ -42,6 +43,7 @@ const SiderbarMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpen
                 textContent='Se déconnecter'
                 Icon={'/Assets/Logout.svg'}
                 className='text-alizarin-crimson-red-51 p-5 mt-8 w-full'
+                onClick={() => logout()}
             />
         </div>
     </aside>

@@ -1,16 +1,16 @@
 'use client';
 import { useTasks } from '@/hooks/useTasks';
-import { ApplicationResponse, TaskProps } from '@/types';
+import { TaskPropsOnPrestataire, TaskProps } from '@/types';
 import { createContext, FC, ReactNode, useContext, useMemo } from 'react';
 
-interface TaskProviderProps<T = TaskProps | ApplicationResponse> {
+interface TaskProviderProps<T = TaskProps | TaskPropsOnPrestataire> {
   taskId: string;
   children: ReactNode;
 }
 
 const TasksContext = createContext<ReturnType<typeof useTasks> | undefined>(undefined);
 
-export function useTasksContext<T = TaskProps | ApplicationResponse>() {
+export function useTasksContext<T = TaskProps | TaskPropsOnPrestataire>() {
   const context = useContext(TasksContext);
   
   if (context === undefined) {
@@ -20,7 +20,7 @@ export function useTasksContext<T = TaskProps | ApplicationResponse>() {
   return context as ReturnType<typeof useTasks<T>>;
 }
 
-function TaskProvider<T = TaskProps | ApplicationResponse>({ 
+function TaskProvider<T = TaskProps | TaskPropsOnPrestataire>({ 
   taskId, 
   children 
 }: TaskProviderProps<T>) {

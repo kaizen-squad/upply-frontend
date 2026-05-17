@@ -1,6 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
+import { redirect } from "next/navigation";
 
 /**
  * The opened routes which any client can reach whithout authorization, except refresh token where the token is checked directly from the http cookie 
@@ -24,7 +25,7 @@ let queue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; 
  * The instance in charge of all HTTP request accross the app
  */
 const instance = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/`,
+    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
     },    
@@ -74,7 +75,7 @@ instance.interceptors.response.use(
             isRefreshing= true;
 
             try{
-                const response = await instance.post(`${process.env.NEXT_PUBLIC_API_BFF}/api/auth/refresh`, {})
+                const response = await instance.post('refresh', {})
                 const { accessToken } : { accessToken: string } = response.data;
                 
                 useTokenStore.setState({accessToken:accessToken});
@@ -91,7 +92,7 @@ instance.interceptors.response.use(
 
                 if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
                     console.debug('[api] redirecting to /login due to refresh failure');
-                    window.location.href = '/login';
+                   redirect('/login'); // Redirige vers la page de connexion si le rafraîchissement échoue et que nous ne sommes pas déjà sur la page de connexion
                 }
                 return Promise.reject(err);
             }
