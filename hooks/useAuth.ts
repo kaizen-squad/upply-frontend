@@ -87,17 +87,13 @@ export const useAuth = () =>{
             console.debug('[useAuth] logout request');
             const response = await apiFetch(`/api/auth/logout`, {}, 'POST');
             console.debug('[useAuth] logout response', response);
-            if(!response){
-                notify('An unexpected error occured.', 'error')
+            if(!response.success){
+               return notify('An unexpected error occured.', 'error');
             }
+            router.push('/login');
         }catch(err){
             console.error('[useAuth] logout error', err);
-            throw err
-        }finally{
-            if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
-                console.debug('[useAuth] redirecting to /login on logout');
-                window.location.href = '/login';
-            }
+            notify('The server results in error while logging out!', 'error');
         }
     }
 

@@ -1,4 +1,4 @@
-import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
+import { ApplicationResponse, Deliverable, DeliverableDTO, TaskProps } from "@/types";
 
   export const tasksA:TaskProps[] = [
       {
@@ -101,6 +101,89 @@ import { Deliverable, DeliverableDTO, TaskProps } from "@/types";
         status: 'OUVERTE',
         created_at: '2026-04-20T15:15:00Z',
       },
+  ];
+
+  export const applicationsMock: ApplicationResponse[] = [
+    {
+      id: 'app_001',
+      task_id: 'task_001',
+      prestataire_id: 'prestataire_001',
+      message: 'Je propose de construire votre API REST sécurisée avec authentification JWT, gestion des réservations, et documentation Swagger.',
+      status: 'EN_ATTENTE',
+      created_at: '2026-04-20T11:00:00Z',
+      prestataire: {
+        name: 'Léa Martin',
+        email: 'lea.martin@example.com',
+        role: 'prestataire',
+        phone: '+33712345678',
+        rating_avg: 4.7,
+        created_at: new Date('2025-09-10T09:00:00Z'),
+      },
+    },
+    {
+      id: 'app_002',
+      task_id: 'task_002',
+      prestataire_id: 'prestataire_002',
+      message: 'Je peux refondre votre dashboard avec un design moderne, responsive et une navigation plus fluide.',
+      status: 'EN_ATTENTE',
+      created_at: '2026-04-22T14:30:00Z',
+      prestataire: {
+        name: 'Nicolas Petit',
+        email: 'nicolas.petit@example.com',
+        role: 'prestataire',
+        phone: '+33798765432',
+        rating_avg: 4.9,
+        created_at: new Date('2025-11-02T15:20:00Z'),
+      },
+    },
+    {
+      id: 'app_003',
+      task_id: 'task_004',
+      prestataire_id: 'prestataire_003',
+      message: 'J’ai déjà intégré des widgets de paiement et je peux gérer l’authentification, l’escrow et les webhooks FedaPay.',
+      status: 'ACCEPTEE',
+      created_at: '2026-04-25T09:45:00Z',
+      prestataire: {
+        name: 'Sofia Bernard',
+        email: 'sofia.bernard@example.com',
+        role: 'prestataire',
+        phone: '+33765432198',
+        rating_avg: 4.6,
+        created_at: new Date('2025-10-18T12:10:00Z'),
+      },
+    },
+    {
+      id: 'app_004',
+      task_id: 'task_007',
+      prestataire_id: 'prestataire_004',
+      message: 'Je peux réaliser vos tests de sécurité, identifier les vulnérabilités et proposer des correctifs exploitables.',
+      status: 'REJETEE',
+      created_at: '2026-04-28T16:10:00Z',
+      prestataire: {
+        name: 'Marc Dubois',
+        email: 'marc.dubois@example.com',
+        role: 'prestataire',
+        phone: '+33711223344',
+        rating_avg: 4.5,
+        created_at: new Date('2025-08-25T10:55:00Z'),
+      },
+    },
+    {
+      id: 'app_005',
+      task_id: 'task_010',
+      prestataire_id: 'prestataire_005',
+      message: 'Je suis prêt à concevoir vos maquettes et prototypes pour mobile avec un focus sur l’ergonomie et l’expérience utilisateur.',
+      status: 'EN_ATTENTE',
+      created_at: '2026-05-01T13:20:00Z',
+      prestataire: {
+        name: 'Emma François',
+        email: 'emma.francois@example.com',
+        role: 'prestataire',
+        phone: '+33766778899',
+        rating_avg: 4.8,
+        created_at: new Date('2025-12-06T08:40:00Z'),
+      },
+    },
   ];
   export const deliverablesWithVariedFiles: DeliverableDTO[] = [
     {

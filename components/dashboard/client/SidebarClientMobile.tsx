@@ -1,11 +1,11 @@
 'use client'
 import SiderbarMobile from '@/components/shared/SidebarMobile';
-import { Onglets } from '@/components/shared/SidebarOnglets';
+import { SidebarOngletsProps } from '@/components/shared/SidebarOnglets';
 import { Dispatch, FC, SetStateAction } from 'react';
 
 const SidebarClientMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpened:Dispatch<SetStateAction<boolean>>}> = ({isMobileSidebarOpened, setIsMobileSidebarOpened}) => {
     
-     const onglets: Onglets = {
+     const onglets: SidebarOngletsProps['onglets'] = {
         GENERAL: [
             {text: 'Tableau de bord', iconPath: 'LayoutDashboard.svg', redirect:'/client/dashboard'}
         ], 

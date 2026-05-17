@@ -1,12 +1,16 @@
 +'use client'
 import { useState, useEffect, useCallback } from 'react';
 import apiFetch from '@/lib/api';
-import type { ApplicationFormType, ApplicationResponse, CDashboardData, Deliverable, PDashboardData, Review, ReviewProps, TaskFormType, TaskProps } from '@/types';
+import type { ApplicationFormType, TaskPropsOnPrestataire, CDashboardData, Deliverable, PDashboardData, Review, ReviewProps, TaskFormType, TaskProps, ApplicationResponse } from '@/types';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Application, DeliveryFormProps } from '@/types/index';
 import { buildFormData } from '@/lib/utils';
+import { tr } from 'zod/v4/locales/index.js';
+import { get } from 'react-hook-form';
+import { router } from 'next/client';
+import { useRouter } from 'next/navigation';
 
-export interface UseTasksReturn<T = ApplicationResponse | TaskProps> {
+export interface UseTasksReturn<T = TaskPropsOnPrestataire | TaskProps> {
   tasks: T[];
   loading: boolean;
   refetch: (id:string | undefined) => Promise<void>;
@@ -17,7 +21,7 @@ export interface UseTasksReturn<T = ApplicationResponse | TaskProps> {
 
 export const budgetCurrency = 'FCFA'
 
-export function useTasks<T = ApplicationResponse | TaskProps>(id:string|undefined, skip:boolean=false): UseTasksReturn<T> {
+export function useTasks<T = TaskPropsOnPrestataire | TaskProps>(id:string|undefined, skip:boolean=false): UseTasksReturn<T> {
   const [tasks, setTasks] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
   const {notify} = useNotificationManager();
@@ -46,10 +50,8 @@ export function useTasks<T = ApplicationResponse | TaskProps>(id:string|undefine
   const createTask = async (taskData:TaskFormType) => {
     try{
         setLoading(true);
-        const data = buildFormData(taskData);
-        const newTask = await apiFetch<TaskProps>('tasks', data, 'POST');
+        const newTask = await apiFetch<TaskProps>('api/tasks', taskData, 'POST');
         console.debug('createTask response', newTask);
-        debugger;
         if(newTask.success)
             notify('Nouvelle tache ajoutée.', 'success');
           else throw new Error(newTask.message);
@@ -63,7 +65,7 @@ export function useTasks<T = ApplicationResponse | TaskProps>(id:string|undefine
   const deliverTask = async (deliveryData:DeliveryFormProps) => {
     try{
       setLoading(true);
-      const delivery = await apiFetch<Deliverable>(`/tasks/${deliveryData.task_id}/deliver`, deliveryData, 'POST');
+      const delivery = await apiFetch<Deliverable>(`api/tasks/${deliveryData.task_id}/deliver`, deliveryData, 'POST');
       if(delivery.success && delivery.status === 201){
         notify('Livrable soumis! En attente de review.', 'success');
         return true
@@ -109,21 +111,25 @@ export function useTasks<T = ApplicationResponse | TaskProps>(id:string|undefine
 
 
 interface UseApplicationReturn {
-  application: Application[],
+  application: ApplicationResponse[],
   loading: boolean,
   applyTotask: (applyData: ApplicationFormType) => Promise<void>,
-  deleteApplication: (application_id:string) => Promise<void>
+  rejectApplication: (application_id:string) => Promise<void>,
+  acceptApplication: (application_id:string) => Promise<void>,
+  getApplication: (task_id:string) => Promise<void>,
+  proceedToPayment: (data: { application_id: string, task_id: string }) => Promise<void>
 } 
 
 export function useApplication(): UseApplicationReturn {
-  const [application, setApplication] = useState<Application[]>([]);
+  const [application, setApplication] = useState<ApplicationResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const {notify} = useNotificationManager();
+  const router = useRouter();
 
    const applyTotask = async (applyData: ApplicationFormType) => {
         try{
           setLoading(true);
-          const applyresponse = await apiFetch<Application>(`api/tasks/${applyData.task_id}/apply`, applyData, 'POST');
+          const applyresponse = await apiFetch<ApplicationResponse>(`api/tasks/${applyData.task_id}/apply`, applyData, 'POST');
           
           if(Number(applyresponse.status) === 201 && applyresponse.success)
             notify('Votre candidature a été soumise avec succès.', 'success');
@@ -135,14 +141,24 @@ export function useApplication(): UseApplicationReturn {
         }
     }
 
-    const getApplication = async ()=>{
-      
+    const getApplication = async (task_id:string)=>{
+      try{
+        setLoading(true);
+        const response = await apiFetch<ApplicationResponse[]>(`api/tasks/${task_id}/applications`);
+        if(response.success)
+          setApplication(response.data);
+        else
+          notify(response.message, 'error');
+      }catch(err){
+        notify(err instanceof Error ? err.message : 'Une erreur est survenue lors du chargement de vos candidatures!', 'error');
+      }finally{
+        setLoading(false);
+      }
     }
-
-    const deleteApplication = async (application_id:string) => {
+    const rejectApplication = async (application_id:string) => {
       try{
           setLoading(true);
-          const applyresponse = await apiFetch<null>(`api/applications/cancel`, {id:application_id}, 'DELETE');
+          const applyresponse = await apiFetch<null>(`api/applications/reject`, {id:application_id}, 'DELETE');
           
           if(applyresponse.success)
             notify('Votre candidature a été retirée.', 'success');
@@ -154,7 +170,40 @@ export function useApplication(): UseApplicationReturn {
         }
     }
 
-    return {applyTotask, application, loading, deleteApplication}
+    const acceptApplication = async (application_id:string) => {
+      try{
+          setLoading(true);
+          const applyresponse = await apiFetch<null>(`api/applications/accept`, {id:application_id}, 'PUT');
+          
+          if(applyresponse.success)
+            notify('Votre candidature a été acceptée.', 'success');
+          else throw new Error(applyresponse.message) 
+        }catch(err){
+            notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non acceptée!', 'error');
+        }finally{
+          setLoading(false);
+        }
+    }
+
+    const proceedToPayment = async (data: { application_id: string, task_id: string }) => {
+      
+      try{
+          setLoading(true);
+          const saveApplicant = await apiFetch<null>('/api/applications', data, 'POST');
+          if(saveApplicant.success){
+            notify('Candidature sauvegardée. Redirection vers le paiement...', 'success'); 
+            router.push(`/client/tasks/${data.task_id}/payment`);
+          }          
+          else throw new Error(saveApplicant.message)
+        }catch(err){
+            notify(err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'acceptation de la candidature!', 'error');
+        }finally{
+          setLoading(false);
+        }
+    }
+
+
+    return {applyTotask, application, loading, rejectApplication, acceptApplication, getApplication, proceedToPayment}
 }
 
 

@@ -7,7 +7,7 @@ import { HTTPResponse } from '@/types';
 export async function POST(request: Request) {
   const body = await request.json();
 
-  const response: HTTPResponse<AuthDataResponse> = await apiFetch(`login`, body, 'POST');
+  const response: HTTPResponse<AuthDataResponse> = await apiFetch(`api/login`, body, 'POST');
   
   const {data}= response;
 

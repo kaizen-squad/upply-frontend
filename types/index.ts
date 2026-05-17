@@ -39,7 +39,7 @@ export type TaskFormType = z.infer<typeof TaskFormProps>;
 export type ApplicationStatus = 'EN_ATTENTE' | 'ACCEPTEE' | 'REJETEE'
 
 export interface Application {
-  id?: string
+  id: string
   task_id: string
   prestataire_id: string
   message: string
@@ -54,12 +54,12 @@ export const ApplicationFormSchema = z.object({
 
 export type ApplicationFormType = z.infer<typeof ApplicationFormSchema>
 
-export interface ApplicationResponse extends TaskProps{
+export interface TaskPropsOnPrestataire extends TaskProps {
   application_id: string
   applied_at: string | undefined
   application_status: ApplicationStatus | undefined
 }
-
+ 
 export  interface Deliverable {
   id: string
   task_id: string
@@ -152,3 +152,15 @@ export type CDashboardData = {
   statistics: CStatistics
 }
 
+export type UserFull = {  
+  name: string,
+  email: string,
+  role: string,
+  phone: string,
+  rating_avg: number,
+  created_at: Date,
+}
+
+export interface ApplicationResponse extends Application {
+  prestataire: UserFull
+}

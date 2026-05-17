@@ -72,7 +72,7 @@ Ce document recense les appels API utilisés dans le projet et les formats de do
 - `status: 'EN_ATTENTE' | 'ACCEPTEE' | 'REJETEE'`
 - `created_at: string`
 
-#### `ApplicationResponse`
+#### `TaskPropsOnPrestataire`
 - tous les champs de `TaskProps`
 - `application_id: string`
 - `applied_at: string | undefined`
