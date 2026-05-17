@@ -4,11 +4,11 @@ import { formatFrenchDateIntl, formatRelativeTime } from "@/lib/utils";
 import Image from "next/image";
 import ApplicationForm from "@/components/dashboard/prestataire/ApplicationForm";
 import Spinner from "@/components/ui/Spinner/Spinner";
-import { ApplicationResponse } from '@/types/index';
+import { TaskPropsOnPrestataire } from '@/types/index';
 import { useTasksContext } from "@/components/shared/tasks/TaskProvider";
 
 const page = () => {
-    const {tasks: [task], refetch, loading} = useTasksContext<ApplicationResponse>();
+    const {tasks: [task], refetch, loading} = useTasksContext<TaskPropsOnPrestataire>();
 
   return (       
      <>     

@@ -10,10 +10,10 @@ export async function POST(request: Request) {
     
   const body = await request.json();
   
-  const response: HTTPResponse<any> = await apiFetch(`register`, body, 'POST');
+  const response: HTTPResponse<any> = await apiFetch(`api/register`, body, 'POST');
   
   const {data} = response;
-
+  console.log('API Response:', response);
   if (response.success && data.refreshToken) {
     //Configure the cookies needed for the user session
     const cookieStore = await cookies();

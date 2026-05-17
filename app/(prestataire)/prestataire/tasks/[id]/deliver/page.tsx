@@ -3,13 +3,13 @@ import DeliverForm from '@/components/dashboard/client/DeliverForm';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
-import { ApplicationResponse, TaskProps } from '@/types';
+import { TaskPropsOnPrestataire, TaskProps } from '@/types';
 import { LockKeyhole, Zap, CircleCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const page= () => {
-    const {tasks:[task]} = useTasksContext<ApplicationResponse>();
+    const {tasks:[task]} = useTasksContext<TaskPropsOnPrestataire>();
     const router = useRouter();
 
     useEffect(()=>{

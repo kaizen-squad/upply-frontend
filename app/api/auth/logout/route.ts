@@ -6,7 +6,7 @@ import apiFetch from '@/lib/api';
 export async function POST() {
 
   const cookieStore = await cookies();
-  const response = await apiFetch('logout', {}, 'POST')  
+  const response = await apiFetch('api/logout')  
     
   if(response.success){
     // Delete the cookies

@@ -3,13 +3,13 @@ import Task from "@/components/shared/tasks/Task"
 import { TaskSkeleton } from "@/components/shared/tasks/TaskSkeleton"
 import Button from "@/components/ui/Button/Button"
 import { useTasks } from "@/hooks/useTasks"
-import { ApplicationResponse, TaskProps } from "@/types";
+import { TaskPropsOnPrestataire, TaskProps } from "@/types";
 import { useMediaQuery } from "@reactuses/core";
 import { RotateCw } from "lucide-react"
 import Image from "next/image";
 
 const page =  () => {
-    const {loading, tasks, refetch} = useTasks<ApplicationResponse>(undefined);
+    const {loading, tasks, refetch} = useTasks<TaskPropsOnPrestataire>(undefined);
     const isMobile = useMediaQuery('(max-width: 700px)', true);
 
   return (
