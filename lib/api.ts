@@ -75,7 +75,8 @@ instance.interceptors.response.use(
             isRefreshing= true;
 
             try{
-                const response = await instance.post('refresh', {})
+
+                const response = await instance.post('/api/auth/refresh', {}, {baseURL: ''});
                 const { accessToken } : { accessToken: string } = response.data;
                 
                 useTokenStore.setState({accessToken:accessToken});

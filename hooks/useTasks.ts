@@ -1,7 +1,7 @@
 +'use client'
 import { useState, useEffect, useCallback } from 'react';
 import apiFetch from '@/lib/api';
-import type { ApplicationFormType, TaskPropsOnPrestataire, CDashboardData, Deliverable, PDashboardData, Review, ReviewProps, TaskFormType, TaskProps, ApplicationResponse } from '@/types';
+import type { ApplicationFormType, TaskPropsOnPrestataire, CDashboardData, Deliverable, PDashboardData, Review, ReviewProps, TaskFormType, TaskProps, ApplicationResponse, PrestataireSelectedData } from '@/types';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Application, DeliveryFormProps } from '@/types/index';
 import { buildFormData } from '@/lib/utils';
@@ -117,8 +117,9 @@ interface UseApplicationReturn {
   rejectApplication: (application_id:string) => Promise<void>,
   acceptApplication: (application_id:string) => Promise<void>,
   getApplication: (task_id:string) => Promise<void>,
-  proceedToPayment: (data: { application_id: string, task_id: string }) => Promise<void>
+  proceedToPayment: (data: { application_id: string, task_id: string, prestataire_name: string }) => Promise<void>
 } 
+
 
 export function useApplication(): UseApplicationReturn {
   const [application, setApplication] = useState<ApplicationResponse[]>([]);
@@ -185,7 +186,7 @@ export function useApplication(): UseApplicationReturn {
         }
     }
 
-    const proceedToPayment = async (data: { application_id: string, task_id: string }) => {
+    const proceedToPayment = async (data: PrestataireSelectedData) => {
       
       try{
           setLoading(true);

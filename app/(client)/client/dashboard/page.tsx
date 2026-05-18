@@ -5,8 +5,11 @@ import Spinner from '@/components/ui/Spinner/Spinner';
 import { useDashboard } from '@/hooks/useTasks';
 import { BookOpenCheck, Lightbulb, Plus, Zap } from 'lucide-react';
 import { CDashboardData } from '@/types/index';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
+    const router = useRouter();
 
     const {loadDashboard, dashboardData, loading} = useDashboard<CDashboardData>('client');
 
@@ -15,6 +18,10 @@ const page = () => {
     const formatNumber = (number:number) => {
         return number < 10 ? `0${number}` : number;
     }
+
+    useEffect(()=>{
+        loadDashboard();
+    }, [])
 
     
         return (
@@ -50,7 +57,8 @@ const page = () => {
                                 <Button 
                                     textContent='NOUVELLE MISSION'
                                     Icon={Plus}
-                                    className='min-w-max px-5 py-3 rounded-sm bg-alizarin-crimson-red-51 font-medium text-white-solid scale-80 hover:scale-77 duration-200 hidden md:flex'
+                                    className='min-w-max px-5 py-3 rounded-sm bg-alizarin-crimson-red-51 font-medium text-white-solid translate-x-5 scale-80 flex-end hover:scale-77 duration-200 hidden md:flex'
+                                    onClick={()=> router.push('/client/tasks/new')}
                                 />
                             }          
                         </div>
@@ -108,20 +116,20 @@ const page = () => {
                     <div>
                         {
                             Boolean(tasks.length) &&
-                        <div className='grid grid-cols-2 gap-5 lg:block'>
-                                <div className='px-5 py-8 bg-woodsmoke-gray-8 rounded-sm h-max md:max-w-[85%] xl:w-full md:w-max mt-10 mx-auto'>
+                        <div className=''>
+                                <div className='px-5 py-8 bg-woodsmoke-gray-8 rounded-sm xl:w-full mt-10 mx-auto'>
                                     <Zap stroke='white' strokeWidth={2}/>
                                     <h3 className='my-2 text-white-solid'>Optimisez votre annonce</h3>
                                     <p className='text-santa-gray'>Une description détaillée avec des étapes claires augmente vos chances de recevoir des candidatures qualifiées de 40%. N'hésitez pas à joindre des fichiers de référence pour guider les prestataires.</p>  
                                 </div>
 
-                                <div className='px-5 py-8 bg-woodsmoke-gray-8 rounded-sm h-max md:max-w-[85%] xl:w-full md:w-max mt-10 mx-auto'>
+                                <div className='px-5 py-8 bg-woodsmoke-gray-8 rounded-sm xl:w-full mt-10 mx-auto'>
                                     <Zap stroke='white' strokeWidth={2}/>
                                     <h3 className='my-2 text-white-solid'>Notez vos prestaires</h3>
                                     <p className='text-santa-gray'>Évaluez vos prestataires avec justesse. Un retour constructif après chaque mission aide la communauté à identifier les meilleurs talents et améliore la qualité globale des livrables sur Upply.</p>  
                                 </div>
 
-                                <div className='px-5 py-8 bg-woodsmoke-gray-8 rounded-sm h-max md:max-w-[85%] xl:w-full md:w-max mt-10 mx-auto'>
+                                <div className='px-5 py-8 bg-woodsmoke-gray-8 rounded-sm xl:w-full mt-10 mx-auto'>
                                     <div className='flex items-center gap-2'>
                                         <Lightbulb className='text-orange-500'/>
                                         <h3 className='my-2 text-white-solid'>Optimisez votre annonce</h3>
