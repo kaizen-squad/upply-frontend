@@ -79,7 +79,7 @@ const AcceptApplicationModal = ({ application }: { application: ApplicationRespo
                     textContent="Sélectionner"
                     className="bg-alizarin-crimson-red-51 py-3 px-5 rounded-sm text-white-solid font-semibold w-full"
                     onClick={() => {
-                        proceedToPayment({ application_id: application.id, task_id: application.task_id });
+                        proceedToPayment({ application_id: application.id, task_id: application.task_id, prestataire_name: application.prestataire.name });
                         close('accept-application-modal');
                     }}
                 />

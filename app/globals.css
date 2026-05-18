@@ -21,6 +21,7 @@
   --orange-alert: #EF6C00;
   --yellow: #EAB308;
   --header-height: 96px;
+  --yellow-fade:#ef6c001a;
   --main-height: calc(100vh - 76px);
   --sidebar-width: 230px;
 }
@@ -45,6 +46,7 @@
   --color-green-success: var(--green-success);
   --color-orange-alert: var(--orange-alert);
   --color-yellow: var(--yellow);
+  --color-yellow-fade: var(--yellow-fade);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --radius-sidebar-width: var(--sidebar-width)
@@ -70,6 +72,7 @@
     --green-success:#2E7D32;
     --orange-alert: #EF6C00;
     --yellow: #EAB308;
+    --yellow-fade:#ef6c001a;
     --woodsmoke-gray-10: #18181B;
     --sidebar-width: 250px;
     --header-height: 80px;
@@ -158,3 +161,8 @@
       height: 100%;
     }
   }
+
+  .css-1ms7hib-MuiTimelineItem-root::before{
+    display: none;
+  }
+

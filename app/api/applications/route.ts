@@ -15,3 +15,12 @@ export async function POST (request: Request) {
 
     return NextResponse.json({success: true, message: 'Application data stored in cookie'});
 }
+
+export async function GET(request: Request) {
+    const cookieStore = await cookies();
+    const applicationData = cookieStore.get('applicationData');
+    if(applicationData){
+        return NextResponse.json({success: true, data: JSON.parse(applicationData.value), message: 'Application data retrieved from cookie'});
+    }
+    return NextResponse.json({success: false, data: null, message: 'No application data found in cookie'});
+}

@@ -11,12 +11,16 @@
     "tailwind:build": "tailwindcss -i ./app/globals.css -o ./app/output.css --minify"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@hookform/resolvers": "^5.2.2",
+    "@mui/lab": "^9.0.0-beta.3",
     "@reactuses/core": "^6.3.1",
     "@tailwindcss/postcss": "^4.2.4",
     "axios": "^1.15.0",
     "clsx": "^2.1.1",
     "dotenv": "^17.4.2",
+    "fedapay-reactjs": "^1.1.2",
     "lucide-react": "^1.8.0",
     "next": "^16.2.4",
     "react": "19.2.4",
