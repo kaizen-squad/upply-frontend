@@ -17,8 +17,8 @@ export async function POST(request: Request) {
   }
   
   // Call the backend to refresh the tokens
-  const response:HTTPResponse<RefreshTokenResponse> = await apiFetch(`api/refresh`, {refreshToken: refreshToken}, 'POST');
-    
+  const response:HTTPResponse<RefreshTokenResponse> = await apiFetch(`api/refresh`, {tokenString: refreshToken}, 'POST');
+  console.log('[Refresh API] Response from refresh endpoint', response);
   const { data } = response;
 
   if (response.success) {

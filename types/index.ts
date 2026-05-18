@@ -164,3 +164,9 @@ export type UserFull = {
 export interface ApplicationResponse extends Application {
   prestataire: UserFull
 }
+
+export interface PrestataireSelectedData {
+  application_id: string,
+  task_id: string,
+  prestataire_name: string
+}

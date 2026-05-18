@@ -67,7 +67,6 @@ export async function proxy(request: NextRequest) {
         return response;
     }
   }
-     console.log('Access granted to:', pathname);
   return NextResponse.next();
 }
 
