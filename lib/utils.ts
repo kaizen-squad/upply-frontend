@@ -87,14 +87,29 @@ export function formatFrenchDateIntl(dateStr: string): string {
   }).format(date);
 }
 
-  const commission = 0.1;
+const commission = 0.1;
 
 export function commissionPlateform(budget: number): number {
   return budget * commission
 }
 
 export function getInitials (name: string): string {
-  return name.split(' ').map(w=> w[0]).join('').toUpperCase()
+  return name.split(' ').map(w => w[0]).join('').toUpperCase();
+}
+
+/**
+ * Formate un montant entier ou décimal en chaîne avec séparateur de milliers.
+ * @param amount - Montant numérique à formater (ex: 23000)
+ * @returns Chaîne formatée avec points comme séparateur de milliers (ex: "23.000")
+ */
+export function formatAmount(amount: number): string {
+  const isNegative = amount < 0;
+  const absoluteValue = Math.abs(amount);
+  const [integerPart, fractionPart] = absoluteValue.toString().split('.');
+  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const formattedNumber = fractionPart ? `${formattedInteger},${fractionPart}` : formattedInteger;
+
+  return isNegative ? `-${formattedNumber}` : formattedNumber;
 }
 
 /**

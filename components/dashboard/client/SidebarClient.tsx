@@ -13,7 +13,7 @@ const SidebarClient = () => {
             {text: 'Tableau de bord', iconPath: 'LayoutDashboard.svg', redirect:'/client/dashboard'}
         ], 
         'GESTION PROJETS': [
-            {text: 'Mes missions', iconPath: 'Mission.svg', redirect:'/client/tasks/new'},
+            {text: 'Mes missions', iconPath: 'Mission.svg', redirect:'/client/tasks'},
             {text: 'Candidatures recues', iconPath: 'Applications.svg', redirect:'/applications'},
             {text: 'Livrables à valider', iconPath: 'Deliverables.svg', redirect:'/deliverables'},
         ],

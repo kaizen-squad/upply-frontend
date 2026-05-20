@@ -1,6 +1,8 @@
 'use client'
 import { flagColor } from '@/components/shared/tasks/Task'
 import Button from '@/components/ui/Button/Button'
+import { budgetCurrency } from '@/hooks/useTasks';
+import { formatAmount } from '@/lib/utils';
 import { TaskProps } from '@/types'
 import { useMediaQuery } from '@reactuses/core';
 import { ArrowRight, Loader } from 'lucide-react'
@@ -33,7 +35,7 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                                 <div key={title} className='my-5 md:my-0 bg-white-solid p-5 rounded-md shadow-xl'>
                                     <div className='flex items-center justify-between my-2'>
                                         <p className='font-semibold w-[70%] line-clamp-1' title={title}>{title}</p>
-                                        <p className='text-alizarin-crimson-red-51 font-semibold line-clamp-1 text-lg'>{budget} <small>FCFA</small> </p>
+                                        <p className='text-alizarin-crimson-red-51 font-semibold line-clamp-1 text-lg'>{formatAmount(budget)} <small>FCFA</small> </p>
                                     </div>
                                     <p>{deadline}</p>
 
@@ -50,19 +52,19 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                                 <tr>
                                     <th className='p-5 pl-8'>TITRE DE LA MISSION</th>
                                     <th className='px-8'>DATE</th>
-                                    <th className='px-8'>BUDGET</th>
+                                    <th className='px-8 min-w-max'>BUDGET ({budgetCurrency})</th>
                                     <th className='p-5 text-right pr-10'>STATUT</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                {tasks.map(({title, deadline, budget, status})=>(
+                                {tasks.map(({id, title, deadline, budget, status})=>(
                                     <tr key={title} className='border-b border-b-gray-300'>
                                         <td className='px-8 w-[45%] h-max py-6 font-semibold'>
-                                            <p className='border-l-4 pl-3 h-max' style={{borderColor: `var(--${flagColor[status]})`}}>{title}</p>
+                                            <button onClick={()=>router.push(`/client/tasks/${id}`)} className='w-full text-left duration-200 hover:rounded-md px-3 py-2 hover:bg-gallery-gray-93 hover:underline cursor-pointer border-l-4 h-max' style={{borderColor: `var(--${flagColor[status]})`}}>{title}</button>
                                         </td>
                                         <td className='text-jumbo-gray-46 px-8'>{deadline}</td>
-                                        <td className='px-8'>{budget}</td>
+                                        <td className='px-8'>{formatAmount(budget)}</td>
                                         <td className='p-5 flex justify-end pr-10'>
                                             <span className='text-white-solid py-1.5 px-2 rounded-sm text-[0.7rem] font-semibold' style={{background: `var(--${flagColor[status]})`}}>{status}</span>
                                         </td>

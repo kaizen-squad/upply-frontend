@@ -1,6 +1,6 @@
 import { TaskProps } from '@/types'
 import { FC } from 'react'
-import { formatFrenchDateIntl } from '@/lib/utils';
+import { formatAmount, formatFrenchDateIntl } from '@/lib/utils';
 import { budgetCurrency } from '@/hooks/useTasks';
 import Button from '@/components/ui/Button/Button';
 import { useMediaQuery } from '@reactuses/core';
@@ -24,7 +24,7 @@ const TaskCard:FC<{task:TaskProps}> = ({task}) => {
               width={20}
               height={20}
             />
-            <p className='text-xl font-bold text-alizarin-crimson-red-51'>{task.budget} {budgetCurrency}</p>
+            <p className='text-xl font-bold text-alizarin-crimson-red-51'>{formatAmount(task.budget)} {budgetCurrency}</p>
           </div>
           <Button
             textContent='Livrer le travail'
@@ -45,7 +45,7 @@ const TaskCard:FC<{task:TaskProps}> = ({task}) => {
                 </div>
                 <div>
                   <small className='font-semibold'>BUDGET</small>
-                  <p>{task.budget} {budgetCurrency}</p>
+                  <p>{formatAmount(task.budget)} {budgetCurrency}</p>
                 </div>
             </div>
           </div>

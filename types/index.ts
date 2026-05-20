@@ -17,7 +17,7 @@ export interface HTTPResponse<T>{
 
 export type TaskStatus = 'OUVERTE' | 'EN_COURS' | 'LIVREE' | 'VALIDEE'
 
-export interface TaskProps {
+export type TaskProps = {
   id: string
   client_id: string
   title: string

@@ -7,6 +7,7 @@ import { BookOpenCheck, Lightbulb, Plus, Zap } from 'lucide-react';
 import { CDashboardData } from '@/types/index';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 const page = () => {
     const router = useRouter();
@@ -24,34 +25,33 @@ const page = () => {
     }, [])
 
     
-        return (
-                
-                <div className='block grid-cols-[67%_3%_30%] m-auto w-[95%] lg:m-auto xl:grid'>
+    return (
+        <div className={cn('block pb-10 gap-10 m-auto w-[95%] lg:m-auto xl:grid grid-cols-[67%_1fr]')}>
+            <div>
+                <div className='md:flex items-center justify-between'>
                     <div>
-                        <div className='md:flex items-center justify-between'>
+                        {
+                            loading ? 
                             <div>
-                                {
-                                    loading ? 
-                                    <div>
-                                        <p className='h-10 rounded-md bg-gray-200 w-50 animate-pulse lg:mt-3 mb-2'></p> 
-                                        <p  className='h-7 rounded-md bg-gray-200 w-80 animate-pulse lg:mt-3'></p>
-                                    </div>
-                                        
-                                    : (
-                                        Boolean(tasks.length) ? 
-                                        <div>
-                                            <h1>VUE D'ENSEMBLE</h1>
-                                            <p className='text-santa-gray text-[0.9rem] mt-2 lg:text-md'>Suivi en temps réel de votre activité opérationnelle.</p>
-                                        </div>  : 
-                                        <div>
-                                            <h1>Prêt à déléguer votre première tâche ?</h1>
-                                            <p className='text-santa-gray text-[0.9rem] mt-2 lg:text-md'>Votre tableau de bord est prêt à recevoir vos projets.</p>
-                                        </div>
-                                    )
-                                    }
-                                
+                                <p className='h-10 rounded-md bg-gray-200 w-50 animate-pulse lg:mt-3 mb-2'></p> 
+                                <p  className='h-7 rounded-md bg-gray-200 w-80 animate-pulse lg:mt-3'></p>
                             </div>
-
+                                        
+                            : (
+                                Boolean(tasks.length) ? 
+                                <div>
+                                    <h1>VUE D'ENSEMBLE</h1>
+                                    <p className='text-santa-gray text-[0.9rem] mt-2 lg:text-md'>Suivi en temps réel de votre activité opérationnelle.</p>
+                                </div>  : 
+                                <div>
+                                    <h1>Prêt à déléguer votre première tâche ?</h1>
+                                    <p className='text-santa-gray text-[0.9rem] mt-2 lg:text-md'>Votre tableau de bord est prêt à recevoir vos projets.</p>
+                                </div>
+                            )
+                        }
+                                
+                    </div> 
+                    
                             {
                                 (!loading && Boolean(tasks.length)) &&
                                 <Button 
@@ -111,12 +111,10 @@ const page = () => {
                             
                         </div>
                     </div>
-                    <div></div>
 
                     <div>
                         {
-                            Boolean(tasks.length) &&
-                        <div className=''>
+                            <div>
                                 <div className='px-5 py-8 bg-woodsmoke-gray-8 rounded-sm xl:w-full mt-10 mx-auto'>
                                     <Zap stroke='white' strokeWidth={2}/>
                                     <h3 className='my-2 text-white-solid'>Optimisez votre annonce</h3>

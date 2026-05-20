@@ -34,7 +34,7 @@
   --color-alizarin-crimson-red-51: var(--alizarin-crimson-red-51);
   --color-athens-gray-96: var(--athens-gray-96);
   --color-gallery-gray-93: var(--gallery-gray-93);
-  --color--iron-gray-90: var(--iron-gray-90);
+  --color-iron-gray-90: var(--iron-gray-90);
   --color-iron-2-gray-84: var(--iron-2-gray-84);
   --color-jumbo-gray-46: var(--jumbo-gray-46);
   --color-santa-gray: var(--santa-gray);
@@ -76,7 +76,7 @@
     --woodsmoke-gray-10: #18181B;
     --sidebar-width: 250px;
     --header-height: 80px;
-    --main-height: calc(100vh - 80px)
+    --main-height: calc(100vh - 60px)
   }
 }
 
