@@ -24,6 +24,7 @@ function TaskProvider<T = TaskProps | TaskPropsOnPrestataire>({
   taskId, 
   children 
 }: TaskProviderProps<T>) {
+  
   const taskManager = useTasks<T>(taskId);
   
   return (

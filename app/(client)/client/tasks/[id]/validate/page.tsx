@@ -1,4 +1,5 @@
 'use client'
+import EmptyImage from '@/components/shared/EmptyImage';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import Button from '@/components/ui/Button/Button';
 import { Modale } from '@/components/ui/Modal/Modale';
@@ -211,7 +212,7 @@ const page = () => {
                                 <div className="mt-5 flex items-center justify-center gap-7 font-semibold text-white">
                                     <Button
                                         textContent="Valider"
-                                        className="py-3 px-6 rounded-sm font-semibold bg-alizarin-crimson-red-51"
+                                        className="py-3 px-6 rounded-sm font-semibold bg-alizarin-crimson-red-51" 
                                     />
                                     <Button
                                         textContent="Annuler"
@@ -229,8 +230,11 @@ const page = () => {
         else 
             return (
                 // Error state : API return error (Show a global error state component)
-                <div>
-                    API ERROR
+                <div className="h-full w-full flex">
+                    <div className="w-max h-max m-auto -translate-y-10">
+                        <EmptyImage/>
+                        <p className="text-2xl font-bold text-center relative z-1">Aucun livrable disponible!</p>
+                    </div>
                 </div>
             )
 }

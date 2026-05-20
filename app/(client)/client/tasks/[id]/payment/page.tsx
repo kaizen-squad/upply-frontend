@@ -3,7 +3,7 @@ import Script from 'next/script';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import { budgetCurrency } from '@/hooks/useTasks';
 import apiFetch from '@/lib/api';
-import { getInitials } from '@/lib/utils';
+import { commissionPlateform, formatAmount, getInitials } from '@/lib/utils';
 import { PrestataireSelectedData } from '@/types';
 import { useEffect, useState }  from 'react'
 import { tasksA } from '../../../../../../lib/data';
@@ -79,23 +79,23 @@ const page = () => {
                         </div>
                         <div className="flex items-center justify-between my-3 gap-5">
                             <p className="min-w-max text-santa-gray">Budget de la mission</p>
-                            <strong className="text-alizarin-crimson-red-51">{task.budget} {budgetCurrency}</strong>
+                            <strong className="text-alizarin-crimson-red-51">{formatAmount(task.budget)} {budgetCurrency}</strong>
                         </div>
                     </div>
 
                     <div className="my-5 p-5 rounded-md bg-athens-gray-96">
                         <div className="flex items-center justify-between mb-3">
                             <p className="text-scarpa-flow-gray-34">Montant mission</p>
-                            <strong>{task.budget} {budgetCurrency}</strong>
+                            <strong>{formatAmount(task.budget)} {budgetCurrency}</strong>
                         </div>
                         <div className="flex items-center justify-between my-3">
                             <p className="text-scarpa-flow-gray-34">Frais de service</p>
-                            <strong>{1000} {budgetCurrency}</strong>
+                            <strong>{formatAmount(commissionPlateform(task.budget))} {budgetCurrency}</strong>
                         </div>
                         <hr className="border border-gray-200 w-full my-3" />
                         <div className="flex items-center justify-between">
                             <p className="text-scarpa-flow-gray-34">Total à déposer</p>
-                            <strong>{task.budget + 1000} {budgetCurrency}</strong>
+                            <strong>{formatAmount(task.budget + commissionPlateform(task.budget))} {budgetCurrency}</strong>
                         </div>
                     </div>
 

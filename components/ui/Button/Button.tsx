@@ -18,7 +18,7 @@ const Button: FC<IButtonProps> = ({type, textContent, className, Icon, isLoading
                 Iposition === 'left' 
                 ? '' : 'flex-row-reverse',
                 'font-medium flex gap-2.5 justify-center cursor-pointer shadow-2xl items-center disabled:cursor-not-allowed disabled:opacity-50 disabled:scale-none',     
-               (!className?.includes('hover') &&  ' hover:opacity-90 hover:scale-98 duration-200'),
+               (!className?.includes('hover') &&  ' hover:opacity-90 hover:scale-98 duration-200 transition-transform'),
                className 
             )}            
         >  
