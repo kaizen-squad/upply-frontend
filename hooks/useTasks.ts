@@ -3,20 +3,18 @@ import { useState, useEffect, useCallback } from 'react';
 import apiFetch from '@/lib/api';
 import type { ApplicationFormType, TaskPropsOnPrestataire, CDashboardData, Deliverable, PDashboardData, Review, ReviewProps, TaskFormType, TaskProps, ApplicationResponse, PrestataireSelectedData } from '@/types';
 import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
-import { Application, DeliveryFormProps } from '@/types/index';
-import { buildFormData } from '@/lib/utils';
-import { tr } from 'zod/v4/locales/index.js';
-import { get } from 'react-hook-form';
-import { router } from 'next/client';
+import { DeliveryFormProps } from '@/types/index';
 import { useRouter } from 'next/navigation';
 
 export interface UseTasksReturn<T = TaskPropsOnPrestataire | TaskProps> {
   tasks: T[];
   loading: boolean;
   refetch: (id:string | undefined) => Promise<void>;
-  createTask: (taskData: TaskFormType) => Promise<void>;
+  createTask: (taskData: TaskFormType) => Promise<boolean>;
   deliverTask: (deliverData: DeliveryFormProps) => Promise<boolean>;
-  reviewPrestataire: (reviewData:ReviewProps) => Promise<void>
+  reviewPrestataire: (reviewData:ReviewProps) => Promise<void>;
+  deleteTask: (task_id:string)=> Promise<void>;
+  editTask:(taskData: TaskProps) => Promise<boolean>;
 }
 
 export const budgetCurrency = 'FCFA'
@@ -25,7 +23,7 @@ export function useTasks<T = TaskPropsOnPrestataire | TaskProps>(id:string|undef
   const [tasks, setTasks] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
   const {notify} = useNotificationManager();
-
+  const router = useRouter()
 
   const fetchTasks = async (id:string | undefined) => {
    
@@ -52,14 +50,52 @@ export function useTasks<T = TaskPropsOnPrestataire | TaskProps>(id:string|undef
         setLoading(true);
         const newTask = await apiFetch<TaskProps>('api/tasks', taskData, 'POST');
         console.debug('createTask response', newTask);
-        if(newTask.success)
-            notify('Nouvelle tache ajoutée.', 'success');
+        if(newTask.success){
+          notify('Nouvelle tache ajoutée.', 'success');
+          return true
+        }
           else throw new Error(newTask.message);
       }catch(err){
         notify(err instanceof Error ? err.message : 'Erreur lors de la création de la tache.', 'error');
       }finally{
         setLoading(false)
       }
+      return false
+  }
+
+    const deleteTask = async (task_id:string) => {
+    try{
+        setLoading(true);
+        const deleteT = await apiFetch<TaskProps>(`api/tasks/${task_id}`, undefined, 'DELETE');
+        console.debug('delete response', deleteT);
+        if(deleteT.success){
+          notify('Mission supprimée!', 'success');
+          router.push('/client/dashboard');
+        }
+          else throw new Error(deleteT.message);
+      }catch(err){
+        notify(err instanceof Error ? err.message : 'Erreur lors de la suppression.', 'error');
+      }finally{
+        setLoading(false)
+      }
+  }
+
+  const editTask = async (taskData:TaskProps) => {
+    try{
+        setLoading(true);
+        const edit = await apiFetch<TaskProps>(`api/tasks/${taskData.id}`, taskData, 'PUT');
+        console.debug('Edit response', edit);
+        if(edit.success){
+          notify('La tache a été modifiée.', 'success');
+          return true
+        }
+          else throw new Error(edit.message);
+      }catch(err){
+        notify(err instanceof Error ? err.message : "Erreur lors de l'édition.", 'error');
+      }finally{
+        setLoading(false)
+      }
+      return false
   }
 
   const deliverTask = async (deliveryData:DeliveryFormProps) => {
@@ -105,7 +141,9 @@ export function useTasks<T = TaskPropsOnPrestataire | TaskProps>(id:string|undef
     refetch: (id:string | undefined)=> fetchTasks(id), 
     createTask,
     deliverTask, 
-    reviewPrestataire
+    reviewPrestataire,
+    deleteTask,
+    editTask  
   };
 }
 

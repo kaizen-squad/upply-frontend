@@ -4,24 +4,52 @@ import useNotificationManager from '@/components/ui/Notification/hooks/useNotifi
 import { Textarea } from '@/components/ui/Textarea/Textarea';
 import TextField from '@/components/ui/TextField/TextField';
 import { useTasks } from '@/hooks/useTasks';
-import { TaskFormProps, TaskFormType } from '@/types';
+import { TaskFormProps, TaskFormType, TaskProps } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HandCoins } from 'lucide-react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import { Controller, useForm } from 'react-hook-form'
 
-const TaskForm = () => {
-    const {createTask} = useTasks(undefined, true);
+const   TaskForm:FC<{field_values?:TaskProps, isEditing?:boolean, setIsEdited?:Dispatch<SetStateAction<boolean>>}> = ({field_values, isEditing=false, setIsEdited}) => {
+    const {createTask, editTask} = useTasks(undefined, true);
     const {notify} = useNotificationManager();
-    const {control, handleSubmit, formState:{isValid, isSubmitting}} = useForm<TaskFormType>({
+    const {control, handleSubmit, formState:{isValid, isSubmitting, isSubmitSuccessful}, reset} = useForm<TaskFormType>({
         mode:'onChange',
-        resolver: zodResolver(TaskFormProps)
+        resolver: zodResolver(TaskFormProps),
+        defaultValues: {
+            title: field_values?.title || '',
+            description: field_values?.description || '',
+            budget: field_values?.budget.toString() || '',
+            deadline: field_values?.deadline || ''
+        }
     });
 
-    const onSubmit = (data:TaskFormType)=> createTask(data);
+
+    const onSubmit = async (data: TaskFormType) => {
+        if (!isEditing) {
+            const created = await createTask(data);
+            if (created) reset();
+        } else {
+            if (!field_values) return;
+            const updatedTask: TaskProps = {
+                ...field_values,
+                title: data.title,
+                description: data.description,
+                budget: Number(data.budget),
+                deadline: data.deadline,
+            };
+            const edited = await editTask(updatedTask);
+            if (edited){
+                reset();
+                if(setIsEdited)
+                    setIsEdited(true)
+            } 
+        }
+    };
     const onError = ()=> notify('Veuillez entrez des données valides!', 'warning');
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)} className='w-full lg:w-max bg-white-solid py-10 px-5 md:p-10 border rounded-sm' >
+    <form onSubmit={handleSubmit(onSubmit, onError)} className='w-full bg-white-solid py-10 px-5 md:p-10 border rounded-sm' >
         <h2>Informations de la mission</h2>
         <p className='text-santa-gray hidden lg:block'>Détaillez vos besoins pour attirer les meilleurs prestataires de la plateforme</p>
 
@@ -56,7 +84,7 @@ const TaskForm = () => {
             />
         </div>
 
-        <div className='flex-col gap-8 lg:flex-row flex my-5'>
+        <div className='flex-col gap-5 lg:flex-row flex my-5'>
             <Controller
                 name='budget'
                 control={control}

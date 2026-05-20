@@ -1,10 +1,9 @@
-import { Component } from 'react';
 import { FedaCheckoutButton, FedaCheckoutContainer } from 'fedapay-reactjs';
 
-export default Fedapay = (amount: number) => {
+export default function Fedapay(amount: number) {
 
-  checkoutButtonOptions = {
-    public_key: proccess.env.NEXT_PUBLIC_FEDAPAY_PUBLIC_KEY,
+  const checkoutButtonOptions = {
+    public_key: process.env.NEXT_PUBLIC_FEDAPAY_PUBLIC_KEY,
     transaction: {
       amount: amount,
       description: 'Airtime'
@@ -28,8 +27,8 @@ export default Fedapay = (amount: number) => {
     }
   };
 
-  checkoutEmbedOptions = {
-    public_key: this.PUBLIC_KEY,
+  const checkoutEmbedOptions = {
+    public_key: process.env.NEXT_PUBLIC_FEDAPAY_PUBLIC_KEY,
     transaction: {
       amount: amount,
       description: 'Airtime'
@@ -42,9 +41,9 @@ export default Fedapay = (amount: number) => {
 
     return (
       <div>
-        <FedaCheckoutButton options={ this.checkoutButtonOptions } />
+        <FedaCheckoutButton options={ checkoutButtonOptions } />
         <div style={{ height: 600, width: 600, backgroundColor: '#eee' }}>
-          <FedaCheckoutContainer options={ this.checkoutEmbedOptions } />
+          <FedaCheckoutContainer options={ checkoutEmbedOptions } />
         </div>
       </div>
     )

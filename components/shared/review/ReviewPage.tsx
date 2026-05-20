@@ -2,7 +2,7 @@ import { CircleAlert } from 'lucide-react'
 import ReviewForm from './ReviewForm'
 import Image from 'next/image'
 import { useTasksContext } from '../tasks/TaskProvider'
-import { formatFrenchDateIntl } from '@/lib/utils'
+import { formatAmount, formatFrenchDateIntl } from '@/lib/utils'
 import { budgetCurrency } from '@/hooks/useTasks'
 import { TaskProps } from '@/types'
 
@@ -25,7 +25,7 @@ const ReviewPage = () => {
                   </div>
                   <div>
                     <p className='text-scarpa-flow-gray-34 text-[0.9rem]'>MONTANT FINAL</p>
-                    <p className='text-alizarin-crimson-red-51 text-xl font-bold'>{task.budget} {budgetCurrency}</p>
+                    <p className='text-alizarin-crimson-red-51 text-xl font-bold'>{formatAmount(task.budget)} {budgetCurrency}</p>
                   </div>
                 </div>
               </div>
