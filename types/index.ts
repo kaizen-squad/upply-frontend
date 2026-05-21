@@ -84,6 +84,7 @@ export type InfoUser = {
 }
 
 export interface DeliverableDTO {
+  id:string,
   content: string,
   prestataire: InfoUser,
   file: FileUpply

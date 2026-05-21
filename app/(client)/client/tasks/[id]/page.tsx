@@ -37,27 +37,39 @@ const page = () => {
             !isEditing ? (
               <div className="mt-10 xl:mt-0">
                 <p className="mb-5 text-xl font-semibold xl:hidden ">ZONE DE GESTION</p>
-                <div className="flex gap-5 items-center xl:flex-col mb-10 xl:mb-5">
-                  <Button
-                    textContent="Modifier la mission"
-                    Icon={Edit}
-                    onClick={()=> setIsEditing(true)}
-                    className="py-3 rounded-md bg-woodsmoke-gray-8 w-full text-white font-bold"
-                  />
+                <div>
                   {
-                    task.status === 'OUVERTE' 
-                    ? <Button
-                    textContent="Voir les candidatures"
-                    Icon={UserCircle2}
-                    className="py-3 rounded-md bg-alizarin-crimson-red-51 w-full text-white font-bold"
-                    onClick={()=> route.push(`/client/tasks/${task?.id}/applications`)}
-                  />:
+                    task.status === 'VALIDEE' ?
                     <Button
-                    textContent="Voir le livrable"
-                    Icon={Truck}
-                    className="py-3 rounded-md bg-alizarin-crimson-red-51 w-full text-white font-bold"
-                    onClick={()=> route.push(`/client/tasks/${task?.id}/validate`)}/> 
-                  }
+                      Icon={UserCircle2}
+                      textContent="Noter le prestataire"
+                      className="py-3 rounded-md bg-alizarin-crimson-red-51 w-full text-white font-bold"
+                      onClick={()=> route.push(`/client/tasks/${task.id}/review`)}
+                    />
+                    : 
+                    <div className="flex gap-5 items-center xl:flex-col mb-10 xl:mb-5">
+                      <Button
+                      textContent="Modifier la mission"
+                      Icon={Edit}
+                      onClick={()=> setIsEditing(true)}
+                      className="py-3 rounded-md bg-woodsmoke-gray-8 w-full text-white font-bold"
+                    />
+                    {
+                      task.status === 'OUVERTE' 
+                      ? <Button
+                      textContent="Voir les candidatures"
+                      Icon={UserCircle2}
+                      className="py-3 rounded-md bg-alizarin-crimson-red-51 w-full text-white font-bold"
+                      onClick={()=> route.push(`/client/tasks/${task.id}/applications`)}
+                    />:
+                      <Button
+                      textContent="Voir le livrable"
+                      Icon={Truck}
+                      className="py-3 rounded-md bg-alizarin-crimson-red-51 w-full text-white font-bold"
+                      onClick={()=> route.push(`/client/tasks/${task?.id}/validate`)}/> 
+                    }
+                    </div>
+                }
                 </div>
               
               <div className="bg-woodsmoke-gray-10 p-5 mt-3">

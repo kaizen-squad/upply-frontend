@@ -11,12 +11,12 @@ const SidebarClientMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileSideba
         ], 
         'GESTION PROJETS': [
             {text: 'Mes missions', iconPath: 'Mission.svg', redirect:'/client/tasks'},
-            {text: 'Candidatures recues', iconPath: 'Applications.svg', redirect:'/applications'},
-            {text: 'Livrables à valider', iconPath: 'Deliverables.svg', redirect:'/deliverables'},
+            // {text: 'Candidatures recues', iconPath: 'Applications.svg', redirect:'/applications'},
+            // {text: 'Livrables à valider', iconPath: 'Deliverables.svg', redirect:'/deliverables'},
         ],
-        FINANCES: [
-            {text: 'Mes facturations', iconPath: 'Billing.svg', redirect:'/billing'},
-        ]
+        // FINANCES: [
+        //     {text: 'Mes facturations', iconPath: 'Billing.svg', redirect:'/billing'},
+        // ]
     }
 
 

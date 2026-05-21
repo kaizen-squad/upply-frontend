@@ -1,6 +1,6 @@
 import Button from '@/components/ui/Button/Button';
 import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
-import { useApplication } from '@/hooks/useTasks';
+import { useApplication, usePayment } from '@/hooks/useTasks';
 import { getInitials } from '@/lib/utils';
 import { ApplicationResponse } from '@/types';
 import { useMediaQuery } from '@reactuses/core';
@@ -70,7 +70,7 @@ export default ApplicationCard;
 
 const AcceptApplicationModal = ({ application }: { application: ApplicationResponse}) => {
     const { close } = useModalify();
-    const { proceedToPayment } = useApplication();
+    const { proceedToPayment } = usePayment();
     return (
         <div>
             <p>Êtes-vous sûr de vouloir sélectionner <em className="font-semibold">{application.prestataire.name}</em> pour cette mission ?</p>
