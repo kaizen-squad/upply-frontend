@@ -1,18 +1,18 @@
 import Button from '@/components/ui/Button/Button'
-import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Textarea } from '@/components/ui/Textarea/Textarea'
 import { useApplication } from '@/hooks/useTasks';
 import { formatFrenchDateIntl } from '@/lib/utils';
-import {  ApplicationFormSchema, ApplicationFormType, TaskPropsOnPrestataire, TaskProps } from '@/types';
+import {  ApplicationFormSchema, ApplicationFormType, TaskPropsOnPrestataire } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CircleAlert } from 'lucide-react'
 import Image from 'next/image';
 import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { useToasting } from '@/components/ui/Toast/useToasting';
 
 const ApplicationForm:FC<{task: TaskPropsOnPrestataire}> = ({task}) => {
-    const {notify} = useNotificationManager();
+    const {notify} = useToasting();
     const {applyTotask} = useApplication();
     const router = useRouter();
 

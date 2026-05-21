@@ -2,8 +2,8 @@
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import Button from '@/components/ui/Button/Button';
 import { FileInput } from '@/components/ui/FileInput/FileInput';
-import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Textarea } from '@/components/ui/Textarea/Textarea';
+import { useToasting } from '@/components/ui/Toast/useToasting';
 import { DeliveryFormProps, DeliveryFormSchema } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
@@ -13,7 +13,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 const DeliverForm: FC<{ task_id: string }> = ({ task_id }) => {
   const [success, setSuccess] = useState(false);
-  const { notify } = useNotificationManager();
+    const {notify} = useToasting();
   const { deliverTask } = useTasksContext();
   const router = useRouter();
 
