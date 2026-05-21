@@ -14,12 +14,12 @@ const SidebarClient = () => {
         ], 
         'GESTION PROJETS': [
             {text: 'Mes missions', iconPath: 'Mission.svg', redirect:'/client/tasks'},
-            {text: 'Candidatures recues', iconPath: 'Applications.svg', redirect:'/applications'},
-            {text: 'Livrables à valider', iconPath: 'Deliverables.svg', redirect:'/deliverables'},
+            // {text: 'Candidatures recues', iconPath: 'Applications.svg', redirect:'/applications'},
+            // {text: 'Livrables à valider', iconPath: 'Deliverables.svg', redirect:'/deliverables'},
         ],
-        FINANCES: [
-            {text: 'Mes facturations', iconPath: 'Billing.svg', redirect:'/billing'},
-        ]
+        // FINANCES: [
+        //     {text: 'Mes facturations', iconPath: 'Billing.svg', redirect:'/billing'},
+        // ]
     }
   return (
     <aside className='pt-8 min-w-(--sidebar-width) shadow-2xs border-r-2 border-r-gray-200 h-(--main-height) relative left-0 top-0'>

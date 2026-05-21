@@ -12,7 +12,7 @@ export interface UseTasksReturn<T = TaskPropsOnPrestataire | TaskProps> {
   refetch: (id:string | undefined) => Promise<void>;
   createTask: (taskData: TaskFormType) => Promise<boolean>;
   deliverTask: (deliverData: DeliveryFormProps) => Promise<boolean>;
-  reviewPrestataire: (reviewData:ReviewProps) => Promise<void>;
+  reviewPrestataire: (reviewData:ReviewProps) => Promise<boolean>;
   deleteTask: (task_id:string)=> Promise<void>;
   editTask:(taskData: TaskProps) => Promise<boolean>;
 }
@@ -120,12 +120,14 @@ export function useTasks<T = TaskPropsOnPrestataire | TaskProps>(id:string|undef
         const delivery = await apiFetch<Review>(`api/tasks/${reviewData.task_id}/review`, reviewData, 'POST');
         if(delivery.success && delivery.status === 201){
           notify('Commentaire soumis. Merci de choisir Upply.', 'success');
+          return true;
         }else throw new Error(delivery.message)
       }catch(err){
         notify(err instanceof Error ? err.message : 'Un erreur est survenue lors de la soumission du commentaire', 'error');
       }finally{
         setLoading(false)
       }
+      return false;
   }
 
 
@@ -155,7 +157,6 @@ interface UseApplicationReturn {
   rejectApplication: (application_id:string) => Promise<void>,
   acceptApplication: (application_id:string) => Promise<void>,
   getApplication: (task_id:string) => Promise<void>,
-  proceedToPayment: (data: { application_id: string, task_id: string, prestataire_name: string }) => Promise<void>
 } 
 
 
@@ -224,25 +225,8 @@ export function useApplication(): UseApplicationReturn {
         }
     }
 
-    const proceedToPayment = async (data: PrestataireSelectedData) => {
-      
-      try{
-          setLoading(true);
-          const saveApplicant = await apiFetch<null>('/api/applications', data, 'POST');
-          if(saveApplicant.success){
-            notify('Candidature sauvegardée. Redirection vers le paiement...', 'success'); 
-            router.push(`/client/tasks/${data.task_id}/payment`);
-          }          
-          else throw new Error(saveApplicant.message)
-        }catch(err){
-            notify(err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'acceptation de la candidature!', 'error');
-        }finally{
-          setLoading(false);
-        }
-    }
 
-
-    return {applyTotask, application, loading, rejectApplication, acceptApplication, getApplication, proceedToPayment}
+    return {applyTotask, application, loading, rejectApplication, acceptApplication, getApplication}
 }
 
 
@@ -290,4 +274,55 @@ export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
     dashboardData,
     error,
   };
+}
+
+export interface UsePaymentReturn {
+  loading: boolean,
+  proceedToPayment: (data: { application_id: string, task_id: string, prestataire_name: string }) => Promise<void>,
+  liberatefunds: (deliverable_id:string) => Promise<void>
+}
+
+export function usePayment<UsePaymentReturn >() {
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const { notify } = useNotificationManager();
+
+  const proceedToPayment = async (data: PrestataireSelectedData) => {
+  try{
+      setLoading(true);
+      const saveApplicant = await apiFetch<null>('/api/applications', data, 'POST');
+      if(saveApplicant.success){
+        notify('Candidature sauvegardée. Redirection vers le paiement...', 'success'); 
+        router.push(`/client/tasks/${data.task_id}/payment`);
+      }          
+      else throw new Error(saveApplicant.message)
+    }catch(err){
+        notify(err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'acceptation de la candidature!', 'error');
+    }finally{
+      setLoading(false);
+    }
+  }
+
+  const liberatefunds = async (deliverable_id:string)=> {
+      try{
+      setLoading(true);
+      const liberate = await apiFetch<null>(`/api/deliverables/validate/${deliverable_id}`, undefined, 'POST');
+      if(liberate.success){
+        router.push(`/client/dashboard`);
+        notify('Votre mission est maintenant achevée', 'success'); 
+      }          
+      else throw new Error(liberate.message)
+    }catch(err){
+        notify(err instanceof Error ? err.message : 'Une erreur est survenue lors de la liberation des fonds!', 'error');
+    }finally{
+      setLoading(false);
+    }
+
+  }
+
+  return{
+    loading,
+    proceedToPayment,
+    liberatefunds
+  }
 }

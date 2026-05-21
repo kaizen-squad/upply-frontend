@@ -2,10 +2,11 @@
 import EmptyImage from '@/components/shared/EmptyImage';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import Button from '@/components/ui/Button/Button';
+import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
 import { Modale } from '@/components/ui/Modal/Modale';
 import { Overlay } from '@/components/ui/Overlay/Overlay';
 import Spinner from '@/components/ui/Spinner/Spinner';
-import { budgetCurrency } from '@/hooks/useTasks';
+import { budgetCurrency, usePayment } from '@/hooks/useTasks';
 import apiFetch from '@/lib/api';
 import { tasksA } from '@/lib/data';
 import { commissionPlateform, formatFrenchDateIntl, getInitials } from '@/lib/utils';
@@ -53,7 +54,18 @@ const page = () => {
     const [deliverable, setDeliverable] = useState<DeliverableDTO | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const {tasks:[task]} = useTasksContext<TaskProps>();
-    const [isModaleOpen, setIsModaleOpen] = useState(false)
+    const {modalify, close} = useModalify();
+    const {liberatefunds} = usePayment();
+
+    const handleLiberateFunds = ()=> {
+        if(deliverable){
+            liberatefunds(deliverable.id)
+            setTimeout(()=>{
+                // Toast pour demander la review
+            }, 3000)
+        }
+
+    }
 
     useEffect(()=>{
         const getDeliverable = async()=> {
@@ -82,8 +94,7 @@ const page = () => {
         )
     else
         if(deliverable){
-                const fileExtension = getFileExtension(deliverable.file.file_type);
-                const fileColors = matchExtBgColor[fileExtension] || matchExtBgColor.default;
+            const fileExtension = getFileExtension(deliverable.file.file_type);
 
             return (
                 <div className="md:py-6">
@@ -144,7 +155,26 @@ const page = () => {
                                         Icon={ArrowRight}
                                         Iposition="right"
                                         className="bg-alizarin-crimson-red-51 py-4 px-7 mt-8 text-white m-auto"
-                                        onClick={()=> setIsModaleOpen(true)}
+                                        onClick={()=> modalify(
+                                        <div>
+                                            <p>Veuillez confirmer votre action</p>
+                                            <div className="mt-5 flex items-center justify-center gap-7 font-semibold text-white">
+                                                <Button
+                                                    textContent="Valider"
+                                                    className="py-3 px-6 rounded-sm font-semibold bg-alizarin-crimson-red-51" 
+                                                    onClick={()=>{
+
+                                                    }}
+                                                />
+                                                <Button
+                                                    textContent="Annuler"
+                                                    className="py-3 px-6 rounded-sm font-semibold bg-santa-gray"
+                                                    onClick={()=>close('liberate-funds')}
+                                                />
+                                            </div>
+                                        </div>, {
+                                            id:'liberate-funds'
+                                        })}
                                     />
                                 </div>
                             </div>
@@ -203,27 +233,6 @@ const page = () => {
                         </div>
 
                     </div>
-
-                    {
-                        isModaleOpen &&
-                        <Overlay isOpen={isModaleOpen} onClose={()=> setIsModaleOpen(false)}>
-                            <Modale isOpen={isModaleOpen} className="text-center" onClose={()=> setIsModaleOpen(false)}>
-                                <p>Veuillez confirmer votre action</p>
-                                <div className="mt-5 flex items-center justify-center gap-7 font-semibold text-white">
-                                    <Button
-                                        textContent="Valider"
-                                        className="py-3 px-6 rounded-sm font-semibold bg-alizarin-crimson-red-51" 
-                                    />
-                                    <Button
-                                        textContent="Annuler"
-                                        className="py-3 px-6 rounded-sm font-semibold bg-santa-gray"
-                                        onClick={()=>setIsModaleOpen(false)}
-                                    />
-                                </div>
-                            </Modale>
-                        </Overlay> 
-                    }
-                    
                 </div>
             )
         }
