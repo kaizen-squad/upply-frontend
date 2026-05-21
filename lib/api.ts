@@ -14,7 +14,8 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 export const publicAccessRoutes = [
   'login',
   'register',
-  'refresh'
+  'refresh',
+  'logout'
 ]
 
 let isRefreshing = false;
