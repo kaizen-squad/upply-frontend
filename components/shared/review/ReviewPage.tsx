@@ -4,7 +4,6 @@ import Image from 'next/image'
 import { useTasksContext } from '../tasks/TaskProvider'
 import { formatAmount, formatFrenchDateIntl } from '@/lib/utils'
 import { budgetCurrency } from '@/hooks/useTasks'
-import { TaskProps } from '@/types'
 
 const ReviewPage = () => {
   const {tasks:[task]} = useTasksContext();

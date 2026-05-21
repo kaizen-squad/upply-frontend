@@ -8,10 +8,12 @@ import { Controller, useForm } from "react-hook-form"
 import Rating from "react-ratings-star";
 import { useTasksContext } from "../tasks/TaskProvider";
 import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
+import { useRouter } from "next/navigation";
 
 const ReviewForm: FC<{task_id: string}> = ({task_id}) => {
     const {reviewPrestataire} = useTasksContext();
     const {notify} = useNotificationManager();
+    const router = useRouter();
     const {control, handleSubmit, formState: {isValid, isSubmitting}} = useForm<ReviewProps>({
         resolver: zodResolver(ReviewSchema),
         defaultValues:{
@@ -21,7 +23,10 @@ const ReviewForm: FC<{task_id: string}> = ({task_id}) => {
     });
     
     const onSubmit = async (data: ReviewProps) => {
-        await reviewPrestataire(data);
+        const reviewed = await reviewPrestataire(data);
+        if(reviewed){
+            router.push('/client/dashboard')
+        }
     }
 
     const onError = () => {
