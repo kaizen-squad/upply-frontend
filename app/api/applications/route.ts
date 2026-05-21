@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+
 export async function POST (request: Request) {
 
     const body = await request.json();
@@ -13,7 +14,7 @@ export async function POST (request: Request) {
       path: '/',           
     });
 
-    return NextResponse.json({success: true, message: 'Application data stored in cookie'});
+    return NextResponse.json({success: true, message: 'Application data stored in cookie.'});
 }
 
 export async function GET(request: Request) {
@@ -23,4 +24,10 @@ export async function GET(request: Request) {
         return NextResponse.json({success: true, data: JSON.parse(applicationData.value), message: 'Application data retrieved from cookie'});
     }
     return NextResponse.json({success: false, data: null, message: 'No application data found in cookie'});
+}
+
+export async function DELETE(request:Request) {
+    const cookieStore = await cookies();
+    cookieStore.delete('applicationData');
+    return NextResponse.json({success: true, message: 'Application data deleted.'});
 }
