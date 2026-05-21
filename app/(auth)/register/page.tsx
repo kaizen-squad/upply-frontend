@@ -7,9 +7,9 @@ import SelectField from '@/components/ui/SelectField/SelectField';
 import TextField from '@/components/ui/TextField/TextField';
 import { Lock, Mail, Phone, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
+import { useToasting } from '@/components/ui/Toast/useToasting';
 
 
 function RegisterForm() {
@@ -18,7 +18,7 @@ function RegisterForm() {
     resolver: zodResolver(RegisterSchema),
     defaultValues: { role: 'client', rating_avg: 1.11 }
   });
-  const {notify}= useNotificationManager();
+    const {notify} = useToasting();
   const {register, loading} = useAuth();
   
   const onSubmit = async (registerData:RegisterProps)=>{

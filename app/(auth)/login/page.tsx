@@ -1,9 +1,9 @@
 'use client'
 
 import Button from "@/components/ui/Button/Button";
-import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import TextField from "@/components/ui/TextField/TextField";
+import { useToasting } from "@/components/ui/Toast/useToasting";
 import { useAuth } from "@/hooks/useAuth";
 import { LoginProps, LoginSchema } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 
 function LoginForm() {
     const { login, loading } = useAuth();
-    const {notify} = useNotificationManager();
+    const {notify} = useToasting();
     
     const emailProps = {
         type: 'email',

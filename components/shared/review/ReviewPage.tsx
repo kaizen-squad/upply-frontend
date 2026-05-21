@@ -1,12 +1,15 @@
+'use client'
 import { CircleAlert } from 'lucide-react'
 import ReviewForm from './ReviewForm'
 import Image from 'next/image'
 import { useTasksContext } from '../tasks/TaskProvider'
 import { formatAmount, formatFrenchDateIntl } from '@/lib/utils'
 import { budgetCurrency } from '@/hooks/useTasks'
+import { tasksA } from '@/lib/data';
 
 const ReviewPage = () => {
-  const {tasks:[task]} = useTasksContext();
+  const {tasks:[]} = useTasksContext();
+  const task = tasksA[0];
   if(task) 
     return (
       <div className='my-10'>      
