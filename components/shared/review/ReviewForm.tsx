@@ -1,3 +1,4 @@
+'use client'
 import Button from "@/components/ui/Button/Button";
 import { Textarea } from "@/components/ui/Textarea/Textarea";
 import { ReviewProps, ReviewSchema } from "@/types";
@@ -7,12 +8,12 @@ import { FC } from "react";
 import { Controller, useForm } from "react-hook-form"
 import Rating from "react-ratings-star";
 import { useTasksContext } from "../tasks/TaskProvider";
-import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
 import { useRouter } from "next/navigation";
+import { useToasting } from "@/components/ui/Toast/useToasting";
 
 const ReviewForm: FC<{task_id: string}> = ({task_id}) => {
     const {reviewPrestataire} = useTasksContext();
-    const {notify} = useNotificationManager();
+    const {notify} = useToasting();
     const router = useRouter();
     const {control, handleSubmit, formState: {isValid, isSubmitting}} = useForm<ReviewProps>({
         resolver: zodResolver(ReviewSchema),
@@ -77,6 +78,7 @@ const ReviewForm: FC<{task_id: string}> = ({task_id}) => {
             Icon={()=> <Image src={'/Assets/Send.svg'} alt="send" height={20} width={20} />}
             Iposition="right"
             className="bg-alizarin-crimson-red-51 w-full mt-5 py-3 text-white-solid"
+            type="submit"
         />
     </form>
   )

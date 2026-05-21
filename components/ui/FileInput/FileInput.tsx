@@ -17,8 +17,7 @@ import {
   Music,
   Video,
 } from 'lucide-react';
-import Image from 'next/image';
-import useNotificationManager from '../Notification/hooks/useNotificationManager';
+import { useToasting } from '../Toast/useToasting';
 
 interface FileItem {
   file: File;
@@ -89,7 +88,7 @@ export function FileInput({
   const [fileItems, setFileItems] = useState<FileItem[]>([]);
   const [previewFile, setPreviewFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const {notify} = useNotificationManager();
+    const {notify} = useToasting();
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!disabled) setIsDragOver(true);

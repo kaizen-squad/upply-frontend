@@ -1,8 +1,8 @@
 'use client'
 import Button from '@/components/ui/Button/Button';
-import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { Textarea } from '@/components/ui/Textarea/Textarea';
 import TextField from '@/components/ui/TextField/TextField';
+import { useToasting } from '@/components/ui/Toast/useToasting';
 import { useTasks } from '@/hooks/useTasks';
 import { TaskFormProps, TaskFormType, TaskProps } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,7 +12,7 @@ import { Controller, useForm } from 'react-hook-form'
 
 const   TaskForm:FC<{field_values?:TaskProps, isEditing?:boolean, setIsEdited?:Dispatch<SetStateAction<boolean>>}> = ({field_values, isEditing=false, setIsEdited}) => {
     const {createTask, editTask} = useTasks(undefined, true);
-    const {notify} = useNotificationManager();
+    const {notify} = useToasting();
     const {control, handleSubmit, formState:{isValid, isSubmitting, isSubmitSuccessful}, reset} = useForm<TaskFormType>({
         mode:'onChange',
         resolver: zodResolver(TaskFormProps),

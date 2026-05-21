@@ -1,10 +1,11 @@
-+'use client'
+'use client'
 import { useState, useEffect, useCallback } from 'react';
 import apiFetch from '@/lib/api';
 import type { ApplicationFormType, TaskPropsOnPrestataire, CDashboardData, Deliverable, PDashboardData, Review, ReviewProps, TaskFormType, TaskProps, ApplicationResponse, PrestataireSelectedData } from '@/types';
-import useNotificationManager from '@/components/ui/Notification/hooks/useNotificationManager';
 import { DeliveryFormProps } from '@/types/index';
 import { useRouter } from 'next/navigation';
+import { toast } from "react-hot-toast";
+import { useToasting } from '@/components/ui/Toast/useToasting';
 
 export interface UseTasksReturn<T = TaskPropsOnPrestataire | TaskProps> {
   tasks: T[];
@@ -22,7 +23,7 @@ export const budgetCurrency = 'FCFA'
 export function useTasks<T = TaskPropsOnPrestataire | TaskProps>(id:string|undefined, skip:boolean=false): UseTasksReturn<T> {
   const [tasks, setTasks] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
-  const {notify} = useNotificationManager();
+    const {notify} = useToasting();
   const router = useRouter()
 
   const fetchTasks = async (id:string | undefined) => {
@@ -163,7 +164,7 @@ interface UseApplicationReturn {
 export function useApplication(): UseApplicationReturn {
   const [application, setApplication] = useState<ApplicationResponse[]>([]);
   const [loading, setLoading] = useState(true);
-  const {notify} = useNotificationManager();
+    const {notify} = useToasting();
   const router = useRouter();
 
    const applyTotask = async (applyData: ApplicationFormType) => {
@@ -243,7 +244,7 @@ export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
   const [loading, setLoading] = useState(false);
   const [dashboardData, setDashboardData] = useState<T | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
-  const { notify } = useNotificationManager();
+    const {notify} = useToasting();
 
   const loadDashboard = useCallback(async () => {
     if (loading) return;
@@ -279,20 +280,27 @@ export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
 export interface UsePaymentReturn {
   loading: boolean,
   proceedToPayment: (data: { application_id: string, task_id: string, prestataire_name: string }) => Promise<void>,
-  liberatefunds: (deliverable_id:string) => Promise<void>
+  liberatefunds: (deliverable_id:string) => Promise<boolean>
 }
 
 export function usePayment<UsePaymentReturn >() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { notify } = useNotificationManager();
+    const {notify} = useToasting();
 
   const proceedToPayment = async (data: PrestataireSelectedData) => {
   try{
       setLoading(true);
       const saveApplicant = await apiFetch<null>('/api/applications', data, 'POST');
       if(saveApplicant.success){
-        notify('Candidature sauvegardée. Redirection vers le paiement...', 'success'); 
+        toast.success('Candidature sauvegardée. Procédez au paiement.', {position: 'top-right', duration: 5000, style:{
+          background: '#333',
+          color: '#fff',
+          fontSize: '16px',
+          padding: '16px',
+        }
+          
+        });
         router.push(`/client/tasks/${data.task_id}/payment`);
       }          
       else throw new Error(saveApplicant.message)
@@ -310,6 +318,7 @@ export function usePayment<UsePaymentReturn >() {
       if(liberate.success){
         router.push(`/client/dashboard`);
         notify('Votre mission est maintenant achevée', 'success'); 
+        return true
       }          
       else throw new Error(liberate.message)
     }catch(err){
@@ -317,7 +326,7 @@ export function usePayment<UsePaymentReturn >() {
     }finally{
       setLoading(false);
     }
-
+    return false
   }
 
   return{

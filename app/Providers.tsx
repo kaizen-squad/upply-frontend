@@ -8,6 +8,7 @@ import ModalContainer from '@/components/ui/Modal/ModalContainer';
 import ClientAuthProvider from './ClientAuthProvider';
 import { User } from '@/types/auth';
 import { useModalManager } from '@/components/ui/Modal/hooks/useModalManager';
+import { Toaster } from 'react-hot-toast';
 
 interface ProvidersProps {
   children: ReactNode;
@@ -26,6 +27,7 @@ const Providers: FC<ProvidersProps> = ({ children, initialUser }) => {
           <ModalContainer />
           <div id="modal-root" />
           <div id="notification-root" />
+          <Toaster/>
         </ClientAuthProvider>
       </ModalProvider>
     </NotificationProvider>

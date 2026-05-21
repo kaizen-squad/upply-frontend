@@ -2,11 +2,11 @@
 import apiFetch from "@/lib/api"
 import { LoginProps, RegisterProps } from "@/types/auth"
 import { AuthDataResponse } from '../types/auth';
-import useNotificationManager from "@/components/ui/Notification/hooks/useNotificationManager";
 import { HTTPResponse } from "@/types";
 import  { useTokenStore, useUserStore } from "./store";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useToasting } from "@/components/ui/Toast/useToasting";
 
 /**
  * The hook used to manage the authentication.
@@ -17,7 +17,7 @@ import { useState } from "react";
  * @returns 
  */
 export const useAuth = () =>{
-    const { notify } = useNotificationManager();
+    const {notify} = useToasting();
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 

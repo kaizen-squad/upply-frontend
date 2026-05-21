@@ -187,6 +187,7 @@ import { ApplicationResponse, Deliverable, DeliverableDTO, TaskProps } from "@/t
   ];
   export const deliverablesWithVariedFiles: DeliverableDTO[] = [
     {
+      id:'d1',
       content: "Capture d'écran interface mobile",
       prestataire:{
         name: "Thomas Dubois",
@@ -201,6 +202,7 @@ import { ApplicationResponse, Deliverable, DeliverableDTO, TaskProps } from "@/t
       created_at: "2026-06-01T08:15:00Z"
     },
     {
+      id:'d2',
       content: "Démonstration fonctionnelle (vidéo)",
       prestataire:{
         name: "Thomas Dubois",
@@ -215,6 +217,7 @@ import { ApplicationResponse, Deliverable, DeliverableDTO, TaskProps } from "@/t
       created_at: "2026-06-02T13:45:00Z"
     },
     {
+      id:'d3',
       content: "Assets graphiques (logo, icônes, bannières)",
       prestataire:{
         name: "Thomas Dubois",
@@ -229,6 +232,7 @@ import { ApplicationResponse, Deliverable, DeliverableDTO, TaskProps } from "@/t
       created_at: "2026-06-03T10:30:00Z"
     },
     {
+      id:'d3',
       content: "Fichier de configuration déploiement",
       prestataire:{
         name: "Thomas Dubois",
@@ -243,6 +247,7 @@ import { ApplicationResponse, Deliverable, DeliverableDTO, TaskProps } from "@/t
       created_at: "2026-06-04T16:20:00Z"
     },
     {
+      id:'d4',
       content: "Certificat SSL et documentation sécurité",
       prestataire:{
         name: "Thomas Dubois",

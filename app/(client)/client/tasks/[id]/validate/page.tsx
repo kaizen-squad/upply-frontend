@@ -1,14 +1,16 @@
 'use client'
 import EmptyImage from '@/components/shared/EmptyImage';
+import ReviewToast from '@/components/shared/review/ReviewToast';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import Button from '@/components/ui/Button/Button';
 import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
 import { Modale } from '@/components/ui/Modal/Modale';
 import { Overlay } from '@/components/ui/Overlay/Overlay';
 import Spinner from '@/components/ui/Spinner/Spinner';
+import { useToasting } from '@/components/ui/Toast/useToasting';
 import { budgetCurrency, usePayment } from '@/hooks/useTasks';
 import apiFetch from '@/lib/api';
-import { tasksA } from '@/lib/data';
+import { deliverablesWithVariedFiles, tasksA } from '@/lib/data';
 import { commissionPlateform, formatFrenchDateIntl, getInitials } from '@/lib/utils';
 import { DeliverableDTO, TaskProps } from '@/types';
 import { ArrowRight, BadgeCheck, Shield } from 'lucide-react';
@@ -56,15 +58,21 @@ const page = () => {
     const {tasks:[task]} = useTasksContext<TaskProps>();
     const {modalify, close} = useModalify();
     const {liberatefunds} = usePayment();
+    const {notifyCustom} = useToasting() 
 
-    const handleLiberateFunds = ()=> {
+    const handleLiberateFunds = async ()=> {
         if(deliverable){
-            liberatefunds(deliverable.id)
-            setTimeout(()=>{
-                // Toast pour demander la review
-            }, 3000)
+           const liberate = await liberatefunds(deliverable.id);
+           if(!liberate)
+                setTimeout(()=>{
+                    return notifyCustom((t)=>(
+                        <ReviewToast t={t} username={deliverable.prestataire.name} task_id={task.id} />
+                        ), {
+                            duration: 8000,
+                            position:'top-right',
+                        })
+                }, 5000)
         }
-
     }
 
     useEffect(()=>{
@@ -77,6 +85,7 @@ const page = () => {
             }catch(err){
                 
             }finally{
+                setDeliverable(deliverablesWithVariedFiles[0])
                 setLoading(false)
             }  
         }
@@ -157,18 +166,19 @@ const page = () => {
                                         className="bg-alizarin-crimson-red-51 py-4 px-7 mt-8 text-white m-auto"
                                         onClick={()=> modalify(
                                         <div>
-                                            <p>Veuillez confirmer votre action</p>
-                                            <div className="mt-5 flex items-center justify-center gap-7 font-semibold text-white">
+                                            <p className="text-xl font-semibold text-center">Veuillez confirmer votre action</p>
+                                            <div className="mt-5 flex items-center justify-center gap-3 font-semibold text-white">
                                                 <Button
                                                     textContent="Valider"
-                                                    className="py-3 px-6 rounded-sm font-semibold bg-alizarin-crimson-red-51" 
+                                                    className="py-3 px-6 w-full rounded-sm font-semibold bg-alizarin-crimson-red-51" 
                                                     onClick={()=>{
-
+                                                        handleLiberateFunds();
+                                                        close('liberate-funds')
                                                     }}
                                                 />
                                                 <Button
                                                     textContent="Annuler"
-                                                    className="py-3 px-6 rounded-sm font-semibold bg-santa-gray"
+                                                    className="py-3 px-6 w-full rounded-sm font-semibold bg-santa-gray"
                                                     onClick={()=>close('liberate-funds')}
                                                 />
                                             </div>
