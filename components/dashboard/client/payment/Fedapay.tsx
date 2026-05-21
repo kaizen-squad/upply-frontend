@@ -1,6 +1,8 @@
+import { PaymentInfosType } from '@/app/(client)/client/tasks/[id]/payment/page';
 import { FedaCheckoutButton, FedaCheckoutContainer } from 'fedapay-reactjs';
+import { Dispatch, FC, SetStateAction } from 'react';
 
-export default function Fedapay(amount: number) {
+ const Fedapay: FC<{amount:number, setPaymentInfos:Dispatch<SetStateAction<PaymentInfosType>>}> = ({amount, setPaymentInfos}) => {
 
   const checkoutButtonOptions = {
     public_key: process.env.NEXT_PUBLIC_FEDAPAY_PUBLIC_KEY,
@@ -13,14 +15,16 @@ export default function Fedapay(amount: number) {
     },
     button: {
       class: 'btn btn-primary',
-      text: `Payer ${amount} FCFA`
+      text: `\n`
     },
     onComplete(resp: any) {
       const FedaPay = (window as any).FedaPay;
       if (resp.reason === FedaPay.DIALOG_DISMISSED) {
-        alert('Vous avez fermé la boite de dialogue');
       } else {
-        alert('Transaction terminée: ' + resp.reason);
+        setPaymentInfos({
+          completed:true,
+          transaction_id: resp.transaction.id
+        });
       }
 
       console.log(resp.transaction);
@@ -40,11 +44,15 @@ export default function Fedapay(amount: number) {
 
 
     return (
-      <div>
+      <div className="w-full h-full">
         <FedaCheckoutButton options={ checkoutButtonOptions } />
-        <div style={{ height: 600, width: 600, backgroundColor: '#eee' }}>
-          <FedaCheckoutContainer options={ checkoutEmbedOptions } />
+        <div className="fedapay-wrapper mt-4">
+          <div className="fedapay-embed">
+            <FedaCheckoutContainer options={ checkoutEmbedOptions } />
+          </div>
         </div>
       </div>
     )
 }
+
+export default Fedapay;

@@ -135,6 +135,7 @@ export type Pstatistics = {
   active_missions: number
 }
 
+// Modification backend
 export type PDashboardData = {
   tasks: TaskProps[],
   applications: ApplicationCardProps[],
@@ -162,6 +163,7 @@ export type UserFull = {
   created_at: Date,
 }
 
+// Modification backend
 export interface ApplicationResponse extends Application {
   prestataire: UserFull
 }

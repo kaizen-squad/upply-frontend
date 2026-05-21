@@ -280,7 +280,8 @@ export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
 export interface UsePaymentReturn {
   loading: boolean,
   proceedToPayment: (data: { application_id: string, task_id: string, prestataire_name: string }) => Promise<void>,
-  liberatefunds: (deliverable_id:string) => Promise<boolean>
+  liberatefunds: (deliverable_id:string) => Promise<boolean>,
+  verifyPayment: (task_id:string)=>Promise<void>
 }
 
 export function usePayment<UsePaymentReturn >() {
@@ -293,14 +294,7 @@ export function usePayment<UsePaymentReturn >() {
       setLoading(true);
       const saveApplicant = await apiFetch<null>('/api/applications', data, 'POST');
       if(saveApplicant.success){
-        toast.success('Candidature sauvegardée. Procédez au paiement.', {position: 'top-right', duration: 5000, style:{
-          background: '#333',
-          color: '#fff',
-          fontSize: '16px',
-          padding: '16px',
-        }
-          
-        });
+       notify('Candidature sauvegardée. Procédez au paiement.', 'success');
         router.push(`/client/tasks/${data.task_id}/payment`);
       }          
       else throw new Error(saveApplicant.message)
@@ -329,9 +323,30 @@ export function usePayment<UsePaymentReturn >() {
     return false
   }
 
+  const verifyPayment = async (task_id:string) => {
+      try{
+      setLoading(true);
+      const verify = await apiFetch<null>(`/api/tasks/${task_id}/payment/verify`, undefined, 'POST');
+      if(verify.success){
+        const deleteCookie = await apiFetch<null>('/api/applications', undefined, 'DELETE')  
+        if(deleteCookie.success)  
+          router.push('/client/dashboard');
+          notify('Paiement effectué avec succès.', 'success')
+          return true
+      }          
+      else throw new Error(verify.message)
+    }catch(err){
+        notify(err instanceof Error ? err.message : 'Une erreur est survenue lors de la liberation des fonds!', 'error');
+    }finally{
+      setLoading(false);
+    }
+    return false
+  }
+
   return{
     loading,
     proceedToPayment,
-    liberatefunds
+    liberatefunds,
+    verifyPayment
   }
 }

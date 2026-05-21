@@ -10,7 +10,7 @@ export default function Milestone() {
       <TimelineItem>
         <TimelineSeparator>
           <div className="rounded-full bg-alizarin-crimson-red-51 flex items-center justify-center h-7 w-7 font-bold text-white">1</div>
-          <TimelineConnector className="h-13" />
+          <TimelineConnector />
         </TimelineSeparator>
         <TimelineContent>
             <div className="-translate-y-1">

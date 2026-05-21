@@ -1,7 +1,7 @@
 'use client'
 import Script from 'next/script';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
-import { budgetCurrency } from '@/hooks/useTasks';
+import { budgetCurrency, usePayment } from '@/hooks/useTasks';
 import apiFetch from '@/lib/api';
 import { commissionPlateform, formatAmount, getInitials } from '@/lib/utils';
 import { PrestataireSelectedData } from '@/types';
@@ -9,21 +9,30 @@ import { useEffect, useState }  from 'react'
 import { tasksA } from '../../../../../../lib/data';
 import  Milestone  from '@/components/ui/Milestone/Milestone';
 import Button from '@/components/ui/Button/Button';
-import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
 import Fedapay from '@/components/dashboard/client/payment/Fedapay';
 
+export type PaymentInfosType = {
+    completed: boolean,
+    transaction_id: string|undefined
+}
 const page = () => {
     const {tasks: []} = useTasksContext();
     const task = tasksA[0];
     const [prestataire, setPrestataire] = useState<PrestataireSelectedData | null>(null);
     const [loading, setLoading] = useState(true);
-    const {modalify} = useModalify();
-
+    const [totalPayment, setTotalPayment] = useState<number>(0);
+    const [showFedapay, setShowFedapay] = useState(false);
+    const [paymentInfos, setPaymentInfos] = useState<PaymentInfosType>({
+        completed:false,
+        transaction_id: undefined
+    });
+    const {verifyPayment} = usePayment() 
     useEffect(()=>{
         const getPrestataire = async ()=>{
             try{
                 const response = await apiFetch<PrestataireSelectedData | null>('/api/applications');
                 setPrestataire(response.data);
+                setTotalPayment((task.budget+commissionPlateform(task.budget)))
             }catch(err){
                 console.error('Error fetching prestataire:', err);
             }finally{
@@ -33,21 +42,23 @@ const page = () => {
         getPrestataire();
     }, [])
 
+    useEffect(()=>{
+        if(paymentInfos.completed && paymentInfos.transaction_id){
+            verifyPayment(paymentInfos.transaction_id)
+        }
+    },[])
+
     if(loading) {
         return (
-            <div className="h-(--main-height) w-full flex">
-                <div className="flex items-center gap-2 h-max m-auto">
-                    <p>Loading prestataire details...</p>
-                </div>
+            <div className="flex items-center gap-2 h-max m-auto">
+                <p>Loading prestataire details...</p>
             </div>
         );
     }
     if(!prestataire) {
         return (
-            <div className="h-(--main-height) w-full flex">
-                <div className="flex items-center gap-2 h-max m-auto">
-                    <h1>No prestataire details found.</h1>
-                </div>
+            <div className="flex items-center gap-2 h-max m-auto">
+                <h1>No prestataire details found.</h1>
             </div>
         );
     }
@@ -95,7 +106,7 @@ const page = () => {
                         <hr className="border border-gray-200 w-full my-3" />
                         <div className="flex items-center justify-between">
                             <p className="text-scarpa-flow-gray-34">Total à déposer</p>
-                            <strong>{formatAmount(task.budget + commissionPlateform(task.budget))} {budgetCurrency}</strong>
+                            <strong>{formatAmount(totalPayment)} {budgetCurrency}</strong>
                         </div>
                     </div>
 
@@ -104,13 +115,10 @@ const page = () => {
                     </div>
                 </div>
 
-                <div className="bg-white p-10 rounded-md border">
-                    <div className="md:flex items-center gap-5 justify-between">
+                <div className="bg-white px-10 py-15 rounded-md border flex flex-col justify-between gap-10">
+                    <div className="flex items-center gap-5 justify-between">
                         <p className="font-bold text-3xl">Plateforme Fedapay sécurisée</p>
                         <p className="h-max py-1 px-3 bg-woodsmoke-gray-8 rounded-md text-white font-semibold">Fedapay</p>
-                    </div>
-                    <div className="my-10">
-                        
                     </div>
                     <div className="rounded-md p-5 bg-gallery-gray-93 mt-5">
                         <p className="font-semibold">Méthodes de paiement acceptés</p>
@@ -120,11 +128,19 @@ const page = () => {
                             <li className="my-2 before:content-['•'] flex items-center gap-2 before:scale-150 text-scarpa-flow-gray-34">Virement bancaires</li>
                         </ul>
                     </div>
+                    <div className="">
+                        <Button
+                            textContent={`Payer ${formatAmount(totalPayment)} ${budgetCurrency}`}
+                            className="rounded-md cursor-pointer bg-alizarin-crimson-red-51 text-white font-bold w-full  py-4 px-15 m-auto"
+                            onClick={()=> setShowFedapay(true)}
+                        />
+                    </div>
+
                 </div>
             </div>
 
             <div>
-                <div className="grid grid-cols-[33%_1fr] gap-5 mt-5 items-end">
+                <div className="grid xl:grid-cols-[33%_1fr] gap-5 mt-5 items-end">
                     <div className="rounded-md pt-5 px-5 bg-gallery-gray-93 border">
                         <p className="text-xl font-semibold mb-2">Prochaines Etapes</p>
                         <Milestone/>
@@ -150,6 +166,18 @@ const page = () => {
                 </div>
 
             </div>
+            {showFedapay && (
+                <div className="fixed inset-0 z-50 bg-white">
+                    <div className="w-full h-full flex flex-col">
+                        <div className="p-4 flex justify-end">
+                            <button onClick={()=> setShowFedapay(false)} className="px-3 py-2 rounded-md border bg-gallery-gray-93 cursor-pointer">Fermer</button>
+                        </div>
+                        <div className="flex-1 overflow-auto">
+                            <Fedapay setPaymentInfos={setPaymentInfos} amount={totalPayment} />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
