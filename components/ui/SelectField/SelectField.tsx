@@ -15,13 +15,13 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
 
     React.useEffect(() => {
       if (typeof value === 'string' && value && value !== selected) {
-        setSelected(value.toLowerCase());
+        setSelected(value);
       }
 
     }, [value, selected]);
 
     const handleSelectOption = (option: string) => {
-      setSelected(option.toLowerCase());
+      setSelected(option);
       setVisible(false);
 
       if (onChange) {
@@ -37,10 +37,10 @@ const SelectField: React.FC<SelectFieldProps> = ({options, name, placeholder, la
 
         <select
           {...props}
-          name={name.toLowerCase()}
-          id={name.toLowerCase()}
+          name={name}
+          id={name}
           className='hidden'
-          value={selected.toLowerCase()}
+          value={selected}
           onChange={(e) => {
             setSelected(e.target.value);
             onChange?.(e);

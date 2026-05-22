@@ -34,7 +34,7 @@ const SidebarPrestataire = () => {
                         loading='eager'
                     />
                     <div className='text-sm'>
-                        <p className='font-bold'>{user?.name ?? 'Admin'}</p>
+                        <p className='font-bold'>{user?.name ?? 'User'}</p>
                         <p className='text-scarpa-flow-gray-34'>Compte: {user?.role.split('').map((l, index)=>index===0 ? l.toUpperCase() : l).join('') ?? 'Prestataire'}</p>
                     </div>
                 </div>

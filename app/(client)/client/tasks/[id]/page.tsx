@@ -33,7 +33,7 @@ const page = () => {
   if(task)
     return (
     <div className="w-full">
-        <TaskDetails loading={loading} task={task} >
+        <TaskDetails role="client" loading={loading} task={task} >
           {
             !isEditing ? (
               <div className="mt-10 xl:mt-0">

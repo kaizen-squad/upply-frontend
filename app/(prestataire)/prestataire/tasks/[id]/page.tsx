@@ -13,7 +13,7 @@ const page = () => {
 
   return (       
      <>     
-      <TaskDetails loading={loading} task={task} >
+      <TaskDetails role="prestataire" loading={loading} task={task} >
         <div className="flex flex-col gap-7">
            <ApplicationForm task={task} />
            <div className="bg-woodsmoke-gray-10 p-5">

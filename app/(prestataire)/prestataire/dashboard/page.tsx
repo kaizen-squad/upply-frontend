@@ -14,24 +14,36 @@ import { useEffect } from "react"
 
 
 const page = () => {
-    const { dashboardData, loading, loadDashboard } =  useDashboard<PDashboardData>();
+    const { dashboardData, loading, loadDashboard } =  useDashboard<PDashboardData>('prestataire');
     useEffect(()=>{
         loadDashboard();
     }, []);
+    
+    if(loading)
+        return (
+            <div className="flex gap-2 m-auto h-max items-center">
+                <Spinner/>
+                <p>Loading...</p>
+            </div> 
+        )
 
-  return (
-    <div className="flex w-full h-full min-h-(--main-height)">
-        {
-            !loading ?
+    if(!dashboardData)
+        return (
+            <div className="flex gap-2 m-auto h-max items-center text-center">
+                <h1>Une erreur de chargement est survenue.</h1>
+            </div>
+        )
+    return (
+        <div className="flex w-full h-full min-h-(--main-height)">
             <div className="my-10 w-full">  
                 <div>
                     <h1>Mon Tableau de Bord</h1>
                     <div className="grid grid-rows-2 grid-cols-2 gap-4 lg:flex lg:flex-row lg:gap-5 my-7 w-full items-stretch">
                         {
                             [
-                                {title: 'GAINS EN ATTENTE', text: `${dashboardData?.statistics.waiting_budget ?? 0} ${budgetCurrency}` , textColor: 'var(--alizarin-crimson-red-51)', Flag: undefined}, 
-                                {title: 'CANDIDATURES', text: `${dashboardData?.statistics.waiting_applications ?? 0}`, textColor: 'var(--alizarin-crimson-red-51)', Flag: ()=> <FlagApplication status="EN_ATTENTE" />},
-                                {title: 'MISSIONS ACTIVES', text: `${dashboardData?.statistics.active_missions ?? 0}`, textColor: 'var(--alizarin-crimson-red-51)', Flag: ()=> <FlagTask status="EN_COURS" />},
+                                {title: 'GAINS EN ATTENTE', text: `${dashboardData?.statistics?.waiting_budget ?? 0} ${budgetCurrency}` , textColor: 'var(--alizarin-crimson-red-51)', Flag: undefined}, 
+                                {title: 'CANDIDATURES', text: `${dashboardData?.statistics?.waiting_applications ?? 0}`, textColor: 'var(--alizarin-crimson-red-51)', Flag: ()=> <FlagApplication status="EN_ATTENTE" />},
+                                {title: 'MISSIONS ACTIVES', text: `${dashboardData?.statistics?.active_missions ?? 0}`, textColor: 'var(--alizarin-crimson-red-51)', Flag: ()=> <FlagTask status="EN_COURS" />},
                             ].map(({title, text, textColor, Flag}, index)=> 
                                 <div 
                                     className={cn(
@@ -84,8 +96,7 @@ const page = () => {
                                         className="bg-alizarin-crimson-red-51 py-3 text-white-solid px-6 rounded-sm m-auto mt-4"
                                     />
                                 </div>
-                            }
-                            
+                            }     
                         </div>
 
                         {/* Right */}
@@ -105,15 +116,8 @@ const page = () => {
                     </div>
                 </div>
             </div>
-            :
-            <div className="flex gap-2 m-auto h-max items-center">
-               <Spinner/>
-                <p>Loading...</p>
-            </div> 
-
-        }
-    </div>
-  )
+        </div>
+    )
 }
 
 export default page

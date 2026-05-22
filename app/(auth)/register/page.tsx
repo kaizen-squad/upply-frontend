@@ -15,8 +15,8 @@ import { useToasting } from '@/components/ui/Toast/useToasting';
 function RegisterForm() {
   const {handleSubmit, control} = useForm<RegisterProps>({
     mode: 'onChange',
-    resolver: zodResolver(RegisterSchema),
-    defaultValues: { role: 'client', rating_avg: 1.11 }
+    resolver: zodResolver(RegisterSchema) as any,
+    defaultValues: { role: 'client' as RegisterProps['role'], rating_avg: 1.11 },
   });
     const {notify} = useToasting();
   const {register, loading} = useAuth();
@@ -24,7 +24,9 @@ function RegisterForm() {
   const onSubmit = async (registerData:RegisterProps)=>{
       await register(registerData);
   }
-  const onError = ()=> notify('Veuillez entrez des données valides!', 'warning');
+  const onError = (data:any)=> {
+    console.log(data)
+    notify('Veuillez entrez des données valides!', 'warning')};
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200 opacity'>

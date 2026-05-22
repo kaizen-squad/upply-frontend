@@ -152,7 +152,7 @@ export function useTasks<T = TaskPropsOnPrestataire | TaskProps>(id:string|undef
 
 
 interface UseApplicationReturn {
-  application: ApplicationResponse[],
+  application: ApplicationResponse[]|undefined,
   loading: boolean,
   applyTotask: (applyData: ApplicationFormType) => Promise<void>,
   rejectApplication: (application_id:string) => Promise<void>,
@@ -162,18 +162,20 @@ interface UseApplicationReturn {
 
 
 export function useApplication(): UseApplicationReturn {
-  const [application, setApplication] = useState<ApplicationResponse[]>([]);
+  const [application, setApplication] = useState<ApplicationResponse[]|undefined>(undefined);
   const [loading, setLoading] = useState(true);
-    const {notify} = useToasting();
+  const {notify} = useToasting();
   const router = useRouter();
 
    const applyTotask = async (applyData: ApplicationFormType) => {
         try{
           setLoading(true);
-          const applyresponse = await apiFetch<ApplicationResponse>(`api/tasks/${applyData.task_id}/apply`, applyData, 'POST');
+          const applyresponse = await apiFetch<ApplicationResponse>(`api/applications/apply`, applyData, 'POST');
           
-          if(Number(applyresponse.status) === 201 && applyresponse.success)
+          if(applyresponse.success){
             notify('Votre candidature a été soumise avec succès.', 'success');
+            setApplication([applyresponse.data]);
+          }
           else throw new Error(applyresponse.message) 
         }catch(err){
             notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non soumise!', 'error');
@@ -244,11 +246,10 @@ export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
   const [loading, setLoading] = useState(false);
   const [dashboardData, setDashboardData] = useState<T | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
-    const {notify} = useToasting();
+  const {notify} = useToasting();
 
   const loadDashboard = useCallback(async () => {
     if (loading) return;
-
     try {
       setLoading(true);
       setError(null);
