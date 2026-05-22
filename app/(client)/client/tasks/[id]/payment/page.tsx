@@ -5,11 +5,13 @@ import { budgetCurrency, usePayment } from '@/hooks/useTasks';
 import apiFetch from '@/lib/api';
 import { commissionPlateform, formatAmount, getInitials } from '@/lib/utils';
 import { PrestataireSelectedData } from '@/types';
-import { useEffect, useState }  from 'react'
-import { tasksA } from '../../../../../../lib/data';
+import { useEffect, useRef, useState }  from 'react'
+import { tasksA } from '@/lib/data';
 import  Milestone  from '@/components/ui/Milestone/Milestone';
 import Button from '@/components/ui/Button/Button';
 import Fedapay from '@/components/dashboard/client/payment/Fedapay';
+import { useToasting } from '@/components/ui/Toast/useToasting';
+import Image from 'next/image';
 
 export type PaymentInfosType = {
     completed: boolean,
@@ -26,7 +28,15 @@ const page = () => {
         completed:false,
         transaction_id: undefined
     });
-    const {verifyPayment} = usePayment() 
+    const [error, setError] = useState('');
+    const [isFedapayScriptLoaded, setIsFedapayScriptLoaded] = useState(false);
+    const [isFedapayScriptError, setIsFedapayScriptError] = useState(false);
+    const [checkoutLoading, setCheckoutLoading] = useState(false);
+    const [checkoutError, setCheckoutError] = useState('');
+    const checkoutTimeoutRef = useRef<number | null>(null);
+    const {verifyPayment} = usePayment() ;
+    const {notify} = useToasting();
+    
     useEffect(()=>{
         const getPrestataire = async ()=>{
             try{
@@ -37,16 +47,54 @@ const page = () => {
                 console.error('Error fetching prestataire:', err);
             }finally{
                 setLoading(false);
-        }
+            }
         }
         getPrestataire();
     }, [])
 
     useEffect(()=>{
         if(paymentInfos.completed && paymentInfos.transaction_id){
-            verifyPayment(paymentInfos.transaction_id)
+            verifyPayment(paymentInfos.transaction_id);
         }
-    },[])
+    },[paymentInfos]);
+
+    useEffect(() => {
+        if (!showFedapay) {
+            if (checkoutTimeoutRef.current) {
+                window.clearTimeout(checkoutTimeoutRef.current);
+                checkoutTimeoutRef.current = null;
+            }
+            setCheckoutLoading(false);
+            return;
+        }
+
+        if (isFedapayScriptLoaded) {
+            setCheckoutLoading(false);
+            return;
+        }
+
+        setCheckoutLoading(true);
+        setCheckoutError('');
+        setIsFedapayScriptError(false);
+
+        checkoutTimeoutRef.current = window.setTimeout(() => {
+            setCheckoutLoading(false);
+            setCheckoutError('Le module de paiement a pris trop de temps à charger. Vérifiez votre connexion et réessayez.');
+            setError('Le module de paiement FedaPay n’a pas pu démarrer après un délai d’attente.');
+        }, 12000);
+
+        return () => {
+            if (checkoutTimeoutRef.current) {
+                window.clearTimeout(checkoutTimeoutRef.current);
+                checkoutTimeoutRef.current = null;
+            }
+        };
+    }, [showFedapay, isFedapayScriptLoaded]);
+
+    useEffect(()=>{
+        if(error)
+            notify(error,'error');
+    }, [error]);
 
     if(loading) {
         return (
@@ -64,7 +112,19 @@ const page = () => {
     }
     return (
         <div>
-            <Script src="https://cdn.fedapay.com/checkout.js?v=1.1.7" strategy="afterInteractive" />
+            <Script
+                src="https://cdn.fedapay.com/checkout.js?v=1.1.7"
+                strategy="afterInteractive"
+                onLoad={() => {
+                    setIsFedapayScriptLoaded(true);
+                    setIsFedapayScriptError(false);
+                }}
+                onError={() => {
+                    setIsFedapayScriptError(true);
+                    setCheckoutLoading(false);
+                    setError('Impossible de charger le widget FedaPay. Veuillez réessayer ultérieurement.');
+                }}
+            />
             <h1>Escrow Paiement</h1>
             <div className="my-10 flex flex-col xl:grid grid-cols-[1fr_1fr] gap-7">
                 <div className="bg-white-solid rounded-md p-10 border">
@@ -115,12 +175,28 @@ const page = () => {
                     </div>
                 </div>
 
-                <div className="bg-white px-10 py-15 rounded-md border flex flex-col justify-between gap-10">
+                <div className="bg-white px-10 py-15 rounded-md border flex flex-col justify-between gap-5">
                     <div className="flex items-center gap-5 justify-between">
                         <p className="font-bold text-3xl">Plateforme Fedapay sécurisée</p>
                         <p className="h-max py-1 px-3 bg-woodsmoke-gray-8 rounded-md text-white font-semibold">Fedapay</p>
                     </div>
-                    <div className="rounded-md p-5 bg-gallery-gray-93 mt-5">
+                    {
+                        error ?
+                        <div className="flex flex-col justify-center items-center flex-1 border-2 py-5 border-dashed rounded-md ">
+                            <Image
+                                src={'/Assets/Error_Icon.svg'}
+                                alt="error-payment"
+                                height={100}
+                                width={100}
+                            />
+                            <p className="my-2 font-bold text-xl">Paiement non effectué.</p>
+                            <p className="text-scarpa-flow-gray-34 w-7/10 m-auto text-center">L'opération de paiement a été interrompue ou a échoué. Veuillez réessayer. </p>
+                        </div> :
+                        <div>
+                            {/* Avant paiement */}
+                        </div>
+                    }
+                    <div className="rounded-md p-5 bg-gallery-gray-93">
                         <p className="font-semibold">Méthodes de paiement acceptés</p>
                         <ul className="mt-3">
                             <li className="my-2 before:content-['•'] flex items-center gap-2 before:scale-150 text-scarpa-flow-gray-34">Mobile Money (MTN, Moov, Orange)</li>
@@ -167,16 +243,32 @@ const page = () => {
 
             </div>
             {showFedapay && (
-                <div className="fixed inset-0 z-50 bg-white">
-                    <div className="w-full h-full flex flex-col">
-                        <div className="p-4 flex justify-end">
-                            <button onClick={()=> setShowFedapay(false)} className="px-3 py-2 rounded-md border bg-gallery-gray-93 cursor-pointer">Fermer</button>
-                        </div>
-                        <div className="flex-1 overflow-auto">
-                            <Fedapay setPaymentInfos={setPaymentInfos} amount={totalPayment} />
-                        </div>
+            <div className="fixed inset-0 z-50 ">
+                <div className="w-full h-full flex flex-col">
+                    <div className="flex-1 w-full h-full ">
+                        {isFedapayScriptError && (
+                            <div className="rounded-md border border-red-200 bg-red-50 p-6 text-red-900">
+                                <p className="font-semibold mb-2">Erreur de chargement FedaPay</p>
+                                <p>Le widget de paiement n’a pas pu se charger. Vérifiez votre connexion ou réessayez plus tard.</p>
+                            </div>
+                        )}
+                        {!isFedapayScriptError && checkoutError && (
+                            <div className="rounded-md border border-yellow-200 bg-yellow-50 p-6 text-yellow-900">
+                                <p className="font-semibold mb-2">Délai d’attente dépassé</p>
+                                <p>{checkoutError}</p>
+                            </div>
+                        )}
+                        {!isFedapayScriptError && !checkoutError && (!isFedapayScriptLoaded || checkoutLoading) && (
+                            <div className="flex h-full items-center justify-center">
+                                <p className="text-jumbo-gray-46">Veuillez patienter pendant le chargement du paiement.</p>
+                            </div>
+                        )}
+                        {!isFedapayScriptError && !checkoutError && isFedapayScriptLoaded && !checkoutLoading && (
+                            <Fedapay setShowFedapay={setShowFedapay} setError={setError} setPaymentInfos={setPaymentInfos} amount={totalPayment} />
+                        )}
                     </div>
                 </div>
+            </div>
             )}
         </div>
     )
