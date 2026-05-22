@@ -336,7 +336,7 @@ export function usePayment<UsePaymentReturn >() {
       }          
       else throw new Error(verify.message)
     }catch(err){
-        notify(err instanceof Error ? err.message : 'Une erreur est survenue lors de la liberation des fonds!', 'error');
+        notify(err instanceof Error ? err.message : 'Erreur lors du paiement.', 'error');
     }finally{
       setLoading(false);
     }
