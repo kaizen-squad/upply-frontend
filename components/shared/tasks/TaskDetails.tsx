@@ -10,24 +10,25 @@ import Button from '@/components/ui/Button/Button';
 import { Trash2 } from 'lucide-react';
 import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
 import { useTasksContext } from './TaskProvider';
+import { useMediaQuery } from '@reactuses/core';
 
 const TaskDetails:FC<
-  | { loading: boolean; task: TaskProps; children:ReactNode }
-  | { loading: boolean; task: TaskPropsOnPrestataire; children:ReactNode }
-> = ({ loading, task, children }) => {
+  | { loading: boolean; task: TaskProps; children:ReactNode, role:'client' }
+  | { loading: boolean; task: TaskPropsOnPrestataire; children:ReactNode, role:'prestataire' }
+> = ({ loading, task, children, role }) => {
 
   const {modalify, close} = useModalify();
   const {deleteTask} = useTasksContext();
+  const isMobile = useMediaQuery('(max-width: 768px)', true);
+
   return (
     <>     
      {/* Chargement */}
         {  
         loading ? 
-          <div className=" h-(--main-height) w-full flex">
-              <div className="flex items-center gap-2 h-max m-auto">
-                <Spinner/> 
-                <p>Loading...</p>
-              </div>
+          <div className="flex items-center gap-2 h-max m-auto">
+            <Spinner/> 
+            <p>Loading...</p>
           </div>
           :
           <div>
@@ -35,43 +36,46 @@ const TaskDetails:FC<
             {
               (!loading && task) &&
               <div>
-
-                <div className="hidden md:flex items-center justify-between gap-5 w-full">
+                {
+                  !isMobile && <div className="hidden md:flex items-center justify-between gap-5 w-full">
                   <div>
                     <FlagTask status={task.status} />
                     <h1 className="mt-3">{task.title}</h1>
                     <p className="my-2 text-scarpa-flow-gray-34">{formatRelativeTime(task.created_at ?? '')}</p>
                   </div>
-                  <Button
-                    textContent=""
-                    Icon={Trash2}
-                    className="rounded-full p-3 bg-red-500 text-white"
-                    title="supprimer la mission"
-                    onClick={()=> modalify(<div>
-                      <p className="text-center my-3">Etes vous sur de vouloir supprimer cette mission?</p>
-                      <div className="mt-3 flex items-center justify-center gap-5">
-                        <Button
-                          textContent="Supprimer"
-                          className="text-white py-3 px-5 rounded-md font-semibold bg-alizarin-crimson-red-51"
-                          Icon={Trash2}
-                          onClick={()=>{
-                            deleteTask(task.id);
-                            close('delete-task')
-                          }}
-                        />
-                        <Button
-                          textContent="Annuler"
-                          className="py-3 px-5 rounded-md font-semibold bg-iron-gray-90"
-                          Icon={Trash2}
-                          onClick={()=> close('delete-task')}
-                        />
-                      </div>
-                    </div>, {
-                      id:'delete-task'
-                    })}
-                  />
-                </div>
-
+                    {
+                      role ==='client' && <Button
+                      textContent=""
+                      Icon={Trash2}
+                      className="rounded-full p-3 bg-red-500 text-white"
+                      title="supprimer la mission"
+                      onClick={()=> modalify(<div>
+                        <p className="text-center my-3">Etes vous sur de vouloir supprimer cette mission?</p>
+                        <div className="mt-3 flex items-center justify-center gap-5">
+                          <Button
+                            textContent="Supprimer"
+                            className="text-white py-3 px-5 rounded-md font-semibold bg-alizarin-crimson-red-51"
+                            Icon={Trash2}
+                            onClick={()=>{
+                              deleteTask(task.id);
+                              close('delete-task')
+                            }}
+                          />
+                          <Button
+                            textContent="Annuler"
+                            className="py-3 px-5 rounded-md font-semibold bg-iron-gray-90"
+                            Icon={Trash2}
+                            onClick={()=> close('delete-task')}
+                          />
+                        </div>
+                      </div>, {
+                        id:'delete-task'
+                      })}
+                    />}                
+              </div>
+              }
+              {
+                isMobile &&
                 <div>
                   <div className="block bg-white md:hidden p-5 border border-gray-200 shadow-2xs rounded-sm">
                     <div className="flex justify-between items-center">
@@ -97,9 +101,9 @@ const TaskDetails:FC<
                     </div>
                   </div>
                 </div>
+                }
                 
-
-                <div className="mt-7 grid xl:grid-cols-[60%_1fr] gap-7">
+                <div className="mt-5 grid xl:grid-cols-[60%_1fr] gap-7">
                   {/* A gauche */}
                     <div>
                         <div className="hidden md:grid grid-cols-2 bg-white border-2 text-center">
@@ -113,9 +117,9 @@ const TaskDetails:FC<
                             </div>
                         </div>
 
-                        <div className="p-5 shadow-[5px_5px_1px_0] border border-gray-200 border-l-6 border-l-alizarin-crimson-red-51 bg-white md:mt-10 shadow-gallery-gray-93">
+                        <div className="p-5 shadow-[5px_5px_1px_0] border border-gray-200 border-l-6 border-l-alizarin-crimson-red-51 bg-white md:mt-7 shadow-gallery-gray-93">
                           <h2>Description de la Mission</h2>
-                          <p className="text-scarpa-flow-gray-34 mt-10">{task.description}</p>
+                          <p className="text-scarpa-flow-gray-34 mt-7">{task.description}</p>
                         </div>
                     </div>
                     {children}
@@ -138,9 +142,7 @@ const TaskDetails:FC<
                     <h1 className="text-center h-max m-auto mt-5">This task doesn't exist or has been removed!</h1>
                   </div>
                 </div>
-
             }
-            
         </div>
     }
     </>

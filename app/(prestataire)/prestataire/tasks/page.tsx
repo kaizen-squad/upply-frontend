@@ -1,46 +1,24 @@
 'use client'
+import EmptyImage from "@/components/shared/EmptyImage";
 import TaskList from "@/components/shared/tasks/TaskList";
 import Button from "@/components/ui/Button/Button";
 import { useTasks } from "@/hooks/useTasks"
 import { TaskPropsOnPrestataire } from "@/types";
-import { useMediaQuery } from "@reactuses/core";
 import { RotateCw } from "lucide-react";
-import Image from "next/image";
 
 const page =  () => {
     const {loading, tasks, refetch} = useTasks<TaskPropsOnPrestataire>(undefined);
-    const isMobile = useMediaQuery('(max-width: 700px)', true);
 
   return (
-    <div className={tasks.length ? "" : "py-10 w-full h-(--main-height) flex flex-col"}>
+    <div className={tasks.length ? "w-full" : "py-10 w-full h-(--main-height) flex flex-col"}>
         <div>
             <h1>Missions Disponibles</h1>
             <p className="text-santa-gray mt-2">Explorez les opportunités du jour.</p>
         </div>
         {
-            tasks.length === 0 && !loading &&
+            (tasks.length === 0 && !loading) &&
                 <div className="w-[90%] lg:max-w-4/5 m-auto h-max text-center scale-90">
-                    {
-                        isMobile ? 
-                            <Image
-                                src={'/Assets/Empty_Mobile.svg' }
-                                alt="empty-box"
-                                height={100}
-                                width={100}
-                                className="scale-200 z-0 -translate-y-10 m-auto"
-                                loading="eager"
-                            /> 
-                        :
-                            <Image
-                                src={'/Assets/Empty_Desktop.svg'}
-                                alt="empty-box"
-                                height={200}
-                                width={200}
-                                className="scale-200 z-0 m-auto"
-                                loading="eager"
-                            /> 
-
-                    }
+                    <EmptyImage/>
                         
                     <div className="relative z-1">
                         <p className="w-[80%] md:w-full m-auto text-3xl font-semibold">Aucune mission disponible pour le moment</p>
@@ -55,10 +33,7 @@ const page =  () => {
                 </div>
         }
 
-        {
-            !loading && tasks.length > 0 && <TaskList loading={loading} tasks={tasks} role="prestataire" />
-        }
-        
+        <TaskList loading={loading} tasks={tasks} role="prestataire" />       
     </div>
   )
 }

@@ -12,7 +12,7 @@ export const LoginSchema = z.object({
  * Register form fields schema with zod validation.
  */
 export const RegisterSchema = z.object({    
-    role: z.enum(['client', 'prestataire']),
+    role: z.preprocess((val:string)=> val.toLowerCase(), z.enum(['client', 'prestataire'])),
     name: z.string().min(2,{error:'Too small !'}),
     email: z.email(),
     password: z.string().min(8, {error:'8 characters minimum!'}),

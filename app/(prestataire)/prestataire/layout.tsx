@@ -36,7 +36,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
                 <SidebarPrestataire/>
             }   
             <div className="w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
-                <div className="w-[95%] m-auto">
+                <div className="m-auto w-[95%] min-h-(--main-height) py-10 flex">
                     {children}
                 </div>
             </div>

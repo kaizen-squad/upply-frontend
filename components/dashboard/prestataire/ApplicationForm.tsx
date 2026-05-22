@@ -13,7 +13,7 @@ import { useToasting } from '@/components/ui/Toast/useToasting';
 
 const ApplicationForm:FC<{task: TaskPropsOnPrestataire}> = ({task}) => {
     const {notify} = useToasting();
-    const {applyTotask} = useApplication();
+    const {applyTotask, application} = useApplication();
     const router = useRouter();
 
     const {control, handleSubmit, formState:{isValid, isSubmitting}} = useForm<ApplicationFormType>({
@@ -74,7 +74,7 @@ const ApplicationForm:FC<{task: TaskPropsOnPrestataire}> = ({task}) => {
         }
 
         {
-           (task.applied_at && task.application_status) &&
+           ((task.applied_at && task.application_status)) &&
            <div>
                 <div className='text-center border-2 rounded-sm shadow-2xs mt-10 py-6 px-3 bg-athens-gray-96'>
                     <Image
