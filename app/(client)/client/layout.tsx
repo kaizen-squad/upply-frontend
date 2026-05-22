@@ -18,7 +18,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
             isMobile ? 
                 <HeaderMobile isMobileSidebarOpened={isMobileSidebarOpened} setIsMobileSidebarOpened={setIsMobileSidebarOpened} />
                 :
-                <Header/>
+                <Header role="client" />
         }
         <div className="flex h-(--main-height) overflow-y-hidden">
             {
