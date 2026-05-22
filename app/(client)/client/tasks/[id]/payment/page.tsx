@@ -12,6 +12,8 @@ import Button from '@/components/ui/Button/Button';
 import Fedapay from '@/components/dashboard/client/payment/Fedapay';
 import { useToasting } from '@/components/ui/Toast/useToasting';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { UserCircle2 } from 'lucide-react';
 
 export type PaymentInfosType = {
     completed: boolean,
@@ -36,13 +38,18 @@ const page = () => {
     const checkoutTimeoutRef = useRef<number | null>(null);
     const {verifyPayment} = usePayment() ;
     const {notify} = useToasting();
-    
+    const router = useRouter();
+
     useEffect(()=>{
         const getPrestataire = async ()=>{
             try{
                 const response = await apiFetch<PrestataireSelectedData | null>('/api/applications');
-                setPrestataire(response.data);
-                setTotalPayment((task.budget+commissionPlateform(task.budget)))
+                if(response.success){
+                    setPrestataire(response.data);
+                    setTotalPayment((task.budget+commissionPlateform(task.budget)))                
+                }else{
+                    notify('Le délai de paiement est expiré. Veuillez réeffectuer la procédure de sélection.', 'error')
+                }
             }catch(err){
                 console.error('Error fetching prestataire:', err);
             }finally{
@@ -106,7 +113,13 @@ const page = () => {
     if(!prestataire) {
         return (
             <div className="flex items-center gap-2 h-max m-auto">
-                <h1>No prestataire details found.</h1>
+                <h1>Veuillez réeffectuer la procédure de sélection.</h1>
+                <Button
+                    textContent="Voir les candidatures"
+                    onClick={()=>router.push(`/client/tasks/${task.id}/applications`)}
+                    className="bg-alizarin-crimson-red-51 rounded-sm mt-5 px-6 py-3 text-white font-semibold"
+                    Icon={UserCircle2}
+                />
             </div>
         );
     }

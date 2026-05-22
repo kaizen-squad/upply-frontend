@@ -26,7 +26,7 @@ const page = () => {
 
     
     return (
-        <div className={cn('block pb-10 gap-10 m-auto w-[95%] lg:m-auto xl:grid grid-cols-[67%_1fr]')}>
+        <div className={'block pb-10 gap-10 m-auto lg:m-auto xl:grid grid-cols-[67%_1fr]'}>
             <div>
                 <div className='md:flex items-center justify-between'>
                     <div>

@@ -20,7 +20,7 @@ export const useToasting = () => {
             }});
             break;
         case 'warning':
-            toast.custom(message, {position: 'top-right', icon:'⚠️', duration: 5000, style:{
+            toast(message, {position: 'top-right', icon:'⚠️', duration: 5000, style:{
                 background: '#333',
                 color: '#fff',
                 fontSize: '16px',

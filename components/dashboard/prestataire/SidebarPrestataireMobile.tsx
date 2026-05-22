@@ -7,7 +7,7 @@ const SidebarPrestataireMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileS
     
     const onglets: SidebarOngletsProps['onglets'] = {
         ACCUEIL: [
-            {text: 'Tableau de bord', iconPath:'LayoutDashboard.svg', redirect:'/prestataire/dashoard'}
+            {text: 'Tableau de bord', iconPath:'LayoutDashboard.svg', redirect:'/prestataire/dashboard'}
         ],
         OPPORTUNITES: [
             {text: 'Marché des missions', iconPath:'MissionsCenter.svg', redirect:'/prestataire/tasks'},
