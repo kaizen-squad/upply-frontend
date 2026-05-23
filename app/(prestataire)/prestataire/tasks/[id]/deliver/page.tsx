@@ -3,21 +3,41 @@ import DeliverForm from '@/components/dashboard/client/DeliverForm';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
-import { TaskPropsOnPrestataire, TaskProps } from '@/types';
+import { useToasting } from '@/components/ui/Toast/useToasting';
+import { useApplication } from '@/hooks/useTasks';
+import { TaskProps } from '@/types';
 import { LockKeyhole, Zap, CircleCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const page= () => {
-    const {tasks:[task]} = useTasksContext<TaskPropsOnPrestataire>();
+    const {tasks:[task], loading} = useTasksContext<TaskProps>();
     const router = useRouter();
+    const {application:[application], getTaskApplication}=useApplication();
+    const [isLoading, setIsLoading] = useState(true);
+    const {notify} = useToasting();
+    useEffect(()=>{
+        if(!task && !loading)
+            return router.push('/not-found');
+
+        const getApplication = async ()=> {
+            if(!loading && task){
+                await getTaskApplication(task.id, 'prestataire');
+                setIsLoading(false)
+            }
+        }
+       
+        getApplication();
+
+    }, [loading, task]);
 
     useEffect(()=>{
-        if(!task)
-            return router.push('/not-found')
-    }, [])
-
-  return task ? (
+        if(!application && !loading){
+            router.push('/prestataire/dashboard');
+            notify("Vous n'etes pas prestataire sur cette tache!", 'warning');
+        }
+    }, [application, isLoading])
+  return (task && !isLoading && application) ? (
     
     <div className='py-10'>
         <h1>Soumettre mon Livrable</h1>
@@ -73,13 +93,11 @@ const page= () => {
     </div>
   ) : 
   (
-    <div className="h-(--main-height) w-full flex">
-        <div className="flex gap-3 items-center w-max h-max m-auto">
-            <Spinner/>
-            <p>Loading..</p>
-        </div>
-        
+    <div className="flex gap-3 items-center w-max h-max m-auto">
+        <Spinner/>
+        <p>Loading..</p>
     </div>
+        
   )
 }
 

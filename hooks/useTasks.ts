@@ -1,13 +1,13 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react';
 import apiFetch from '@/lib/api';
-import type { ApplicationFormType, TaskPropsOnPrestataire, CDashboardData, Deliverable, PDashboardData, Review, ReviewProps, TaskFormType, TaskProps, ApplicationResponse, PrestataireSelectedData } from '@/types';
+import type { ApplicationFormType, CDashboardData, Deliverable, PDashboardData, Review, ReviewProps, TaskFormType, TaskProps, ApplicationResponse, PrestataireSelectedData, Application } from '@/types';
 import { DeliveryFormProps } from '@/types/index';
 import { useRouter } from 'next/navigation';
 import { toast } from "react-hot-toast";
 import { useToasting } from '@/components/ui/Toast/useToasting';
 
-export interface UseTasksReturn<T = TaskPropsOnPrestataire | TaskProps> {
+export interface UseTasksReturn<T = TaskProps> {
   tasks: T[];
   loading: boolean;
   refetch: (id:string | undefined) => Promise<void>;
@@ -20,9 +20,9 @@ export interface UseTasksReturn<T = TaskPropsOnPrestataire | TaskProps> {
 
 export const budgetCurrency = 'FCFA'
 
-export function useTasks<T = TaskPropsOnPrestataire | TaskProps>(id:string|undefined, skip:boolean=false): UseTasksReturn<T> {
+export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false): UseTasksReturn<T> {
   const [tasks, setTasks] = useState<T[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
     const {notify} = useToasting();
   const router = useRouter()
 
@@ -152,17 +152,17 @@ export function useTasks<T = TaskPropsOnPrestataire | TaskProps>(id:string|undef
 
 
 interface UseApplicationReturn {
-  application: ApplicationResponse[]|undefined,
+  application: ApplicationResponse[],
   loading: boolean,
   applyTotask: (applyData: ApplicationFormType) => Promise<void>,
   rejectApplication: (application_id:string) => Promise<void>,
   acceptApplication: (application_id:string) => Promise<void>,
-  getApplication: (task_id:string) => Promise<void>,
+  getTaskApplication: (task_id:string, role:'client'|'prestataire') => Promise<void>,
 } 
 
 
 export function useApplication(): UseApplicationReturn {
-  const [application, setApplication] = useState<ApplicationResponse[]|undefined>(undefined);
+  const [application, setApplication] = useState<ApplicationResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const {notify} = useToasting();
   const router = useRouter();
@@ -184,10 +184,10 @@ export function useApplication(): UseApplicationReturn {
         }
     }
 
-    const getApplication = async (task_id:string)=>{
+    const getTaskApplication = async (task_id:string, role:'client'|'prestataire'): Promise<void> => {
       try{
         setLoading(true);
-        const response = await apiFetch<ApplicationResponse[]>(`api/tasks/${task_id}/applications`);
+        const response = await apiFetch<ApplicationResponse[]>(`api/tasks/${task_id}/applications${role === 'prestataire' ? '/me':''}`);
         if(response.success)
           setApplication(response.data);
         else
@@ -229,7 +229,7 @@ export function useApplication(): UseApplicationReturn {
     }
 
 
-    return {applyTotask, application, loading, rejectApplication, acceptApplication, getApplication}
+    return {applyTotask, application, loading, rejectApplication, acceptApplication, getTaskApplication}
 }
 
 
