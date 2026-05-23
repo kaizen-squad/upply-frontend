@@ -84,13 +84,18 @@ export const useAuth = () =>{
 
     const logout = async () =>{
         try{
-            console.debug('[useAuth] logout request');
-            const response = await apiFetch(`/api/auth/logout`, {}, 'POST');
-            console.debug('[useAuth] logout response', response);
-            if(!response.success){
-               return notify('An unexpected error occured.', 'error');
+            console.log('[useAuth] logout request');
+            const response = await apiFetch(`api/logout`);
+            console.log('[useAuth] logout response', response);
+            
+            if(response.success){
+                const deleteCookie = await apiFetch('/api/auth/logout')
+                if(deleteCookie.success)
+                    router.push('/login');
+            }else{
+               return notify('An unexpected error occured.', 'error');            
+
             }
-            router.push('/login');
         }catch(err){
             console.error('[useAuth] logout error', err);
             notify('The server results in error while logging out!', 'error');

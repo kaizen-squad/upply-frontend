@@ -14,7 +14,7 @@ const Header:FC<{role: Role}> = ({role}) => {
     const router = useRouter();
   return (
     <header className='h-(--header-height) relative bg-white z-50'>
-        <form className='h-(--header-height) flex sm:gap-10 md:gap-[20%] py-4 bg-gallery-gray-93 shadow-2xs border-b border-b-gray-200 px-10 items-center'>
+        <form onSubmit={(e)=>e.preventDefault()} className='h-(--header-height) flex sm:gap-10 md:gap-[10%] py-4 bg-gallery-gray-93 shadow-2xs border-b border-b-gray-200 px-10 items-center'>
             <Image
                 src={'/Assets/UpplySVG.svg'}
                 loading='eager'

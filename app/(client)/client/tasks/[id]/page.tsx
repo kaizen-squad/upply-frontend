@@ -93,14 +93,17 @@ const page = () => {
             </div>
             )
             :
-            <div className="relative mt-10 lg:mt-0">
-              <Button
-                textContent=""
-                Icon={X}
-                className="rounded-full p-3 bg-gallery-gray-93 absolute right-3 top-3"
-                onClick={()=>setIsEditing(false)}
-              />
-              <TaskForm isEditing={true} field_values={task} setIsEdited={setIsEdited}/>
+            <div className="mt-10 lg:mt-0">
+              <h1 className="mb-5">Edition de la mission</h1>
+              <div className="relative">
+                <Button
+                  textContent=""
+                  Icon={X}
+                  className="rounded-full p-3 bg-gallery-gray-93 absolute right-3 top-3"
+                  onClick={()=>setIsEditing(false)}
+                />
+                <TaskForm isEditing={true} field_values={task} setIsEdited={setIsEdited}/>
+              </div>
             </div>
           }
         </TaskDetails>

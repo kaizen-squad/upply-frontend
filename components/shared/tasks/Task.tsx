@@ -19,7 +19,7 @@ const Task: FC<{task:TaskProps, role:string}> = ({task, role}) => {
 
     const router = useRouter();
   return (
-    <div className="bg-white-solid border-2 border-gray-200 shadow-2xs w-[280px] rounded-sm flex flex-col justify-between w-full">
+    <div className="bg-white-solid border-2 border-gray-200 shadow-2xs rounded-sm flex flex-col justify-between w-full">
         <div className="p-5">
             <div className="flex justify-end">
                 <FlagTask status={status} />
@@ -30,7 +30,7 @@ const Task: FC<{task:TaskProps, role:string}> = ({task, role}) => {
             <div className="mt-5">
                 <div className="flex gap-5 items-center justify-between">
                     <p className="text-scorpion-gray-37 text-[0.85rem]">REMUNERATION</p>
-                    <p className="text-lg text-alizarin-crimson-red-51 font-semibold lg:line-clamp-1 text-right">{formatAmount(budget)} {budgetCurrency}</p>
+                    <p className="text-lg text-alizarin-crimson-red-51 font-semibold line-clamp-1 text-right">{formatAmount(budget)} {budgetCurrency}</p>
                 </div>
                 <div className="flex items-center justify-between mt-2">
                     <p className="text-scorpion-gray-37 text-[0.85rem]">ECHEANCE</p>
