@@ -9,7 +9,7 @@ interface UseApplicationReturn {
   loading: boolean,
   applyTotask: (applyData: ApplicationFormType) => Promise<void>,
   rejectApplication: (application_id:string) => Promise<void>,
-  acceptApplication: (application_id:string) => Promise<void>,
+  acceptApplication: (application_id:string) => Promise<boolean>,
   getTaskApplication: (task_id:string, role:'client'|'prestataire') => Promise<void>,
 } 
 
@@ -57,7 +57,7 @@ export function useApplication(): UseApplicationReturn {
           const applyresponse = await apiFetch<null>(`api/applications/reject`, {id:application_id}, 'DELETE');
           
           if(applyresponse.success)
-            notify('Votre candidature a été retirée.', 'success');
+            notify('La candidature a été rejetée.', 'success');
           else throw new Error(applyresponse.message) 
         }catch(err){
             notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non retirée!', 'error');
@@ -69,16 +69,19 @@ export function useApplication(): UseApplicationReturn {
     const acceptApplication = async (application_id:string) => {
       try{
           setLoading(true);
-          const applyresponse = await apiFetch<null>(`api/applications/accept`, {id:application_id}, 'PUT');
+          const applyresponse = await apiFetch<null>(`api/applications/${application_id}/accept`, {}, 'PUT');
           
-          if(applyresponse.success)
-            notify('Votre candidature a été acceptée.', 'success');
+          if(applyresponse.success){
+            notify('La candidature a été acceptée.', 'success');
+            return true;
+          }
           else throw new Error(applyresponse.message) 
         }catch(err){
             notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non acceptée!', 'error');
         }finally{
           setLoading(false);
         }
+        return false;
     }
 
 

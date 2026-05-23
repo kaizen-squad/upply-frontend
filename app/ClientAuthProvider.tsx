@@ -18,7 +18,6 @@ const ClientAuthProvider: FC<{children:ReactNode, initialUser: User | undefined}
             setUser(initialUser);
         } else if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
             console.debug('[ClientAuthProvider] redirecting to /login');
-            debugger
             router.push("/logout");
         }
         setLoading(false);

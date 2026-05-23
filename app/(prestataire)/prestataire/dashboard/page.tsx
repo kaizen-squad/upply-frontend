@@ -75,7 +75,7 @@ const page = () => {
                         <div>
                             <h2>Missions en cours</h2>
                             {
-                                dashboardData?.tasks ?
+                                dashboardData?.tasks.length ?
                                 <div className="mt-7">
                                     {dashboardData?.tasks.map((task)=>
                                         <TaskCard key={task.id} task={task} />

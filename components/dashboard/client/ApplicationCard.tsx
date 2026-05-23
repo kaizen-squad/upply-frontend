@@ -10,10 +10,17 @@ import Rating from 'react-ratings-star';
 const ApplicationCard = ({ application }: { application: ApplicationResponse }) => {
         const { modalify } = useModalify();
         const isMobile = useMediaQuery('(max-width: 768px)');
+        application = {
+            ...application,
+            prestataire:{
+                ...application.prestataire,
+                rating_avg:Number(application.prestataire.rating_avg)
+            }
+        }
   return (
-    <div className="md:flex gap-5 bg-white-solid rounded-sm p-5 border py-10">
+    <div className="md:flex justify-between gap-5 bg-white-solid rounded-sm p-5 border py-10">
         <div className="flex gap-4">
-            <p className="font-bold bg-gallery-gray-93  rounded-full border border-gray-300 p-4 text-center h-max w-max flex items-center">{getInitials(application.prestataire.name)}</p>
+            <div className="font-bold bg-gallery-gray-93  rounded-full border border-gray-300 text-xl text-center h-15 w-15 justify-center flex items-center">{getInitials(application.prestataire.name)}</div>
             <div>
                 <p className="font-semibold">{application.prestataire.name}</p>
                 <div className="flex items-center gap-2 my-1">
