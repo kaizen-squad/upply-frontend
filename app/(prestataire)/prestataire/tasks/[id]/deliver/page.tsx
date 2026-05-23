@@ -4,7 +4,7 @@ import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { useToasting } from '@/components/ui/Toast/useToasting';
-import { useApplication } from '@/hooks/useTasks';
+import { useApplication } from '@/hooks/useApplication';
 import { TaskProps } from '@/types';
 import { LockKeyhole, Zap, CircleCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';

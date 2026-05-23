@@ -1,9 +1,6 @@
 'use client'
-import FlagTask from "@/components/shared/tasks/FlagTask";
-import { formatAmount, formatFrenchDateIntl, formatRelativeTime } from "@/lib/utils";
 import Image from "next/image";
 import ApplicationForm from "@/components/dashboard/prestataire/ApplicationForm";
-import Spinner from "@/components/ui/Spinner/Spinner";
 import { TaskProps } from '@/types/index';
 import { useTasksContext } from "@/components/shared/tasks/TaskProvider";
 import TaskDetails from "@/components/shared/tasks/TaskDetails";
