@@ -13,12 +13,12 @@ const SidebarPrestataire = () => {
         OPPORTUNITES: [
             {text: 'Marché des missions', iconPath:'MissionsCenter.svg', redirect:'/prestataire/tasks'},
         ],
-        'ACTIVITE & EXECUTION': [
-            {text: 'Soumettre Livrable', iconPath:'DeliverablesTruck.svg', redirect:'/prestataire/deliverables'}
-        ], 
-        FINANCES: [
-            {text: 'Mes Facturations', iconPath:'BillingPocket.svg', redirect:'/prestataire/billing'}
-        ]
+        // 'ACTIVITE & EXECUTION': [
+        //     {text: 'Soumettre Livrable', iconPath:'DeliverablesTruck.svg', redirect:'/prestataire/deliverables'}
+        // ], 
+        // FINANCES: [
+        //     {text: 'Mes Facturations', iconPath:'BillingPocket.svg', redirect:'/prestataire/billing'}
+        // ]
     }
   return (
     <aside className='pt-8 min-w-(--sidebar-width) shadow-2xs border-r-2 border-r-gray-200 h-(--main-height) relative left-0 top-0' >

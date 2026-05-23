@@ -4,12 +4,12 @@ import { formatAmount, formatFrenchDateIntl, formatRelativeTime } from "@/lib/ut
 import Image from "next/image";
 import ApplicationForm from "@/components/dashboard/prestataire/ApplicationForm";
 import Spinner from "@/components/ui/Spinner/Spinner";
-import { TaskPropsOnPrestataire } from '@/types/index';
+import { TaskProps } from '@/types/index';
 import { useTasksContext } from "@/components/shared/tasks/TaskProvider";
 import TaskDetails from "@/components/shared/tasks/TaskDetails";
 
 const page = () => {
-    const {tasks: [task], refetch, loading} = useTasksContext<TaskPropsOnPrestataire>();
+    const {tasks: [task], refetch, loading} = useTasksContext<TaskProps>();
 
   return (       
      <>     
