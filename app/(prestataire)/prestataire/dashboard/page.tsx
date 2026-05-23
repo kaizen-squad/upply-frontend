@@ -82,7 +82,7 @@ const page = () => {
                                     )}
                                 </div>
                                 :
-                                <div className="mt-7 border shadow-2xs bg-white-solid py-12 text-center">
+                                <div className="mt-7 border shadow-2xs bg-white-solid py-12 text-center rounded-sm">
                                     <Image 
                                         src={'/Assets/Rocket.svg'}
                                         height={65}
@@ -105,11 +105,11 @@ const page = () => {
 
                         {/* Right */}
                         <div className="w-full">
-                            <h2>Candidatures envoyées</h2>
+                            <h2>Dernières applications</h2>
 
-                            <div className="flex flex-col gap-5 mt-7">
+                            <div className="flex flex-col gap-3 mt-7">
                                 {   dashboardData?.applications.length ? 
-                                        dashboardData?.applications.map((application, index)=> <ApplicationCard key={index} application={application} />)
+                                        dashboardData?.applications.slice(0,3).map((application, index)=> <ApplicationCard key={index} application={application} />)
                                     :
                                         <div className="text-center py-5 bg-white border shadow-2xs">
                                             Aucune candidature
