@@ -2,12 +2,12 @@
 import MissionBoard from '@/components/dashboard/client/MissionBoard';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
-import { useDashboard } from '@/hooks/useTasks';
 import { BookOpenCheck, Lightbulb, Plus, Zap } from 'lucide-react';
 import { CDashboardData } from '@/types/index';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useDashboard } from '@/hooks/useDashboard';
 
 const page = () => {
     const router = useRouter();
