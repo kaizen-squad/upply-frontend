@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, ReactNode, useMemo } from 'react';
+import { FC, ReactNode } from 'react';
 import NotificationProvider from '@/components/ui/Notification/NotificationProvider';
 import NotificationContainer from '@/components/ui/Notification/NotificationContainer';
 import ModalProvider from '@/components/ui/Modal/ModalProvider';

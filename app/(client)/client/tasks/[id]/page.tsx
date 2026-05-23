@@ -8,7 +8,6 @@ import { Edit, Truck, UserCircle2, X } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast';
 
 const page = () => {
   const {tasks:[task], loading, refetch} = useTasksContext();

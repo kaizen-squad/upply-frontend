@@ -1,7 +1,7 @@
 'use client'
 import Script from 'next/script';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
-import { budgetCurrency, usePayment } from '@/hooks/useTasks';
+import { budgetCurrency } from '@/hooks/useTasks';
 import apiFetch from '@/lib/api';
 import { commissionPlateform, formatAmount, getInitials } from '@/lib/utils';
 import { PrestataireSelectedData } from '@/types';
@@ -14,6 +14,7 @@ import { useToasting } from '@/components/ui/Toast/useToasting';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { UserCircle2 } from 'lucide-react';
+import { usePayment } from '@/hooks/usePayment';
 
 export type PaymentInfosType = {
     completed: boolean,
