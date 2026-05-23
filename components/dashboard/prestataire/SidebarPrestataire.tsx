@@ -2,10 +2,12 @@
 import SidebarOnglets, { SidebarOngletsProps } from '@/components/shared/SidebarOnglets';
 import Button from '@/components/ui/Button/Button'
 import { useUserStore } from '@/hooks/store';
+import { useAuth } from '@/hooks/useAuth';
 import Image from 'next/image'
 
 const SidebarPrestataire = () => {
     const {user} = useUserStore();
+    const {logout} = useAuth();
     const onglets :SidebarOngletsProps['onglets'] = {
         ACCUEIL: [
             {text: 'Tableau de bord', iconPath:'LayoutDashboard.svg', redirect:'/prestataire/dashboard'}
@@ -44,6 +46,7 @@ const SidebarPrestataire = () => {
                 textContent='Se déconnecter'
                 Icon={'/Assets/Logout.svg'}
                 className='text-alizarin-crimson-red-51 pl-2 mt-2'
+                onClick={()=>logout()}
             />
         </div>
     </aside>

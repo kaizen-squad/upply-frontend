@@ -11,7 +11,7 @@ const page = () => {
     const {loading, tasks, refetch} = useTasks<TaskProps>('mine');
     const router = useRouter();
   return (
-    <div className={tasks.length ? "w-full pb-10" : "h-(--main-height) w-full flex flex-col pb-10"}>
+    <div className={tasks.length ? "w-full pb-10 px-2" : "h-(--main-height) w-full flex flex-col pb-10 px-5"}>
          <div>
             <h1>Vos Missions </h1>
             <p className="text-santa-gray mt-2">Explorez les missions que vous proposez.</p>

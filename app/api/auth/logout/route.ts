@@ -1,21 +1,14 @@
 // app/api/auth/logout/route.ts
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import apiFetch from '@/lib/api';
 
-export async function POST() {
+export async function GET() {
 
   const cookieStore = await cookies();
-  const response = await apiFetch('api/logout')  
-    
-  if(response.success){
-    // Delete the cookies
-    cookieStore.delete('refreshToken');
-    cookieStore.delete('user');
+  // Delete the cookies
+  cookieStore.delete('refreshToken');
+  cookieStore.delete('user');
 
-    return NextResponse.json({ success: true });
-  }
-  
-  return NextResponse.json(response);
-
+  return NextResponse.json({ success: true });
 }
+  

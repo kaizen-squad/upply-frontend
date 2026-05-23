@@ -22,10 +22,10 @@ const TaskList:FC<{loading: boolean; tasks: TaskProps[], role:string}> =  ({load
 
        
         <div className="flex flex-col gap-10 justify-between h-full">
-            <div>
+            <div className="w-full">
                 {
                     (Boolean(tasks.length) && !loading) &&
-                    <div className="grid xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7 my-10 items-stretch justify-center">
+                    <div className="grid xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7 my-10 items-stretch w-[95%] m-auto sm:w-full">
                         {tasks.map((task)=><Task role={role} key={task.id} task={task} />)}
                     </div>
                 }

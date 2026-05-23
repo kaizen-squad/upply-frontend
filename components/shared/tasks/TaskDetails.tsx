@@ -11,6 +11,7 @@ import { Trash2 } from 'lucide-react';
 import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
 import { useTasksContext } from './TaskProvider';
 import { useMediaQuery } from '@reactuses/core';
+import { Role } from '@/types/auth';
 
 const TaskDetails:FC<
   | { loading: boolean; task: TaskProps; children:ReactNode, role:'client'|'prestataire' }
@@ -48,27 +49,9 @@ const TaskDetails:FC<
                       Icon={Trash2}
                       className="rounded-full p-3 bg-red-500 text-white"
                       title="supprimer la mission"
-                      onClick={()=> modalify(<div>
-                        <p className="text-center my-3">Etes vous sur de vouloir supprimer cette mission?</p>
-                        <div className="mt-3 flex items-center justify-center gap-5">
-                          <Button
-                            textContent="Supprimer"
-                            className="text-white py-3 px-5 rounded-md font-semibold bg-alizarin-crimson-red-51"
-                            Icon={Trash2}
-                            onClick={()=>{
-                              deleteTask(task.id);
-                              close('delete-task')
-                            }}
-                          />
-                          <Button
-                            textContent="Annuler"
-                            className="py-3 px-5 rounded-md font-semibold bg-iron-gray-90"
-                            Icon={Trash2}
-                            onClick={()=> close('delete-task')}
-                          />
-                        </div>
-                      </div>, {
-                        id:'delete-task'
+                      onClick={()=> modalify(<DeleteModale task_id={task.id} />, {
+                        id:'delete-task',
+                        title: 'Suppression de mission'
                       })}
                     />}                
               </div>
@@ -88,15 +71,33 @@ const TaskDetails:FC<
                     <h1 className="my-3">{task.title}</h1>
                     <hr className="border border-gray-100 my-6" />
 
-                    <small className="text-scarpa-flow-gray-34 font-semibold">DATE LIMITE</small>
-                    <div className="flex items-center gap-1 mt-1p">
-                      <Image
-                        width={15}
-                        height={15}
-                        alt="deadline-icon"
-                        src={'/Assets/Deadline_Icon.svg'}
-                      />
-                      <p>{formatFrenchDateIntl(task.deadline)}</p>
+                    <div className="flex justify-between items-end">
+                      <div>
+                        <small className="text-scarpa-flow-gray-34 font-semibold">DATE LIMITE</small>
+                        <div className="flex items-center gap-1">
+                          <Image
+                            width={15}
+                            height={15}
+                            alt="deadline-icon"
+                            src={'/Assets/Deadline_Icon.svg'}
+                          />
+                          <p>{formatFrenchDateIntl(task.deadline)}</p>
+                        </div>
+                      </div>
+                      {
+                        role ==='client' && 
+                        <Button
+                          textContent="Supprimer"
+                          Icon={Trash2}
+                          className="rounded-md py-2 px-4 bg-alizarin-crimson-red-51 text-white"
+                          title="supprimer la mission"
+                          onClick={()=> modalify(<DeleteModale task_id={task.id} />, {
+                            id:'delete-task',
+                            title: 'Suppression de mission'
+                        })}
+                        />
+                      }  
+
                     </div>
                   </div>
                 </div>
@@ -150,3 +151,32 @@ const TaskDetails:FC<
 }
 
 export default TaskDetails
+
+
+const DeleteModale:FC<{task_id:string}> = ({task_id}) => {
+  const {close} = useModalify();
+  const {deleteTask} = useTasksContext();
+
+  return (
+    <div>
+      <p className="text-center mt-2">Etes vous sur de vouloir supprimer cette mission?</p>
+      <div className="mt-5 flex items-center justify-center gap-2">
+        <Button
+          textContent="Supprimer"
+          className="text-white py-3 px-5 rounded-md font-semibold bg-alizarin-crimson-red-51 w-full"
+          Icon={Trash2}
+          onClick={()=>{
+            deleteTask(task_id);
+            close('delete-task')
+          }}
+        />
+        <Button
+          textContent="Annuler"
+          className="py-3 px-5 rounded-md font-semibold bg-iron-gray-90 w-full"
+          Icon={Trash2}
+          onClick={()=> close('delete-task')}
+        />
+      </div>
+    </div>
+  )
+}
