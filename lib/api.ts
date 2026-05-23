@@ -1,7 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
-import { redirect } from "next/navigation";
 
 /**
  * The opened routes which any client can reach whithout authorization, except refresh token where the token is checked directly from the http cookie 
@@ -15,7 +14,6 @@ export const publicAccessRoutes = [
   'login',
   'register',
   'refresh',
-  'logout'
 ]
 
 let isRefreshing = false;
@@ -40,12 +38,11 @@ const instance = axios.create({
  */
 instance.interceptors.request.use((config)=> {
 
-    if(config.url && !publicAccessRoutes.find((route)=>config.url?.includes(route))){
-        const accessToken = useTokenStore.getState().accessToken;
+    if(config.url && !isNextBackendRoute(config.url)){
+        const accessToken = useTokenStore.getState().accessToken; 
         if(accessToken)
             config.headers.Authorization = `Bearer ${accessToken}`
     }
-
     return config;
 })
 
@@ -57,8 +54,7 @@ instance.interceptors.response.use(
     (response)=> response, 
     async (error) => {
         const config = error.config as CustomAxiosRequestConfig;
-        
-        if (error.response?.status === 401 && !config._retry && !publicAccessRoutes.find((route)=>error.config.url?.includes(route))) {
+        if(error.response?.status === 401 && !config._retry && !publicAccessRoutes.find((route)=>error.config.url?.includes(route))) {
 
             config._retry = true;
 
@@ -94,7 +90,7 @@ instance.interceptors.response.use(
 
                 if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
                     console.debug('[api] redirecting to /login due to refresh failure');
-                   redirect('/login'); // Redirige vers la page de connexion si le rafraîchissement échoue et que nous ne sommes pas déjà sur la page de connexion
+                   window.location.href='/login'; // Redirige vers la page de connexion si le rafraîchissement échoue et que nous ne sommes pas déjà sur la page de connexion
                 }
                 return Promise.reject(err);
             }

@@ -31,15 +31,15 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                 {   
                     isMobile ? 
                         <div className='md:grid md:grid-cols-2 md:gap-7 mt-10'>
-                            {tasks.map(({title, deadline, budget, status})=>(
-                                <div key={title} className='my-5 md:my-0 bg-white-solid p-5 rounded-md shadow-xl'>
+                            {tasks.map(({title, deadline, budget, status, id})=>(
+                                <div key={title} className='my-5 md:my-0 bg-white-solid pl-3 pr-5 py-5 rounded-md shadow-xl'>
                                     <div className='flex items-center justify-between my-2'>
-                                        <p className='font-semibold w-[70%] line-clamp-1' title={title}>{title}</p>
+                                        <button onClick={()=> router.push(`/client/tasks/${id}`)} className='font-semibold max-w-[70%] line-clamp-1 py-1 px-2 rounded-md hover:bg-gallery-gray-93 cursor-pointer text-left' title={title}>{title}</button>
                                         <p className='text-alizarin-crimson-red-51 font-semibold line-clamp-1 text-lg'>{formatAmount(budget)} <small>FCFA</small> </p>
                                     </div>
-                                    <p>{deadline}</p>
+                                    <p className="ml-2">{deadline}</p>
 
-                                    <div className='mt-4 flex items-center gap-2'>
+                                    <div className='mt-4 flex items-center gap-2 ml-2'>
                                         <small className='rounded-md px-3 py-1 text-white-solid font-semibold' style={{background: `var(--${flagColor[status]})`}}>{status}</small>
                                         <hr className='border-gray-200 w-full' />
                                     </div>
