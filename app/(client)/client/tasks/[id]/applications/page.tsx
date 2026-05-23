@@ -2,13 +2,14 @@
 import ApplicationCard from "@/components/dashboard/client/ApplicationCard";
 import { useTasksContext } from "@/components/shared/tasks/TaskProvider";
 import Spinner from "@/components/ui/Spinner/Spinner";
-import { budgetCurrency, useApplication } from "@/hooks/useTasks";
+import { budgetCurrency } from "@/hooks/useTasks";
 import { formatAmount, formatRelativeTime } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect } from "react";
 import { formatFrenchDateIntl } from '@/lib/utils';
 import FlagTask from "@/components/shared/tasks/FlagTask";
 import EmptyImage from "@/components/shared/EmptyImage";
+import { useApplication } from "@/hooks/useApplication";
 
 const page = () => {
     const {loading, application, getTaskApplication} = useApplication();
