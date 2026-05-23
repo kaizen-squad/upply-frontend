@@ -159,7 +159,7 @@ export type UserFull = {
 
 // Modification backend
 export interface ApplicationResponse extends Application {
-  prestataire?: UserFull
+  prestataire: UserFull
 }
 
 export interface PrestataireSelectedData {
