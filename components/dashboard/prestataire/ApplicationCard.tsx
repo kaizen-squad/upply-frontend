@@ -19,13 +19,13 @@ const ApplicationCard: FC<{application: ApplicationCardProps}> = ({application:{
     )
   }
   else return (
-    <div className='bg-white border p-5'>
+    <div className='bg-white border p-5 rounded-sm shadow-2xs'>
        <div className='flex items-center justify-between flex-wrap-reverse gap-5 lg:gap-2'>
             <p className='font-bold line-clamp-2'>{task.title}</p>
             <div className='self-end'><FlagApplication status={status} /></div>
        </div>
-       <div className='flex items-center w-full justify-between lg:flex-col lg:items-start lg:text-[0.9rem] xl:text-md xl:items-center xl:flex-row mt-3'>
-            <p className='text-scarpa-flow-gray-34 lg:w-full lg:flex lg:justify-between lg:items-center xl:w-max'><span className='hidden lg:inline xl:hidden '>Soumis le </span> <span>{formatFrenchDateIntl(created_at.substring(0,10))}</span> </p>
+       <div className='flex items-center w-full justify-between lg:flex-col gap-2 lg:items-start lg:text-[0.9rem] xl:text-md xl:items-center xl:flex-row mt-3'>
+            <p className='text-scarpa-flow-gray-34 lg:w-full lg:flex lg:justify-between lg:items-center xl:w-max gap-1'><span className='hidden lg:inline'>Soumis le </span> <span>{formatFrenchDateIntl(created_at.substring(0,10))}</span> </p>
             <p className='font-semibold lg:w-full lg:flex lg:justify-between lg:items-center xl:w-max'> <span className='hidden lg:inline xl:hidden'>Budget </span> <span>{formatAmount(task.budget)} {budgetCurrency}</span></p>
        </div>                                       
     </div>
