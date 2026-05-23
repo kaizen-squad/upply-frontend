@@ -1,13 +1,13 @@
 import Button from '@/components/ui/Button/Button';
 import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
-import { useApplication, usePayment } from '@/hooks/useTasks';
+import { useApplication } from '@/hooks/useApplication';
+import { usePayment } from '@/hooks/usePayment';
 import { getInitials } from '@/lib/utils';
 import { ApplicationResponse } from '@/types';
 import { useMediaQuery } from '@reactuses/core';
 import Rating from 'react-ratings-star';
 
 const ApplicationCard = ({ application }: { application: ApplicationResponse }) => {
-        const { rejectApplication, acceptApplication } = useApplication();
         const { modalify } = useModalify();
         const isMobile = useMediaQuery('(max-width: 768px)');
   return (
@@ -39,7 +39,6 @@ const ApplicationCard = ({ application }: { application: ApplicationResponse }) 
                         <AcceptApplicationModal application={application} />,
                         {
                             title: 'Confirmer la sélection',
-                            onConfirm: () => acceptApplication(application.id),
                             id: 'accept-application-modal',
                         }
                     )
@@ -53,9 +52,6 @@ const ApplicationCard = ({ application }: { application: ApplicationResponse }) 
                         <RejectApplicationModal application={application} />,
                         {
                             title: 'Confirmer le rejet',
-                            onCancel: () => {
-                                console.log('Rejet annulé');
-                            },
                             id: 'reject-application-modal',
                         }
                     );
