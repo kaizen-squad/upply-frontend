@@ -10,11 +10,13 @@ import { cn } from "@/lib/utils"
 import {  PDashboardData } from "@/types"
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
+import { useRouter } from "next/navigation";
 import { useEffect } from "react"
 
 
 const page = () => {
     const { dashboardData, loading, loadDashboard } =  useDashboard<PDashboardData>('prestataire');
+  const router = useRouter();
     useEffect(()=>{
         loadDashboard();
     }, []);
@@ -94,6 +96,7 @@ const page = () => {
                                         Icon={ArrowRight}
                                         Iposition="right"
                                         className="bg-alizarin-crimson-red-51 py-3 text-white-solid px-6 rounded-sm m-auto mt-4"
+                                        onClick={()=> router.push('/prestataire/tasks')}
                                     />
                                 </div>
                             }     
@@ -105,7 +108,7 @@ const page = () => {
 
                             <div className="flex flex-col gap-5 mt-7">
                                 {   dashboardData?.applications.length ? 
-                                        dashboardData?.applications.map((application)=> <ApplicationCard application={application} />)
+                                        dashboardData?.applications.map((application, index)=> <ApplicationCard key={index} application={application} />)
                                     :
                                         <div className="text-center py-5 bg-white border shadow-2xs">
                                             Aucune candidature

@@ -2,13 +2,13 @@
 import Task from "@/components/shared/tasks/Task"
 import { TaskSkeleton } from "@/components/shared/tasks/TaskSkeleton"
 import Button from "@/components/ui/Button/Button"
-import { TaskPropsOnPrestataire, TaskProps } from "@/types";
+import { TaskProps } from "@/types";
 import { useMediaQuery } from "@reactuses/core";
 import { RotateCw } from "lucide-react"
 import Image from "next/image";
 import { FC } from "react";
 
-const TaskList:FC<{loading: boolean; tasks: TaskPropsOnPrestataire[] | TaskProps[], role:string}> =  ({loading, tasks, role}) => {
+const TaskList:FC<{loading: boolean; tasks: TaskProps[], role:string}> =  ({loading, tasks, role}) => {
 
   return (
     <div className={tasks.length ? "" : "w-full flex flex-col"}>

@@ -12,12 +12,12 @@ const SidebarPrestataireMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileS
         OPPORTUNITES: [
             {text: 'Marché des missions', iconPath:'MissionsCenter.svg', redirect:'/prestataire/tasks'},
         ],
-        'ACTIVITE & EXECUTION': [
-            {text: 'Soumettre Livrable', iconPath:'DeliverablesTruck.svg', redirect:'/prestataire/deliverables'}
-        ], 
-        FINANCES: [
-            {text: 'Mes Facturations', iconPath:'BillingPocket.svg', redirect:'/prestataire/billing'}
-        ]
+        // 'ACTIVITE & EXECUTION': [
+        //     {text: 'Soumettre Livrable', iconPath:'DeliverablesTruck.svg', redirect:'/prestataire/deliverables'}
+        // ], 
+        // FINANCES: [
+        //     {text: 'Mes Facturations', iconPath:'BillingPocket.svg', redirect:'/prestataire/billing'}
+        // ]
     }
 
 

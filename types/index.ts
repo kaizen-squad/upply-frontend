@@ -54,11 +54,6 @@ export const ApplicationFormSchema = z.object({
 
 export type ApplicationFormType = z.infer<typeof ApplicationFormSchema>
 
-export interface TaskPropsOnPrestataire extends TaskProps {
-  application_id: string
-  applied_at: string | undefined
-  application_status: ApplicationStatus | undefined
-}
  
 export  interface Deliverable {
   id: string
@@ -123,10 +118,9 @@ export const ReviewSchema = z.object({
 export type ReviewProps = z.infer<typeof ReviewSchema>;
 
 export type ApplicationCardProps = {
-  mission_title:string,
-  status_application:ApplicationStatus,
-  applied_at: string,
-  budget_mission:number
+  status:ApplicationStatus,
+  created_at: string,
+  task:TaskProps
 }
 
 export type Pstatistics = {
@@ -165,7 +159,7 @@ export type UserFull = {
 
 // Modification backend
 export interface ApplicationResponse extends Application {
-  prestataire: UserFull
+  prestataire?: UserFull
 }
 
 export interface PrestataireSelectedData {

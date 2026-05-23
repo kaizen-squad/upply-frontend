@@ -3,11 +3,10 @@ import EmptyImage from "@/components/shared/EmptyImage";
 import TaskList from "@/components/shared/tasks/TaskList";
 import Button from "@/components/ui/Button/Button";
 import { useTasks } from "@/hooks/useTasks"
-import { TaskPropsOnPrestataire } from "@/types";
 import { RotateCw } from "lucide-react";
 
 const page =  () => {
-    const {loading, tasks, refetch} = useTasks<TaskPropsOnPrestataire>(undefined);
+    const {loading, tasks, refetch} = useTasks(undefined);
 
   return (
     <div className={tasks.length ? "w-full" : "py-10 w-full h-(--main-height) flex flex-col"}>

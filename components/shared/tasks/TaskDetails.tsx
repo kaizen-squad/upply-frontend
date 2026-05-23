@@ -1,6 +1,6 @@
 'use client'
 import { formatAmount, formatFrenchDateIntl, formatRelativeTime } from '@/lib/utils';
-import { TaskProps, TaskPropsOnPrestataire } from '@/types';
+import { TaskProps } from '@/types';
 import{ FC, ReactNode } from 'react'
 import FlagTask from './FlagTask';
 import Spinner from '@/components/ui/Spinner/Spinner';
@@ -13,8 +13,7 @@ import { useTasksContext } from './TaskProvider';
 import { useMediaQuery } from '@reactuses/core';
 
 const TaskDetails:FC<
-  | { loading: boolean; task: TaskProps; children:ReactNode, role:'client' }
-  | { loading: boolean; task: TaskPropsOnPrestataire; children:ReactNode, role:'prestataire' }
+  | { loading: boolean; task: TaskProps; children:ReactNode, role:'client'|'prestataire' }
 > = ({ loading, task, children, role }) => {
 
   const {modalify, close} = useModalify();

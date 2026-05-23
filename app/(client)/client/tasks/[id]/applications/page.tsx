@@ -4,22 +4,19 @@ import { useTasksContext } from "@/components/shared/tasks/TaskProvider";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import { budgetCurrency, useApplication } from "@/hooks/useTasks";
 import { formatAmount, formatRelativeTime } from "@/lib/utils";
-import { TaskPropsOnPrestataire } from "@/types";
 import Image from "next/image";
 import { useEffect } from "react";
 import { formatFrenchDateIntl } from '@/lib/utils';
 import FlagTask from "@/components/shared/tasks/FlagTask";
-import { applicationsMock, tasksA } from "@/lib/data";
-import { ModalifyExample } from "@/components/examples/ModalifyExample";
 import EmptyImage from "@/components/shared/EmptyImage";
 
 const page = () => {
-    const {loading, application, getApplication} = useApplication();
-    const {tasks: [task]} = useTasksContext<TaskPropsOnPrestataire>();
+    const {loading, application, getTaskApplication} = useApplication();
+    const {tasks: [task]} = useTasksContext();
 
     useEffect(()=>{
       if(task && task.id)
-        getApplication(task.id);
+        getTaskApplication(task.id, 'client');
     }, [task]);
 
     if(loading) 
