@@ -66,11 +66,14 @@ const page = () => {
     }, [task])
 
     useEffect(()=>{
-        if(paymentInfos.completed && paymentInfos.transaction_id && prestataire){
-            const accept = await acceptApplication(prestataire.application_id);
-            if(accept)
-                verifyPayment(paymentInfos.transaction_id);
+        const acceptAndPay = async ()=>{
+            if(paymentInfos.completed && paymentInfos.transaction_id && prestataire){
+                const accept = await acceptApplication(prestataire.application_id);
+                if(accept)
+                    verifyPayment(paymentInfos.transaction_id);
+            }
         }
+        acceptAndPay();
     },[paymentInfos]);
 
     useEffect(() => {
