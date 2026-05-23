@@ -14,8 +14,7 @@ export interface UsePaymentReturn {
 export function usePayment<UsePaymentReturn >() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-    const {notify} = useToasting();
-
+  const {notify} = useToasting();
   const proceedToPayment = async (data: PrestataireSelectedData) => {
   try{
       setLoading(true);
