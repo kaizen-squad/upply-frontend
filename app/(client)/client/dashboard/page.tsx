@@ -6,7 +6,6 @@ import { BookOpenCheck, Lightbulb, Plus, Zap } from 'lucide-react';
 import { CDashboardData } from '@/types/index';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { cn } from '@/lib/utils';
 import { useDashboard } from '@/hooks/useDashboard';
 
 const page = () => {

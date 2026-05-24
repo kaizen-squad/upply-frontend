@@ -1,6 +1,6 @@
-import { ApplicationResponse, Deliverable, DeliverableDTO, TaskProps } from "@/types";
+import { ApplicationResponse, DeliverableDTO, TaskProps } from "@/types";
 
-  export const tasksA:TaskProps[] = [
+   const tasksA:TaskProps[] = [
       {
         id: 'task_001',
         client_id: 'client_001',
@@ -103,7 +103,7 @@ import { ApplicationResponse, Deliverable, DeliverableDTO, TaskProps } from "@/t
       },
   ];
 
-  export const applicationsMock: ApplicationResponse[] = [
+   const applicationsMock: ApplicationResponse[] = [
     {
       id: 'app_001',
       task_id: 'task_001',
@@ -185,7 +185,7 @@ import { ApplicationResponse, Deliverable, DeliverableDTO, TaskProps } from "@/t
       },
     },
   ];
-  export const deliverablesWithVariedFiles: DeliverableDTO[] = [
+   const deliverablesWithVariedFiles: DeliverableDTO[] = [
     {
       id:'d1',
       content: "Capture d'écran interface mobile",
