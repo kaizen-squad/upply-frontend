@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cookies } from "next/headers";
 import Providers from "./Providers";
+import { redirect } from "next/navigation";
+import apiFetch from "@/lib/api";
+import ClientAuthProvider from "./ClientAuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,24 +28,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const cookieStore = await cookies();
-  const userCookie = cookieStore.get('user');
-  let user: any = null;
-  if (userCookie?.value) {
-    try {
-      user = JSON.parse(userCookie.value);
-    } catch {
-      console.error('Failed to parse user cookie');
-    }
-  }
-
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Providers initialUser={user}>
+        <Providers>
           {children}
         </Providers>
       </body>

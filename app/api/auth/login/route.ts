@@ -36,3 +36,15 @@ export async function POST(request: Request) {
   
   return NextResponse.json(response);
 }
+
+
+export async function GET(){
+  const cookiestore = await cookies();
+  let user = cookiestore.get('user');
+  if(user){
+    user = JSON.parse(user?.value as string);
+    return NextResponse.json({success:true, user:user});
+  }else{
+    NextResponse.json({success:false});
+  }
+}

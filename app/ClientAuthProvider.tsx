@@ -5,24 +5,31 @@ import { FC, ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { User } from "@/types/auth";
 import Spinner from "@/components/ui/Spinner/Spinner";
+import apiFetch from "@/lib/api";
 
-const ClientAuthProvider: FC<{children:ReactNode, initialUser: User | undefined}> = ({ children, initialUser }) => {
+const ClientAuthProvider: FC<{children:ReactNode}> = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const setUser = useUserStore(state => state.setUser);
     const router = useRouter();
 
     useEffect(() => {
-        console.debug('[ClientAuthProvider] initialUser', initialUser, 'pathname', window.location.pathname);
-
-        if (initialUser?.name) {
-            setUser(initialUser);
-        } else if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
-            console.debug('[ClientAuthProvider] redirecting to /login');
-            router.push("/logout");
+        const loadStore = async ()=> {
+            try{
+                const userResponse = await apiFetch<User>('/api/auth/login');
+                if (userResponse.success) {
+                    setUser(userResponse.data);
+                } else if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
+                    console.debug('[ClientAuthProvider] redirecting to /login');
+                    await apiFetch('/api/auth/logout')
+                    router.push("/login");
+                }
+            }catch(e){}
+            finally{
+                setLoading(false);
+            }            
         }
-        setLoading(false);
-
-    }, [initialUser, setUser, router]);
+        loadStore();
+    }, [setUser, router]);
     if(loading)
         return <div className="flex h-screen w-screen">
             <div className="flex items-center gap-3 h-max m-auto">
