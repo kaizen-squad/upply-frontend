@@ -6,7 +6,6 @@ import NotificationContainer from '@/components/ui/Notification/NotificationCont
 import ModalProvider from '@/components/ui/Modal/ModalProvider';
 import ModalContainer from '@/components/ui/Modal/ModalContainer';
 import ClientAuthProvider from './ClientAuthProvider';
-import { User } from '@/types/auth';
 import { useModalManager } from '@/components/ui/Modal/hooks/useModalManager';
 import { Toaster } from 'react-hot-toast';
 

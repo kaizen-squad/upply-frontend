@@ -6,7 +6,6 @@ import apiFetch from '@/lib/api';
 import { commissionPlateform, formatAmount, getInitials } from '@/lib/utils';
 import { PrestataireSelectedData } from '@/types';
 import { useEffect, useRef, useState }  from 'react'
-import { tasksA } from '@/lib/data';
 import  Milestone  from '@/components/ui/Milestone/Milestone';
 import Button from '@/components/ui/Button/Button';
 import Fedapay from '@/components/dashboard/client/payment/Fedapay';
@@ -15,9 +14,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { UserCircle2 } from 'lucide-react';
 import { usePayment } from '@/hooks/usePayment';
-import { Overlay } from '@/components/ui/Overlay/Overlay';
 import Spinner from '@/components/ui/Spinner/Spinner';
-import { toast } from 'react-hot-toast';
 import { useApplication } from '@/hooks/useApplication';
 
 export type PaymentInfosType = {

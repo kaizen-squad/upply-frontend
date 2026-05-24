@@ -9,7 +9,6 @@ import { useToasting } from '@/components/ui/Toast/useToasting';
 import { usePayment } from '@/hooks/usePayment';
 import { budgetCurrency } from '@/hooks/useTasks';
 import apiFetch from '@/lib/api';
-import { deliverablesWithVariedFiles, tasksA } from '@/lib/data';
 import { commissionPlateform, formatFrenchDateIntl, getInitials } from '@/lib/utils';
 import { DeliverableDTO, TaskProps } from '@/types';
 import { ArrowRight, BadgeCheck, Shield } from 'lucide-react';
@@ -84,7 +83,6 @@ const page = () => {
             }catch(err){
                 
             }finally{
-                setDeliverable(deliverablesWithVariedFiles[0])
                 setLoading(false)
             }  
         }
@@ -195,17 +193,17 @@ const page = () => {
                                 <div className="px-4">
                                     <div className="flex items-center justify-between pb-3 my-3 border-b border-b-gray-300 lg:border-none">
                                         <span className="text-scarpa-flow-gray-34">Montant du contrat</span>
-                                        <span>{tasksA[0].budget} {budgetCurrency}</span>
+                                        <span>{task.budget} {budgetCurrency}</span>
                                     </div>
                                     <div className="flex items-center justify-between pb-3 my-3 border-b border-b-gray-300 lg:border-none">
                                         <span className="text-scarpa-flow-gray-34">Commission de service</span>
-                                        <span className="text-alizarin-crimson-red-51 lg:text-black">- {commissionPlateform(tasksA[0].budget)} {budgetCurrency}</span>
+                                        <span className="text-alizarin-crimson-red-51 lg:text-black">- {commissionPlateform(task.budget)} {budgetCurrency}</span>
                                     </div>
                                 </div>
                                 <hr className="mx-4 border-gray-300 my-5 hidden lg:block" />
                                 <div className="flex items-center justify-between px-4">
                                     <p className="text-2xl font-bold">Total Net</p>
-                                    <p className="font-bold text-alizarin-crimson-red-51 text-2xl">{(tasksA[0].budget - commissionPlateform(tasksA[0].budget))} {budgetCurrency}</p>
+                                    <p className="font-bold text-alizarin-crimson-red-51 text-2xl">{(task.budget - commissionPlateform(task.budget))} {budgetCurrency}</p>
                                 </div>
                             </div>
 
