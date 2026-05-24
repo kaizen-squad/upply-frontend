@@ -12,25 +12,24 @@ import { Toaster } from 'react-hot-toast';
 
 interface ProvidersProps {
   children: ReactNode;
-  initialUser: User | undefined;
 }
 
-const Providers: FC<ProvidersProps> = ({ children, initialUser }) => {
+const Providers: FC<ProvidersProps> = ({ children }) => {
   const modalManager = useModalManager();
 
   return (
-    <NotificationProvider>
-      <ModalProvider modalManager={modalManager}>
-        <ClientAuthProvider initialUser={initialUser}>
-          {children}
-          <NotificationContainer />
-          <ModalContainer />
-          <div id="modal-root" />
-          <div id="notification-root" />
-          <Toaster/>
-        </ClientAuthProvider>
-      </ModalProvider>
-    </NotificationProvider>
+    <ClientAuthProvider>
+      <NotificationProvider>
+        <ModalProvider modalManager={modalManager}>
+            {children}
+            <NotificationContainer />
+            <ModalContainer />
+            <div id="modal-root" />
+            <div id="notification-root" />
+            <Toaster/>
+        </ModalProvider>
+      </NotificationProvider>
+  </ClientAuthProvider>
   );
 };
 

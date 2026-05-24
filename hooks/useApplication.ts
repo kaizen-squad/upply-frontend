@@ -29,7 +29,8 @@ export function useApplication(): UseApplicationReturn {
             notify('Votre candidature a été soumise avec succès.', 'success');
             setApplication([applyresponse.data]);
           }
-          else throw new Error(applyresponse.message) 
+          else notify(applyresponse.message, 'error');
+
         }catch(err){
             notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non soumise!', 'error');
         }finally{

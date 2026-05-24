@@ -5,20 +5,17 @@ import{ FC, ReactNode } from 'react'
 import FlagTask from './FlagTask';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import Image from 'next/image';
-import { budgetCurrency } from '@/hooks/useTasks';
+import { budgetCurrency, useTasks } from '@/hooks/useTasks';
 import Button from '@/components/ui/Button/Button';
 import { Trash2 } from 'lucide-react';
 import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
-import { useTasksContext } from './TaskProvider';
 import { useMediaQuery } from '@reactuses/core';
-import { Role } from '@/types/auth';
 
 const TaskDetails:FC<
   | { loading: boolean; task: TaskProps; children:ReactNode, role:'client'|'prestataire' }
 > = ({ loading, task, children, role }) => {
 
-  const {modalify, close} = useModalify();
-  const {deleteTask} = useTasksContext();
+  const {modalify} = useModalify();
   const isMobile = useMediaQuery('(max-width: 768px)', true);
 
   return (
@@ -155,7 +152,7 @@ export default TaskDetails
 
 const DeleteModale:FC<{task_id:string}> = ({task_id}) => {
   const {close} = useModalify();
-  const {deleteTask} = useTasksContext();
+  const {deleteTask} = useTasks(undefined,true);
 
   return (
     <div>
