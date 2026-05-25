@@ -8,7 +8,7 @@ export interface UsePaymentReturn {
   loading: boolean,
   proceedToPayment: (data: { application_id: string, task_id: string, prestataire_name: string }) => Promise<void>,
   liberatefunds: (deliverable_id:string) => Promise<boolean>,
-  verifyPayment: (task_id:string)=>Promise<void>,
+  verifyPayment: (task_id:string, transaction_id:string)=>Promise<void>,
   deleteSavedApplicant: ()=> Promise<void>
 }
 
@@ -35,7 +35,7 @@ export function usePayment<UsePaymentReturn >() {
   const liberatefunds = async (deliverable_id:string)=> {
       try{
       setLoading(true);
-      const liberate = await apiFetch<null>(`/api/deliverables/validate/${deliverable_id}`, undefined, 'POST');
+      const liberate = await apiFetch<null>(`api/deliverables/validate/${deliverable_id}`, undefined, 'POST');
       if(liberate.success){
         router.push(`/client/dashboard`);
         notify('Votre mission est maintenant achevée', 'success'); 
@@ -50,12 +50,12 @@ export function usePayment<UsePaymentReturn >() {
     return false
   }
 
-  const verifyPayment = async (task_id:string) => {
+  const verifyPayment = async (task_id:string, transaction_id:string) => {
       try{
       setLoading(true);
-      const verify = await apiFetch<null>(`/api/tasks/${task_id}/payment/verify`, undefined, 'POST');
+      const verify = await apiFetch<null>(`api/tasks/${task_id}/payment/verify`, undefined, 'POST');
       if(verify.success){
-        const deleteCookie = await apiFetch<null>('/api/applications', undefined, 'DELETE')  
+        const deleteCookie = await apiFetch<null>('/api/applications', {transaction_id:transaction_id}, 'DELETE')  
         if(deleteCookie.success)  
           router.push('/client/dashboard');
           notify('Paiement effectué avec succès.', 'success')

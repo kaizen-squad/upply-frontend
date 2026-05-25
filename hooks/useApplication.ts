@@ -7,7 +7,7 @@ import { useState } from "react";
 interface UseApplicationReturn {
   application: ApplicationResponse[],
   loading: boolean,
-  applyTotask: (applyData: ApplicationFormType) => Promise<void>,
+  applyTotask: (task_id:string, applyData: ApplicationFormType) => Promise<void>,
   rejectApplication: (application_id:string) => Promise<void>,
   acceptApplication: (application_id:string) => Promise<boolean>,
   getTaskApplication: (task_id:string, role:'client'|'prestataire') => Promise<void>,
@@ -18,16 +18,15 @@ export function useApplication(): UseApplicationReturn {
   const [application, setApplication] = useState<ApplicationResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const {notify} = useToasting();
-  const router = useRouter();
 
-   const applyTotask = async (applyData: ApplicationFormType) => {
+   const applyTotask = async (task_id:string, applyData: ApplicationFormType) => {
         try{
           setLoading(true);
-          const applyresponse = await apiFetch<ApplicationResponse>(`api/applications/apply`, applyData, 'POST');
+          const applyresponse = await apiFetch<ApplicationResponse>(`api/${task_id}/apply`, applyData, 'POST');
           
           if(applyresponse.success){
             notify('Votre candidature a été soumise avec succès.', 'success');
-            setApplication([applyresponse.data]);
+            setApplication([applyresponse.data].flat(3));
           }
           else notify(applyresponse.message, 'error');
 
@@ -43,7 +42,7 @@ export function useApplication(): UseApplicationReturn {
         setLoading(true);
         const response = await apiFetch<ApplicationResponse[]>(`api/tasks/${task_id}/applications${role === 'prestataire' ? '/me':''}`);
         if(response.success)
-          setApplication(response.data);
+          setApplication([response.data].flat(3));
         else
           notify(response.message, 'error');
       }catch(err){
@@ -70,7 +69,7 @@ export function useApplication(): UseApplicationReturn {
     const acceptApplication = async (application_id:string) => {
       try{
           setLoading(true);
-          const applyresponse = await apiFetch<null>(`api/applications/${application_id}/accept`, {}, 'PUT');
+          const applyresponse = await apiFetch<null>(`api/application/${application_id}/accept`, {}, 'PUT');
           
           if(applyresponse.success){
             notify('La candidature a été acceptée.', 'success');

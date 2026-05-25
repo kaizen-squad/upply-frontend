@@ -91,7 +91,7 @@ const page = () => {
                                         className="m-auto my-4 p-2 rounded-sm border border-gray-200 shadow-2xs"
                                     />
                                     <p className="text-2xl font-bold">Aucune tache active ?</p>
-                                    <p className="text-scarpa-flow-gray-34 mt-1 mx-auto w-[60%]">Lancer votre première candidature ou continuez a vous enrichir avec Upply.</p>
+                                    <p className="text-scarpa-flow-gray-34 mt-2 mx-auto w-[90%] ">Lancer votre première candidature ou continuez a vous enrichir avec Upply.</p>
                                     <Button
                                         textContent="Decrocher un contrat"
                                         Icon={ArrowRight}

@@ -20,7 +20,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
                 :
                 <Header role="client" />
         }
-        <div className="flex h-(--main-height) overflow-y-hidden">
+        <div className="flex mt-(--header-height) md:mt-0 md:h-(--main-height) md:overflow-y-hidden">
             {
                 isMobile ? 
                     <div className='md:hidden'>
@@ -34,7 +34,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
                 :
                     <SidebarClient/>
             }
-            <div className="w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
+            <div className="w-full md:overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
                 <div className="m-auto w-[95%] min-h-(--main-height) py-10 flex">
                     {children}
                 </div>
