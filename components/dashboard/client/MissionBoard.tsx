@@ -17,13 +17,13 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
         {
             Boolean(tasks.length) && 
             <div>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-between mx-1'>
                     <h2 className='my-3'>MISSIONS RECENTES</h2>
                     <button 
-                        className='flex bg-alizarin-crimson-red-51 rounded-md text-white-solid font-semibold text-xl items-center px-4 py-2 gap-3 scale-80 cursor-pointer duration-200 hover:opacity-80 hover:scale-77'
+                        className='flex bg-alizarin-crimson-red-51 rounded-md text-white-solid font-semibold text-xl items-center px-4 py-2 gap-3 translate-x-1 scale-80 cursor-pointer duration-200 hover:opacity-80 hover:scale-77'
                         onClick={()=>loadDashboard()}
                     >
-                        <span className=''>Refresh</span>
+                        <span className='hidden xs:block'>Refresh</span>
                         <Loader width={19} strokeWidth={3} />
                     </button>
                 </div>

@@ -25,17 +25,17 @@ const TaskList:FC<{loading: boolean; tasks: TaskProps[], role:string}> =  ({load
             <div className="w-full">
                 {
                     (Boolean(tasks.length) && !loading) &&
-                    <div className="grid xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7 my-10 items-stretch w-[95%] m-auto sm:w-full">
+                    <div className="grid xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7 my-10 items-stretch m-auto sm:w-full">
                         {tasks.map((task)=><Task role={role} key={task.id} task={task} />)}
                     </div>
                 }
             </div>
 
             <div className="flex items-stretch justify-center h-max gap-5 w-full lg:scale-90">
-                <div className="text-center items-center gap-10 rounded-sm px-8 sm:p-8 w-full sm:bg-woodsmoke-gray-10 sm:w-full lg:w-max lg:text-left lg:flex">
+                <div className="text-center items-center gap-10 rounded-sm px-5 sm:p-8 w-full sm:bg-woodsmoke-gray-10 sm:w-full lg:w-max lg:text-left lg:flex">
                     <div className="lg:w-80">
-                        <p className="text-woodsmoke-gray-10 text-4xl font-bold sm:text-[1.5rem] sm:text-white-solid ">Vous ne trouvez pas votre bonheur?</p>
-                        <p className="text-santa-gray mt-3 w-[80%] m-auto sm:w-full">Abonnez-vous aux alertes pour être notifié des nouvelles missions en temps réel.</p>
+                        <p className="text-woodsmoke-gray-10 text-2xl font-bold sm:text-[1.5rem] sm:text-white-solid ">Vous ne trouvez pas votre bonheur?</p>
+                        <p className="text-santa-gray mt-3 w-[90%] m-auto sm:w-full">Abonnez-vous aux alertes pour être notifié des nouvelles missions en temps réel.</p>
                     </div>
                     <Button 
                         className="rounded-sm bg-alizarin-crimson-red-51 px-5 py-3 text-white-solid w-[75%] m-auto mt-3 sm:w-max lg:m-0"

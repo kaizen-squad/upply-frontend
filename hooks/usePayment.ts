@@ -8,7 +8,8 @@ export interface UsePaymentReturn {
   loading: boolean,
   proceedToPayment: (data: { application_id: string, task_id: string, prestataire_name: string }) => Promise<void>,
   liberatefunds: (deliverable_id:string) => Promise<boolean>,
-  verifyPayment: (task_id:string)=>Promise<void>
+  verifyPayment: (task_id:string)=>Promise<void>,
+  deleteSavedApplicant: ()=> Promise<void>
 }
 
 export function usePayment<UsePaymentReturn >() {
@@ -69,10 +70,15 @@ export function usePayment<UsePaymentReturn >() {
     return false
   }
 
+  const deleteSavedApplicant = async ()=>{
+    await apiFetch('/api/applications', undefined, 'DELETE')
+  }
+
   return{
     loading,
     proceedToPayment,
     liberatefunds,
-    verifyPayment
+    verifyPayment,
+    deleteSavedApplicant
   }
 }

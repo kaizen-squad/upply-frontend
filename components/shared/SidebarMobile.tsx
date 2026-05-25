@@ -29,7 +29,7 @@ const SiderbarMobile :FC<{isMobileSidebarOpened: boolean, setIsMobileSidebarOpen
                     />
                     <div className='text-sm'>
                         <p className='font-bold'>{user?.name ?? 'Admin'}</p>
-                        <p className='text-scarpa-flow-gray-34'>Compte: {user?.role ?? 'Prestataire'}</p>
+                        <p className='text-scarpa-flow-gray-34'>Compte: {user?.role ?? 'Client'}</p>
                     </div>
                 </div>
             </div>

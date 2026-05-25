@@ -47,7 +47,7 @@ const page = () => {
                       onClick={()=> route.push(`/client/tasks/${task.id}/review`)}
                     />
                     : 
-                    <div className="flex gap-5 items-center xl:flex-col mb-10 xl:mb-5">
+                    <div className="flex gap-5 items-center flex-col xs:flex-row xl:flex-col mb-10 xl:mb-5">
                       <Button
                       textContent="Modifier la mission"
                       Icon={Edit}
@@ -99,7 +99,7 @@ const page = () => {
                 <Button
                   textContent=""
                   Icon={X}
-                  className="rounded-full p-3 bg-gallery-gray-93 absolute right-3 top-3"
+                  className="rounded-full p-2 sm:p-3 bg-gallery-gray-93 absolute right-3 top-3"
                   onClick={()=>setIsEditing(false)}
                 />
                 <TaskForm isEditing={true} field_values={task} setIsEdited={setIsEdited}/>

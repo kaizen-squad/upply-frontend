@@ -115,13 +115,13 @@ const   TaskForm:FC<{field_values?:TaskProps, isEditing?:boolean, setIsEdited?:D
             />
         </div>
 
-        <div className='mt-25 w-full'>
-            <hr className='border-gray-200 w-full' />
+        <div className='mt-8 sm:mt-25 w-full'>
+            <hr className='hidden sm:block border-gray-200 w-full' />
             <Button
                 disabled={!isValid}
                 type='submit'
                 textContent={isSubmitting ? 'Loading...' : 'Publier la mission'}
-                className='bg-alizarin-crimson-red-51 text-white-solid font-medium rounded-md py-2.5 px-5 mt-5 flex justify-self-end mb-5'
+                className='bg-alizarin-crimson-red-51 text-white-solid font-medium rounded-md py-3 sm:py-2.5 px-5 mt-5 flex justify-self-end mb-5 sm:w-max w-full'
                 isLoading={isSubmitting}
             />
         </div>

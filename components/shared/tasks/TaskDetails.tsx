@@ -84,7 +84,7 @@ const TaskDetails:FC<
                       {
                         role ==='client' && 
                         <Button
-                          textContent="Supprimer"
+                          textContent={isMobile ? "" : "Supprimer"}
                           Icon={Trash2}
                           className="rounded-md py-2 px-4 bg-alizarin-crimson-red-51 text-white"
                           title="supprimer la mission"

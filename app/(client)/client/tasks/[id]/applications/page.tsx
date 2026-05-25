@@ -10,10 +10,14 @@ import { formatFrenchDateIntl } from '@/lib/utils';
 import FlagTask from "@/components/shared/tasks/FlagTask";
 import EmptyImage from "@/components/shared/EmptyImage";
 import { useApplication } from "@/hooks/useApplication";
+import Button from "@/components/ui/Button/Button";
+import { Redo2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const page = () => {
     const {loading, application, getTaskApplication} = useApplication();
     const {tasks: [task]} = useTasksContext();
+    const router = useRouter();
 
     useEffect(()=>{
       if(task && task.id)
@@ -79,11 +83,18 @@ const page = () => {
       )
     if(!Boolean(application.length))
       return (
-        <div className="h-max m-auto">
+        <div className="h-max m-auto translate-y-15">
           <div className="-translate-y-20">
             <EmptyImage/>
-            <p className="text-2xl font-bold relative z-1">Aucune candidature n'a été soumise.</p>
+            <p className="text-xl font-bold relative z-1 text-center">Aucune candidature n'a été soumise.</p>
           </div>
+          <Button
+            textContent="Retourner"
+            className="bg-alizarin-crimson-red-51 text-white font-semibold rounded-md py-3 px-8 m-auto -translate-y-15 w-[95%] sm:w-max"
+            Icon={()=><Redo2 className="rotate-y-180" />}
+            Iposition="left"
+            onClick={()=> router.back()}
+          />
         </div>
       )
 }

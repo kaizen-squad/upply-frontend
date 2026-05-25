@@ -6,8 +6,8 @@ import { useAuth } from '@/hooks/useAuth';
 import Image from 'next/image';
 
 const SidebarClient = () => {
-    const {user} = useUserStore();
     const {logout} = useAuth();
+    const {user} = useUserStore();
     const onglets = {
         GENERAL: [
             {text: 'Tableau de bord', iconPath: 'LayoutDashboard.svg', redirect:'/client/dashboard'}
@@ -34,8 +34,8 @@ const SidebarClient = () => {
                     loading='eager'
                 />
                 <div className='text-sm'>
-                    <p className='font-bold'>{user?.name ?? 'Admin'}</p>
-                    <p className='text-scarpa-flow-gray-34'>Compte: {user?.role ?? 'Prestataire'}</p>
+                    <p className='font-bold'>{user?.name ?? 'Placeholder'}</p>
+                    <p className='text-scarpa-flow-gray-34'>Compte: Client</p>
                 </div>
             </div>
             <Button 

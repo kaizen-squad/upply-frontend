@@ -11,7 +11,7 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
   return (
     <div className='flex h-screen flex-col gap-10 lg:flex-row my-auto'>
 
-      <div className="lg:w-full h-max lg:h-screen my-auto flex flex-col gap-10 lg:flex-row lg:gap-0">
+      <div className="lg:w-full h-max lg:h-screen my-auto flex flex-col gap-8 lg:flex-row lg:gap-0">
          {/* Image gauche */}
         <div className='w-[45%] bg-cover-beige hidden lg:block'>
           <Image 
@@ -36,7 +36,7 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
         </div>
         
         {/* Zone de formulaire */}
-        <div className='w-[80%] md:w-[60%] lg:w-[40%] mx-auto flex flex-col h-max lg:my-auto'>
+        <div className='w-[90%] sm:w-[80%] md:w-[60%] lg:w-[40%] mx-auto flex flex-col h-max lg:my-auto'>
           <Tab options={['Login', 'Register']} current={pathname?.includes('login') ? 'Login' : 'Register'} onclick={(e)=> {
               router.push((e.currentTarget.id  === 'Login') ? '/login' : '/register')
           }} />
