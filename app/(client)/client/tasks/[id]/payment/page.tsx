@@ -16,6 +16,8 @@ import { UserCircle2 } from 'lucide-react';
 import { usePayment } from '@/hooks/usePayment';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { useApplication } from '@/hooks/useApplication';
+import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
+import { any } from 'zod';
 
 export type PaymentInfosType = {
     completed: boolean,
@@ -37,11 +39,11 @@ const page = () => {
     const [checkoutLoading, setCheckoutLoading] = useState(false);
     const [checkoutError, setCheckoutError] = useState('');
     const checkoutTimeoutRef = useRef<number | null>(null);
-    const {verifyPayment} = usePayment() ;
+    const {verifyPayment, deleteSavedApplicant} = usePayment() ;
     const {notify} = useToasting();
     const router = useRouter();
     const {acceptApplication} = useApplication();
-
+    const {modalify, close} = useModalify();
     useEffect(()=>{
         const getPrestataire = async ()=>{
             try{
@@ -66,8 +68,11 @@ const page = () => {
         const acceptAndPay = async ()=>{
             if(paymentInfos.completed && paymentInfos.transaction_id && prestataire){
                 const accept = await acceptApplication(prestataire.application_id);
-                if(accept)
-                    verifyPayment(paymentInfos.transaction_id);
+                if(accept){
+                    const verified = await verifyPayment(paymentInfos.transaction_id);
+                    if(verified)
+                        deleteSavedApplicant();
+                }
             }
         }
         acceptAndPay();
@@ -148,9 +153,40 @@ const page = () => {
                     setShowFedapay(false);
                 }}
             />
-            <h1>Escrow Paiement</h1>
+            <div className="flex justify-between items-center">
+                <p className="text-2xl font-bold">Escrow Paiement</p>
+                <Button
+                    textContent="Annuler"
+                    className="bg-gallery-gray-93 font-semibold rounded-md py-2 px-5"
+                    onClick={()=>{
+                        modalify(<div>
+                            <p className="text-center">Voulez vous annuler le payement?</p>
+                            <div className="flex items-center gap-2 mt-5">
+                                <Button
+                                    className="bg-alizarin-crimson-red-51 text-white font-semibold rounded-md py-3 w-full"
+                                    textContent="Continuer"
+                                    onClick={()=>close('annuler-paiement')}
+                                />
+                                <Button
+                                    className="bg-gallery-gray-93 font-semibold rounded-md py-3 w-full"
+                                    textContent="Annuler"
+                                    onClick={()=>{
+                                        deleteSavedApplicant();
+                                        close('annuler-paiement')
+                                        router.push('/client/dashboard')
+                                    }}
+
+                                />
+                            </div>
+                        </div>, {
+                            title: 'Annuler le paiement',
+                            id:'annuler-paiement'
+                        })
+                    }}
+                />
+            </div>
             <div className="my-10 flex flex-col xl:grid grid-cols-[1fr_1fr] gap-7">
-                <div className="bg-white-solid rounded-md p-10 border flex flex-col justify-between">
+                <div className="bg-white-solid rounded-md p-5 py-7 sm:p-10 border flex flex-col justify-between">
                     
                     <div>
                         <div className="flex items-center gap-3">
@@ -162,7 +198,7 @@ const page = () => {
                         </div>
                         <hr className="border border-gray-200 w-full my-5" />
 
-                        <p className="text-2xl font-bold my-5">Récapitulatif de la Mission & du Montant</p>
+                        <p className="text-xl sm:text-2xl font-bold my-5">Récapitulatif de la Mission & du Montant</p>
 
                         <div className="my-5 rounded-md">
                             <div className="flex items-center justify-between my-3 gap-10">
@@ -185,7 +221,7 @@ const page = () => {
                     </div>
                 </div>
 
-                <div className="bg-white p-10 rounded-md border flex flex-col justify-between gap-5">
+                <div className="bg-white px-5 py-7 sm:p-10 rounded-md border flex flex-col justify-between gap-5">
                     <div className="flex items-center gap-5 justify-between">
                         <p className="font-bold text-xl">Plateforme Fedapay sécurisée</p>
                         <p className="h-max py-1 px-3 bg-woodsmoke-gray-8 rounded-md text-white font-semibold">Fedapay</p>
@@ -228,7 +264,7 @@ const page = () => {
                         <Button
                             textContent={`Payer ${formatAmount(totalPayment)} ${budgetCurrency}`}
                             Icon={showFedapay?()=><Spinner size={7} />:''}
-                            className="rounded-md cursor-pointer bg-alizarin-crimson-red-51 text-white font-bold w-full  py-4 px-15 m-auto"
+                            className="rounded-md cursor-pointer bg-alizarin-crimson-red-51 text-white font-bold w-full  py-4 m-auto"
                             onClick={()=> {
                                 setShowFedapay(true);
                             }}
@@ -245,7 +281,7 @@ const page = () => {
                         <Milestone/>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-5 h-max">
+                    <div className="grid xs:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5 h-max">
                         <div className="rounded-md p-5 bg-white-solid border gap-2">
                             <p className="font-semibold text-xl">Securité Escrow</p>
                             <p className="text-scarpa-flow-gray-34 mt-3">Votre budget est bloqué en toute sécurité dans notre système de séquestre. Le prestataire ne pourra accéder aux fonds qu'après votre validation finale du travail accompli.</p>

@@ -33,9 +33,9 @@ export async function proxy(request: NextRequest) {
     if(userCookie){
       const user: User = JSON.parse(userCookie);
       if (user && user.role === 'client') {
-        return NextResponse.redirect(new URL('/client', request.url));
+        return NextResponse.redirect(new URL('/client/dashboard', request.url));
       } else if (user.role === 'prestataire') {
-          return NextResponse.redirect(new URL('/prestataire', request.url));
+          return NextResponse.redirect(new URL('/prestataire/dashboard', request.url));
       }
     }
     // Fallback: logout si pas de rôle
@@ -51,14 +51,19 @@ export async function proxy(request: NextRequest) {
     if(userCookie){
        const user: User = JSON.parse(userCookie);
 
+      // Redirection vers le dashboard pour l'url index "/"
+      if(request.url=== `${process.env.FRONTEND_BASE_URL}/`)
+        return NextResponse.redirect(new URL(`/${user.role}/dashboard`, request.url));
+
+
         // Client essayant d'accéder à une route prestataire
       if (user.role === 'client' && prestataireRoutes.some(route => pathname.startsWith(route))) {
-        return NextResponse.redirect(new URL('/client', request.url));
+        return NextResponse.redirect(new URL('/client/dashboard', request.url));
       }
     
       // Prestataire essayant d'accéder à une route client
       if (user.role === 'prestataire' && clientRoutes.find(route => pathname.startsWith(route))) {
-        return NextResponse.redirect(new URL('/prestataire', request.url));
+        return NextResponse.redirect(new URL('/prestataire/dashboard', request.url || '/dashboard'));
       }
     }else{
         const response = NextResponse.redirect(new URL('/login', request.url));

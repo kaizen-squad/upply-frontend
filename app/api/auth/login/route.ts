@@ -43,7 +43,7 @@ export async function GET(){
   let user = cookiestore.get('user');
   if(user){
     user = JSON.parse(user?.value as string);
-    return NextResponse.json({success:true, user:user});
+    return NextResponse.json({success:true, data:user, message:'User info'});
   }else{
     NextResponse.json({success:false});
   }

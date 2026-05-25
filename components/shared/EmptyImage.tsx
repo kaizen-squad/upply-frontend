@@ -12,7 +12,7 @@ const EmptyImage = () => {
                   alt="empty-box"
                   height={100}
                   width={100}
-                  className="scale-200 z-0 -translate-y-10 m-auto"
+                  className="scale-200 z-0 -translate-y-10 translate-x-2  m-auto"
                   loading="eager"
                 /> 
                 :

@@ -16,7 +16,7 @@ function RegisterForm() {
   const {handleSubmit, control} = useForm<RegisterProps>({
     mode: 'onChange',
     resolver: zodResolver(RegisterSchema) as any,
-    defaultValues: { role: 'client' as RegisterProps['role'], rating_avg: 1.11 },
+    defaultValues: { role: 'Client' as RegisterProps['role'], rating_avg: 1.11 },
   });
     const {notify} = useToasting();
   const {register, loading} = useAuth();
@@ -30,17 +30,17 @@ function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} className='m-auto rounded-2xl mt-5 bg-white shadow-lg p-8 border-[0.5px] border-gray-200 opacity'>
-        <div className='flex items-center justify-between'>
-          <h1 className="font-bold text-2xl">Create Account</h1>
+        <div className='flex flex-col gap-3 xs:flex-row items-center justify-between'>
+          <p className="font-bold text-2xl">Create Account</p>
           <Controller 
               control={control}
               name='role'
               render={({field})=> <SelectField {...field} options={['Client', 'Prestataire']} name='role' />  }
           />
         </div> 
-        <p className="py-3 font-semibold text-xl">Join Upply now!</p>
+        <p className="my-3 xs:font-semibold text-xl">Join Upply now!</p>
 
-        <div className='flex gap-5 items-center my-2'>
+        <div className='flex flex-col xs:flex-row gap-3 items-center my-2'>
             <Controller 
               control={control}
               name='name'
