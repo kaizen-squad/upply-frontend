@@ -69,7 +69,7 @@ const page = () => {
             if(paymentInfos.completed && paymentInfos.transaction_id && prestataire){
                 const accept = await acceptApplication(prestataire.application_id);
                 if(accept){
-                    const verified = await verifyPayment(paymentInfos.transaction_id);
+                    const verified = await verifyPayment(task.id, paymentInfos.transaction_id);
                     if(verified)
                         deleteSavedApplicant();
                 }
@@ -305,23 +305,6 @@ const page = () => {
             <div className="fixed inset-0 z-50 ">
                 <div className="w-full h-full flex flex-col">
                     <div className="flex-1 w-full h-full ">
-                        {isFedapayScriptError && (
-                            <div className="rounded-md border border-red-200 bg-red-50 p-6 text-red-900">
-                                <p className="font-semibold mb-2">Erreur de chargement FedaPay</p>
-                                <p>Le widget de paiement n’a pas pu se charger. Vérifiez votre connexion ou réessayez plus tard.</p>
-                            </div>
-                        )}
-                        {!isFedapayScriptError && checkoutError && (
-                            <div className="rounded-md border border-yellow-200 bg-yellow-50 p-6 text-yellow-900">
-                                <p className="font-semibold mb-2">Délai d’attente dépassé</p>
-                                <p>{checkoutError}</p>
-                            </div>
-                        )}
-                        {!isFedapayScriptError && !checkoutError && (!isFedapayScriptLoaded || checkoutLoading) && (
-                            <div className="flex h-full items-center justify-center">
-                                <p className="text-jumbo-gray-46">Veuillez patienter pendant le chargement du paiement...</p>
-                            </div>
-                        )}
                         {!isFedapayScriptError && !checkoutError && isFedapayScriptLoaded && !checkoutLoading && (
                             <Fedapay setShowFedapay={setShowFedapay} setError={setError} setPaymentInfos={setPaymentInfos} amount={totalPayment} />
                         )}

@@ -49,7 +49,6 @@ export interface Application {
 
 export const ApplicationFormSchema = z.object({
     message: z.string().min(20, 'Soyez bon vendeur de vous même!'),
-    task_id: z.string()
 });
 
 export type ApplicationFormType = z.infer<typeof ApplicationFormSchema>

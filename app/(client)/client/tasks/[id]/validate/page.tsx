@@ -91,11 +91,9 @@ const page = () => {
 
     if(loading)
         return (
-            <div className="h-(--main-height) flex w-full">
-                <div className="h-max flex items-center gap-3 m-auto">
-                    <Spinner/>
-                    <p>Loading...</p>
-                </div>
+            <div className="h-max flex items-center gap-3 m-auto">
+                <Spinner/>
+                <p>Loading...</p>
             </div>
         )
     else
@@ -246,11 +244,9 @@ const page = () => {
         else 
             return (
                 // Error state : API return error (Show a global error state component)
-                <div className="h-full w-full flex">
-                    <div className="w-max h-max m-auto -translate-y-10">
-                        <EmptyImage/>
-                        <p className="text-2xl font-bold text-center relative z-1">Aucun livrable disponible!</p>
-                    </div>
+                <div className="w-max h-max m-auto -translate-y-10">
+                    <EmptyImage/>
+                    <p className="text-2xl font-bold text-center relative z-1">Aucun livrable disponible!</p>
                 </div>
             )
 }

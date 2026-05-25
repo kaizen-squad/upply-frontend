@@ -9,7 +9,7 @@ const page =  () => {
     const {loading, tasks, refetch} = useTasks(undefined);
 
   return (
-    <div className={tasks.length ? "w-full" : "py-10 w-full h-(--main-height) flex flex-col"}>
+    <div className={tasks.length ? "w-full px-2" : "px-2 pb-10 w-full h-(--main-height) flex flex-col"}>
         <div>
             <h1>Missions Disponibles</h1>
             <p className="text-santa-gray mt-2">Explorez les opportunités du jour.</p>

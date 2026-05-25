@@ -21,7 +21,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
                 :
                 <Header role="prestataire" />
         }
-        <div className="flex h-(--main-height) overflow-y-hidden">
+        <div className="flex md:mt-0 mt-(--header-height) md:h-(--main-height) md:overflow-y-hidden">
             {
                 isMobile ? 
                 <div>
@@ -35,7 +35,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
                 :
                 <SidebarPrestataire/>
             }   
-            <div className="w-full overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
+            <div className="w-full md:overflow-y-scroll bg-alabaster-gray-98 no-scrollbar">
                 <div className="m-auto w-[95%] min-h-(--main-height) py-10 flex">
                     {children}
                 </div>

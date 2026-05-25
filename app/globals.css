@@ -122,6 +122,9 @@
   h3{
     @apply text-[1rem] font-semibold
   }
+  body{
+    @apply bg-alabaster-gray-98
+  }
 
   @layer utilities {
     /* Chrome, Safari, Edge, Opera */

@@ -1,6 +1,6 @@
 // TaskSkeleton.tsx pour l'état de chargement
 export const TaskSkeleton = () => (
-    <div className="bg-white-solid border-2 border-gray-200 shadow-2xs w-[280px] rounded-sm animate-pulse">
+    <div className="bg-white-solid border-2 border-gray-200 shadow-2xs w-full rounded-sm animate-pulse">
         <div className="p-5">
             <div className="flex">
                 <div className="w-16 h-4 bg-gray-200 rounded"></div>

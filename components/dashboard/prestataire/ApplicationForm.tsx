@@ -19,13 +19,10 @@ const ApplicationForm:FC<{task: TaskProps}> = ({task}) => {
     const {control, handleSubmit, formState:{isValid, isSubmitting}} = useForm<ApplicationFormType>({
         mode: 'onChange',
         resolver: zodResolver(ApplicationFormSchema),
-        defaultValues: {
-            task_id: task.id
-        }
     });
     
     const onSubmit = async (data: ApplicationFormType)=> {
-        await applyTotask(data);
+        await applyTotask(task.id, data);
     }
 
     const onError = ()=>{
