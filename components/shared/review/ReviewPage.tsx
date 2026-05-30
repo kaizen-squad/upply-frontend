@@ -5,9 +5,16 @@ import Image from 'next/image'
 import { useTasksContext } from '../tasks/TaskProvider'
 import { formatAmount, formatFrenchDateIntl } from '@/lib/utils'
 import { budgetCurrency } from '@/hooks/useTasks'
+import { useEffect } from 'react';
+import { notFound } from 'next/navigation';
 
 const ReviewPage = () => {
   const {tasks:[task]} = useTasksContext();
+  useEffect(()=>{
+    if(task.status !== 'OUVERTE'){
+        notFound();
+    }
+  },[])
   if(task) 
     return (
       <div className='my-10'>      

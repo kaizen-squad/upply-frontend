@@ -28,11 +28,13 @@ export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
       
       if (response.success) {
         setDashboardData(response.data);
-      } else {
-        throw new Error(response.message || 'Erreur de chargement');
+      } else { 
+          if(response.message)
+            notify(response.message,'error');
+          else throw ''
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Une erreur est survenue lors du chargement';
+      const message ='Une erreur est survenue lors du chargement';
       setError(message);
       notify(message, 'error');
     } finally {

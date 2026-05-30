@@ -12,7 +12,7 @@ import EmptyImage from "@/components/shared/EmptyImage";
 import { useApplication } from "@/hooks/useApplication";
 import Button from "@/components/ui/Button/Button";
 import { Redo2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 
 const page = () => {
     const {loading, application, getTaskApplication} = useApplication();
@@ -20,8 +20,12 @@ const page = () => {
     const router = useRouter();
 
     useEffect(()=>{
+      
       if(task && task.id)
-        getTaskApplication(task.id, 'client');
+        if(task.status !== 'OUVERTE'){          
+            notFound();
+        }else
+          getTaskApplication(task.id, 'client');
     }, [task]);
 
     if(loading) 

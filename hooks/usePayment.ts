@@ -24,9 +24,13 @@ export function usePayment<UsePaymentReturn >() {
        notify('Candidature sauvegardée. Procédez au paiement.', 'success');
         router.push(`/client/tasks/${data.task_id}/payment`);
       }          
-      else throw new Error(saveApplicant.message)
+      else { 
+          if(saveApplicant.message)
+            notify(saveApplicant.message,'error');
+          else throw ''
+        }
     }catch(err){
-        notify(err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'acceptation de la candidature!', 'error');
+        notify('Une erreur est survenue lors de l\'acceptation de la candidature!', 'error');
     }finally{
       setLoading(false);
     }
@@ -41,9 +45,13 @@ export function usePayment<UsePaymentReturn >() {
         notify('Votre mission est maintenant achevée', 'success'); 
         return true
       }          
-      else throw new Error(liberate.message)
+      else{ 
+          if(liberate.message)
+            notify(liberate.message,'error');
+          else throw ''
+      }
     }catch(err){
-        notify(err instanceof Error ? err.message : 'Une erreur est survenue lors de la liberation des fonds!', 'error');
+        notify('Une erreur est survenue lors de la liberation des fonds!', 'error');
     }finally{
       setLoading(false);
     }
@@ -53,17 +61,21 @@ export function usePayment<UsePaymentReturn >() {
   const verifyPayment = async (task_id:string, transaction_id:string) => {
       try{
       setLoading(true);
-      const verify = await apiFetch<null>(`api/tasks/${task_id}/payment/verify`, undefined, 'POST');
+      const verify = await apiFetch<null>(`api/tasks/${task_id}/payment/verify`, {transaction_id:transaction_id}, 'POST');
       if(verify.success){
-        const deleteCookie = await apiFetch<null>('/api/applications', {transaction_id:transaction_id}, 'DELETE')  
+        const deleteCookie = await apiFetch<null>('/api/applications', undefined, 'DELETE')  
         if(deleteCookie.success)  
           router.push('/client/dashboard');
           notify('Paiement effectué avec succès.', 'success')
           return true
       }          
-      else throw new Error(verify.message)
+      else{ 
+          if(verify.message)
+            notify(verify.message,'error');
+          else throw ''
+      }
     }catch(err){
-        notify(err instanceof Error ? err.message : 'Erreur lors du paiement.', 'error');
+        notify('Erreur lors du paiement.', 'error');
     }finally{
       setLoading(false);
     }

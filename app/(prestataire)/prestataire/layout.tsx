@@ -23,7 +23,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
         }
         <div className="flex md:mt-0 mt-(--header-height) md:h-(--main-height) md:overflow-y-hidden">
             {
-                isMobile ? 
+                isMobile ?
                 <div>
                      {
                         isMobileSidebarOpened && 

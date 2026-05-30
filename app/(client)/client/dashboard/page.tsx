@@ -7,10 +7,11 @@ import { CDashboardData } from '@/types/index';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDashboard } from '@/hooks/useDashboard';
+import { useMediaQuery } from '@reactuses/core';
 
 const page = () => {
     const router = useRouter();
-
+  const isMobile = useMediaQuery('(max-width: 768px)', true);
     const {loadDashboard, dashboardData, loading} = useDashboard<CDashboardData>('client');
 
     const {tasks = [], statistics = {opened: 0, pending: 0, validated: 0}} = dashboardData || {};
@@ -27,7 +28,7 @@ const page = () => {
     return (
         <div className={'block pb-10 gap-10 m-auto lg:m-auto xl:grid grid-cols-[67%_1fr]'}>
             <div>
-                <div className='md:flex items-center justify-between'>
+                <div className='flex items-center justify-between w-full'>
                     <div>
                         {
                             loading ? 
@@ -54,9 +55,9 @@ const page = () => {
                             {
                                 (!loading && Boolean(tasks.length)) &&
                                 <Button 
-                                    textContent='NOUVELLE MISSION'
+                                    textContent={isMobile ? '' : 'NOUVELLE MISSION'}
                                     Icon={Plus}
-                                    className='min-w-max px-5 py-3 rounded-sm bg-alizarin-crimson-red-51 font-medium text-white-solid translate-x-5 scale-80 flex-end hover:scale-77 duration-200 hidden md:flex'
+                                    className='min-w-max px-5 py-3 rounded-sm bg-alizarin-crimson-red-51 font-medium text-white-solid md:translate-x-5 scale-80 flex-end hover:scale-77 duration-200'
                                     onClick={()=> router.push('/client/tasks/new')}
                                 />
                             }          

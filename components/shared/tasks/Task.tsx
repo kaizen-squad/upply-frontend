@@ -15,7 +15,7 @@ export const flagColor ={
 }
 
 const Task: FC<{task:TaskProps, role:string}> = ({task, role}) => {
-    const {id, client_id, title, description, budget, deadline, status} = task;
+    const {id, title, description, budget, deadline, status} = task;
 
     const router = useRouter();
   return (

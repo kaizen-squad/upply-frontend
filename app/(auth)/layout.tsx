@@ -9,9 +9,9 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
   const router = useRouter();
   console.log('Current pathname:', pathname);
   return (
-    <div className='flex h-screen flex-col gap-10 lg:flex-row my-auto'>
+    <div className='flex h-screen flex-col gap-10 lg:flex-row my-auto bg-alabaster-gray-98'>
 
-      <div className="lg:w-full h-max lg:h-screen my-auto flex flex-col gap-8 lg:flex-row lg:gap-0">
+      <div className="lg:w-full py-5 h-max lg:h-screen my-auto flex flex-col gap-8 lg:flex-row lg:gap-0 bg-alabaster-gray-98">
          {/* Image gauche */}
         <div className='w-[45%] bg-cover-beige hidden lg:block'>
           <Image 

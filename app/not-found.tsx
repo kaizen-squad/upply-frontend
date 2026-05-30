@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 const NotFound = () => {
     const router = useRouter();
+   
   return (
     <div className="h-screen w-screen flex" >
         <div className="h-max m-auto text-center" >
@@ -23,9 +24,7 @@ const NotFound = () => {
                     onClick={()=> router.push(`/`)}
                 />
             </div>
-           
         </div>
-       
     </div>
   )
 }

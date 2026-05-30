@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-const DeliverForm: FC<{ task_id: string }> = ({ task_id }) => {
+const DeliverForm: FC<{ task_id: string, isdelivered:boolean }> = ({ task_id,  isdelivered}) => {
   const [success, setSuccess] = useState(false);
     const {notify} = useToasting();
   const { deliverTask } = useTasksContext();
@@ -32,6 +32,7 @@ const DeliverForm: FC<{ task_id: string }> = ({ task_id }) => {
   });
 
   const onSubmit = async (data: DeliveryFormProps) => {
+    console.log(data)
     const response = await deliverTask(data);
     setSuccess(response);
   };
@@ -42,7 +43,7 @@ const DeliverForm: FC<{ task_id: string }> = ({ task_id }) => {
 
   return (
     <div>
-      {!success ? (
+      {(!success && !isdelivered) ? (
         <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit, onError)}>
           <Controller
             control={control}

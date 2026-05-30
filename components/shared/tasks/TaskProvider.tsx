@@ -1,7 +1,8 @@
 'use client';
 import { useTasks } from '@/hooks/useTasks';
 import { TaskProps } from '@/types';
-import { createContext, FC, ReactNode, useContext, useMemo } from 'react';
+import { notFound } from 'next/navigation';
+import { createContext, ReactNode, useContext, useEffect, useMemo } from 'react';
 
 interface TaskProviderProps<T = TaskProps > {
   taskId: string;
@@ -26,9 +27,15 @@ function TaskProvider<T = TaskProps >({
 }: TaskProviderProps<T>) {
   
   const taskManager = useTasks<T>(taskId);
-  
+
+  useEffect(()=>{
+    if(!taskManager.loading && taskManager.tasks.length === 0){
+      console.log('[Provider]')
+      notFound()
+    }
+  },[taskManager.loading])
   return (
-    <TasksContext.Provider value={taskManager}>
+    <TasksContext.Provider value={taskManager}> 
        {children}
     </TasksContext.Provider>
   );

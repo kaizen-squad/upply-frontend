@@ -130,8 +130,7 @@ export default async function apiFetch<T> (url: string, body?: object | undefine
     try{
 
         const res: HTTPResponse<T> = await instance(requestConfig)
-        .then((response)=> response.data);
-
+        .then((response)=> response.data)
         return res;
 
     }catch(err){
@@ -146,8 +145,8 @@ export default async function apiFetch<T> (url: string, body?: object | undefine
             console.error(err);
         return {
             success: false,
-            message: err instanceof Error ? err.message : 'Request failed',
             data: null as T,
+            message: "Echec de la tentative: une erreur est survenue",
             status: 500
         } ;
     }
