@@ -48,20 +48,24 @@ const page = () => {
                     />
                     : 
                     <div className="flex gap-5 items-center flex-col xs:flex-row xl:flex-col mb-10 xl:mb-5">
-                      <Button
-                      textContent="Modifier la mission"
-                      Icon={Edit}
-                      onClick={()=> setIsEditing(true)}
-                      className="py-3 rounded-md bg-woodsmoke-gray-8 w-full text-white font-bold"
-                    />
-                    {
-                      task.status === 'OUVERTE' 
-                      ? <Button
-                      textContent="Voir les candidatures"
-                      Icon={UserCircle2}
-                      className="py-3 rounded-md bg-alizarin-crimson-red-51 w-full text-white font-bold"
-                      onClick={()=> route.push(`/client/tasks/${task.id}/applications`)}
-                    />:
+                      {task.status === 'OUVERTE' 
+                      ? 
+                      <div>
+                        <Button
+                        textContent="Modifier la mission"
+                        Icon={Edit}
+                        onClick={()=> setIsEditing(true)}
+                        className="py-3 rounded-md bg-woodsmoke-gray-8 w-full text-white font-bold"
+                        />
+                      
+                        <Button
+                        textContent="Voir les candidatures"
+                        Icon={UserCircle2}
+                        className="py-3 rounded-md bg-alizarin-crimson-red-51 w-full text-white font-bold"
+                        onClick={()=> route.push(`/client/tasks/${task.id}/applications`)}
+                        />
+                      </div>
+                    :
                       <Button
                       textContent="Voir le livrable"
                       Icon={Truck}

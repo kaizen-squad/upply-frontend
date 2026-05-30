@@ -14,13 +14,13 @@ const TextField: FC<ITextFieldProps> = ( { type, id, label, value, className, pl
             </div>}              
            
            <div className='relative'>
-                {Icon && <Icon className='absolute left-3 top-[7px] text-gray-400 w-5'/>}
+                {Icon && <Icon className='absolute left-3 top-[8px] text-gray-400 w-5'/>}
                 <input 
                     {...props} 
                     value={value ?? ''} 
                     type={type ?? 'text'} id={textFieldId} 
                     className={cn(
-                                'block max-w-full w-full px-3 py-[5px] shadow-2xs rounded-lg border-[0.5px] border-gray-300 outline-2 ', 
+                                'block max-w-full w-full px-3 py-[8px] shadow-2xs rounded-lg border-[0.5px] border-gray-300 outline-2 ', 
                                 errorMessage 
                                 ? 'outline-red-500 text-red-700'
                                 : 'focus-visible:outline-blue-500 outline-transparent bg-gray-50',

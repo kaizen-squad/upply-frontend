@@ -5,9 +5,11 @@ import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { useToasting } from '@/components/ui/Toast/useToasting';
 import { useApplication } from '@/hooks/useApplication';
+import { budgetCurrency } from '@/hooks/useTasks';
+import { formatAmount } from '@/lib/utils';
 import { TaskProps } from '@/types';
 import { LockKeyhole, Zap, CircleCheck } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const page= () => {
@@ -26,20 +28,24 @@ const page= () => {
                 setIsLoading(false)
             }
         }
-       
+    
         getApplication();
 
     }, [loading, task]);
 
     useEffect(()=>{
-        if(!application && !loading){
+        if(!application && !isLoading){
             router.push('/prestataire/dashboard');
             notify("Vous n'etes pas prestataire sur cette tache!", 'warning');
+            return;
         }
-    }, [application, isLoading])
+        if(task && ['VALIDEE', 'OUVERTE'].includes(task.status))
+            notFound();
+
+    }, [application, isLoading, task])
   return (task && !isLoading && application) ? (
     
-    <div className='py-10'>
+    <div className=''>
         <h1>Soumettre mon Livrable</h1>
         <p>Complétez les informations ci-dessous pour valider la livrables.</p>
 
@@ -52,13 +58,13 @@ const page= () => {
                 </div>
                 <div className='rounded-lg bg-gallery-gray-93 py-3 px-5 flex justify-between items-center mt-4 md:block md:bg-transparent md:p-0'>
                     <small className='text-[0.9rem] font-semibold md:text-xs'>Montant sécurisé (Escrow)</small>
-                    <p className='text-alizarin-crimson-red-51 text-3xl font-black'>{task?.budget ?? ''}</p>
+                    <p className='text-alizarin-crimson-red-51 text-3xl font-black'>{formatAmount(task?.budget) ?? ''}</p>
                 </div>
             </div>
         </div>
 
         <div className='p-6 border-2 mt-6 bg-white-solid'>
-            <DeliverForm task_id={task?.id} />
+            <DeliverForm task_id={task?.id} isdelivered={task.status === 'LIVREE'} />
         </div>
         
         <div className='border-2 bg-white-solid flex flex-col lg:grid lg:grid-rows-2 lg:grid-cols-2 xl:grid-rows-1 xl:grid-cols-3 gap-5 mt-5 p-5'>
@@ -68,7 +74,7 @@ const page= () => {
                         <LockKeyhole className='text-alizarin-crimson-red-51' /> 
                         <p className='font-semibold'>Fonds sécurisés</p>
                     </div> 
-                    <p className='text-santa-gray mt-3'>Les fonds pour cette mission (25,000 FCFA) sont actuellement conservés en toute sécurité dans l'escrow FedaPay.</p>
+                    <p className='text-santa-gray mt-3'>Les fonds pour cette mission {formatAmount(task?.budget)} {budgetCurrency} sont actuellement conservés en toute sécurité dans l'escrow FedaPay.</p>
                 </div>
             </div>
                 
@@ -82,7 +88,7 @@ const page= () => {
                 </div>
             </div>
 
-            <div className='p-5 rounded-sm bg-woodsmoke-gray-8 text-white-solid lg:col-start-1 lg:col-end-3 lg:w-[60%] lg:m-auto xl:col-start-3 xl:w-full'>
+            <div className='p-5 rounded-sm bg-woodsmoke-gray-8 text-white-solid lg:col-start-1 lg:col-end-3 lg:w-full lg:m-auto xl:col-start-3 xl:w-full'>
                 <Zap className='stroke-2 text-white' />
                 <p className='font-semibold mt-2'>Accélerez vos missions</p>
                 <p className='my-3'>Boostez la visibilité de vos taches pour un recrutement 2x plus rapide.</p>

@@ -15,7 +15,7 @@ const TaskList:FC<{loading: boolean; tasks: TaskProps[], role:string}> =  ({load
         {/* Rendu de loading */}
 
         {loading && 
-            <div className="flex items-center flex-wrap gap-8 justify-center my-10">
+            <div className="grid xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7 my-10 items-stretch m-auto w-full">
                 {Array(8).fill(0).map((p, index)=> <TaskSkeleton key={index} />)}
             </div>
         }

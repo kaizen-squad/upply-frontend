@@ -41,11 +41,11 @@ const TaskDetails:FC<
                     <p className="my-2 text-scarpa-flow-gray-34">{formatRelativeTime(task.created_at ?? '')}</p>
                   </div>
                     {
-                      role ==='client' && <Button
+                      (role ==='client' && task.status === 'OUVERTE') && <Button
                       textContent=""
                       Icon={Trash2}
                       className="rounded-full p-3 bg-red-500 text-white"
-                      title="supprimer la mission"
+                      title="Supprimer la mission"
                       onClick={()=> modalify(<DeleteModale task_id={task.id} />, {
                         id:'delete-task',
                         title: 'Suppression de mission'
@@ -82,19 +82,18 @@ const TaskDetails:FC<
                         </div>
                       </div>
                       {
-                        role ==='client' && 
+                        (role ==='client' && task.status === 'OUVERTE') && 
                         <Button
-                          textContent={isMobile ? "" : "Supprimer"}
+                          textContent={''}
                           Icon={Trash2}
                           className="rounded-md py-2 px-4 bg-alizarin-crimson-red-51 text-white"
-                          title="supprimer la mission"
+                          title="Supprimer la mission"
                           onClick={()=> modalify(<DeleteModale task_id={task.id} />, {
                             id:'delete-task',
                             title: 'Suppression de mission'
                         })}
                         />
                       }  
-
                     </div>
                   </div>
                 </div>

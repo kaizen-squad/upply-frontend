@@ -13,6 +13,7 @@ import { commissionPlateform, formatFrenchDateIntl, getInitials } from '@/lib/ut
 import { DeliverableDTO, TaskProps } from '@/types';
 import { ArrowRight, BadgeCheck, Shield } from 'lucide-react';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Rating from 'react-ratings-star';
 
@@ -86,8 +87,12 @@ const page = () => {
                 setLoading(false)
             }  
         }
-        getDeliverable();
-    }, []);
+
+        if(task && !['EN_COURS', 'LIVREE'].includes(task.status)){            
+            notFound();
+        }else
+            getDeliverable();
+    }, [task]);
 
     if(loading)
         return (

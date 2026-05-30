@@ -71,7 +71,6 @@ export const useAuth = () =>{
             }else{
                 notify(response.message, 'error');
             }
-               
         }catch(err){
             console.error('[useAuth] register error', err);
             notify('The server results in error while registering!', 'error');
@@ -94,7 +93,6 @@ export const useAuth = () =>{
                     router.push('/login');
             }else{
                return notify('An unexpected error occured.', 'error');            
-
             }
         }catch(err){
             console.error('[useAuth] logout error', err);

@@ -35,11 +35,13 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
         const data:T[] = Array(1).fill(response.data).flat(Infinity)
         setTasks(data);
       }
-      else{
-         throw new Error(response.message) 
+      else{ 
+          if(response.message)
+            notify(response.message,'error');
+          else throw ''
       }
     } catch (err) {
-      notify(err instanceof Error ? err.message : 'Erreur lors du chargement.', 'error')
+      notify('Erreur lors du chargement.', 'error')
     } finally {
       setLoading(false);
     }
@@ -53,10 +55,13 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
         if(newTask.success){
           notify('Nouvelle tache ajoutée.', 'success');
           return true
+        }else{ 
+          if(newTask.message)
+            notify(newTask.message,'error');
+          else throw ''
         }
-          else throw new Error(newTask.message);
       }catch(err){
-        notify(err instanceof Error ? err.message : 'Erreur lors de la création de la tache.', 'error');
+        notify('Erreur lors de la création de la tache.', 'error');
       }finally{
         setLoading(false)
       }
@@ -71,10 +76,13 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
         if(deleteT.success){
           notify('Mission supprimée!', 'success');
           router.push('/client/dashboard');
+        }else {
+          if(deleteT.message)
+            notify(deleteT.message,'error');
+          else throw ''
         }
-          else throw new Error(deleteT.message);
       }catch(err){
-        notify(err instanceof Error ? err.message : 'Erreur lors de la suppression.', 'error');
+        notify('Erreur lors de la suppression.', 'error');
       }finally{
         setLoading(false)
       }
@@ -88,10 +96,13 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
         if(edit.success){
           notify('La tache a été modifiée.', 'success');
           return true
-        }
-          else throw new Error(edit.message);
+        } else {
+          if(edit.message)
+            notify(edit.message,'error');
+          else throw ''
+        };
       }catch(err){
-        notify(err instanceof Error ? err.message : "Erreur lors de l'édition.", 'error');
+        notify("Erreur lors de l'édition.", 'error');
       }finally{
         setLoading(false)
       }
@@ -101,17 +112,23 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
   const deliverTask = async (deliveryData:DeliveryFormProps) => {
     try{
       setLoading(true);
-      const delivery = await apiFetch<Deliverable>(`api/tasks/${deliveryData.task_id}/deliver`, deliveryData, 'POST');
-      if(delivery.success && delivery.status === 201){
+      const delivery = await apiFetch<Deliverable>(`api/deliverables/submit`, deliveryData, 'POST');
+      if(delivery.success){
         notify('Livrable soumis! En attente de review.', 'success');
         return true
-      }else throw new Error(delivery.message)
+      }else {
+        console.log(delivery.message)
+        if(delivery.message)
+          notify(delivery.message, 'error')
+        else throw ''
+      }
     }catch(err){
-      notify(err instanceof Error ? err.message : 'Livrable non soumis. Un erreur est survenue', 'error');
+      notify('Livrable non soumis. Un erreur est survenue', 'error');
       return false;
     }finally{
       setLoading(false)
-    }
+    }          
+    return false;
   }
 
   const reviewPrestataire = async (reviewData:ReviewProps) => {
@@ -121,9 +138,13 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
         if(delivery.success && delivery.status === 201){
           notify('Commentaire soumis. Merci de choisir Upply.', 'success');
           return true;
-        }else throw new Error(delivery.message)
+        }else {
+          if(delivery.message){
+            notify(delivery.message, 'error')
+          }else throw ''
+        }
       }catch(err){
-        notify(err instanceof Error ? err.message : 'Un erreur est survenue lors de la soumission du commentaire', 'error');
+        notify('Un erreur est survenue lors de la soumission du commentaire', 'error');
       }finally{
         setLoading(false)
       }

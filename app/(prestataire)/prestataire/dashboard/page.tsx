@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button/Button"
 import Spinner from "@/components/ui/Spinner/Spinner"
 import { useDashboard } from "@/hooks/useDashboard";
 import { budgetCurrency } from "@/hooks/useTasks"
-import { cn } from "@/lib/utils"
+import { cn, formatAmount } from "@/lib/utils"
 import {  PDashboardData } from "@/types"
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
@@ -44,7 +44,7 @@ const page = () => {
                     <div className="grid grid-rows-2 grid-cols-2 gap-4 lg:flex lg:flex-row lg:gap-5 my-7 w-full items-stretch">
                         {
                             [
-                                {title: 'GAINS EN ATTENTE', text: `${dashboardData?.statistics?.waiting_budget ?? 0} ${budgetCurrency}` , textColor: 'var(--alizarin-crimson-red-51)', Flag: undefined}, 
+                                {title: 'GAINS EN ATTENTE', text: `${formatAmount(dashboardData?.statistics?.waiting_budget) ?? 0} ${budgetCurrency}` , textColor: 'var(--alizarin-crimson-red-51)', Flag: undefined}, 
                                 {title: 'CANDIDATURES', text: `${dashboardData?.statistics?.waiting_applications ?? 0}`, textColor: 'var(--alizarin-crimson-red-51)', Flag: ()=> <FlagApplication status="EN_ATTENTE" />},
                                 {title: 'MISSIONS ACTIVES', text: `${dashboardData?.statistics?.active_missions ?? 0}`, textColor: 'var(--alizarin-crimson-red-51)', Flag: ()=> <FlagTask status="EN_COURS" />},
                             ].map(({title, text, textColor, Flag}, index)=> 

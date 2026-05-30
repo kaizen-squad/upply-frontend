@@ -11,13 +11,12 @@ import Button from '@/components/ui/Button/Button';
 import Fedapay from '@/components/dashboard/client/payment/Fedapay';
 import { useToasting } from '@/components/ui/Toast/useToasting';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { UserCircle2 } from 'lucide-react';
 import { usePayment } from '@/hooks/usePayment';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { useApplication } from '@/hooks/useApplication';
 import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
-import { any } from 'zod';
 
 export type PaymentInfosType = {
     completed: boolean,
@@ -45,6 +44,7 @@ const page = () => {
     const {acceptApplication} = useApplication();
     const {modalify, close} = useModalify();
     useEffect(()=>{
+        
         const getPrestataire = async ()=>{
             try{
                 const response = await apiFetch<PrestataireSelectedData | null>('/api/applications');
@@ -61,7 +61,10 @@ const page = () => {
             }
         }
         if(task)
-            getPrestataire();
+            if(task.status !== 'OUVERTE'){
+                notFound();
+            }else
+                getPrestataire();
     }, [task])
 
     useEffect(()=>{

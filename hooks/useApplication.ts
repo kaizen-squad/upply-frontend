@@ -1,7 +1,6 @@
 import { useToasting } from "@/components/ui/Toast/useToasting";
 import apiFetch from "@/lib/api";
 import { ApplicationFormType, ApplicationResponse } from "@/types";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface UseApplicationReturn {
@@ -22,7 +21,7 @@ export function useApplication(): UseApplicationReturn {
    const applyTotask = async (task_id:string, applyData: ApplicationFormType) => {
         try{
           setLoading(true);
-          const applyresponse = await apiFetch<ApplicationResponse>(`api/${task_id}/apply`, applyData, 'POST');
+          const applyresponse = await apiFetch<ApplicationResponse>(`api/tasks/${task_id}/apply`, applyData, 'POST');
           
           if(applyresponse.success){
             notify('Votre candidature a été soumise avec succès.', 'success');
@@ -31,7 +30,7 @@ export function useApplication(): UseApplicationReturn {
           else notify(applyresponse.message, 'error');
 
         }catch(err){
-            notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non soumise!', 'error');
+            notify('Une erreur est survenue: Candidature non soumise!', 'error');
         }finally{
           setLoading(false);
         }
@@ -46,7 +45,7 @@ export function useApplication(): UseApplicationReturn {
         else
           notify(response.message, 'error');
       }catch(err){
-        notify(err instanceof Error ? err.message : 'Une erreur est survenue lors du chargement de vos candidatures!', 'error');
+        notify('Une erreur est survenue lors du chargement de vos candidatures!', 'error');
       }finally{
         setLoading(false);
       }
@@ -54,13 +53,17 @@ export function useApplication(): UseApplicationReturn {
     const rejectApplication = async (application_id:string) => {
       try{
           setLoading(true);
-          const applyresponse = await apiFetch<null>(`api/applications/reject`, {id:application_id}, 'DELETE');
+          const applyresponse = await apiFetch<null>(`api/application/${application_id}/reject`, undefined, 'PUT');
           
           if(applyresponse.success)
             notify('La candidature a été rejetée.', 'success');
-          else throw new Error(applyresponse.message) 
+          else { 
+          if(applyresponse.message)
+            notify(applyresponse.message,'error');
+          else throw ''
+          }
         }catch(err){
-            notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non retirée!', 'error');
+            notify('Une erreur est survenue: Candidature non retirée!', 'error');
         }finally{
           setLoading(false);
         }
@@ -75,9 +78,13 @@ export function useApplication(): UseApplicationReturn {
             notify('La candidature a été acceptée.', 'success');
             return true;
           }
-          else throw new Error(applyresponse.message) 
+          else { 
+            if(applyresponse.message)
+              notify(applyresponse.message,'error');
+            else throw ''
+          }
         }catch(err){
-            notify(err instanceof Error ? err.message : 'Une erreur est survenue: Candidature non acceptée!', 'error');
+            notify('Une erreur est survenue: Candidature non acceptée!', 'error');
         }finally{
           setLoading(false);
         }

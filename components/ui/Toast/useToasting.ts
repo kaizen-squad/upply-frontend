@@ -1,10 +1,11 @@
-import { ReactNode } from 'react';
+import { useMediaQuery } from '@reactuses/core';
+import { ReactNode, useEffect } from 'react';
 import toast from 'react-hot-toast';
 export const useToasting = () => {
-  const notify = (message: string, type: 'success' | 'error' | 'warning') => {
+    const notify = (message: string, type: 'success' | 'error' | 'warning') => {
     switch (type) { 
         case 'success':
-            toast.success(message, {position: 'top-right', duration: 5000, style:{
+            toast.success(message, {position:'top-center', duration: 5000, style:{
                 background: '#333',
                 color: '#fff',
                 fontSize: '16px',
@@ -12,7 +13,7 @@ export const useToasting = () => {
             }});
             break;
         case 'error':
-            toast.error(message, {position: 'top-right', duration: 5000, style:{
+            toast.error(message, {position: 'top-center', duration: 5000, style:{
                 background: '#333',
                 color: '#fff',
                 fontSize: '16px',
@@ -20,7 +21,7 @@ export const useToasting = () => {
             }});
             break;
         case 'warning':
-            toast(message, {position: 'top-right', icon:'⚠️', duration: 5000, style:{
+            toast(message, {position: 'top-center', icon:'⚠️', duration: 5000, style:{
                 background: '#333',
                 color: '#fff',
                 fontSize: '16px',
@@ -29,7 +30,6 @@ export const useToasting = () => {
             break;
         }
     }
-
     const notifyCustom = toast.custom ;
     return {notify, notifyCustom}
 }
