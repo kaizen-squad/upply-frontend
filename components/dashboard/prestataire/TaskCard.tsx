@@ -14,7 +14,7 @@ const TaskCard:FC<{task:TaskProps}> = ({task}) => {
     return (
       <div className='my-5 bg-white-solid rounded-md shadow-2xs p-5 border border-gray-200'>
           <div className='flex items-center justify-between'>
-            <small className='font-semibold uppercase line-clamp-1'>REF:MS-<span>{task.id.substring(0,15)}...</span> </small>
+            <small className='font-semibold uppercase line-clamp-1'>REF:MS-<span>{task.id.substring(0,10)}...</span> </small>
             <small className='rounded-sm bg-gallery-gray-93 py-1 px-3 font-semibold'>{formatFrenchDateIntl(task.deadline)}</small>
           </div>
           <button onClick={()=>{

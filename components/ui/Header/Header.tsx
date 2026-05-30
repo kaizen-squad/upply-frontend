@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import { Role } from '@/types/auth';
+import BackButton from '@/components/shared/BackButton';
 
 const Header:FC<{role: Role}> = ({role}) => {
     const {control, handleSubmit} = useForm<{search:string}>({
@@ -14,7 +15,7 @@ const Header:FC<{role: Role}> = ({role}) => {
     const router = useRouter();
   return (
     <header className='h-(--header-height) relative bg-white z-50'>
-        <form onSubmit={(e)=>e.preventDefault()} className='h-(--header-height) flex sm:gap-10 md:gap-[10%] py-4 bg-gallery-gray-93 shadow-2xs border-b border-b-gray-200 px-10 items-center'>
+        <form onSubmit={(e)=>e.preventDefault()} className='h-(--header-height) flex sm:gap-10 md:gap-[10%] py-4 bg-gallery-gray-93 shadow-2xs border-b border-b-gray-200 px-10 items-center space-between'>
             <Image
                 src={'/Assets/UpplySVG.svg'}
                 loading='eager'
@@ -31,10 +32,11 @@ const Header:FC<{role: Role}> = ({role}) => {
                 <TextField 
                     Icon={Search}
                     placeholder='Rechercher une mission...'
-                    className='sm:w-full md:w-[90%] rounded-sm border-black py-2'
+                    className='sm:w-full rounded-sm border-black py-2'
                     {...field}
                 />}
             />
+            <BackButton/>
         </form>
     </header>
     

@@ -32,7 +32,7 @@ const ApplicationForm:FC<{task: TaskProps}> = ({task}) => {
     const applicationRangeBarColor: {EN_ATTENTE:string, ACCEPTEE: string, REJETEE:string} = {
         EN_ATTENTE: 'linear-gradient(to right, var(--alizarin-crimson-red-51) 33%, #fff 1%)',
         ACCEPTEE: 'linear-gradient(to right, var(--orange-alert) 100%, #fff 1%)',
-        REJETEE: ''
+        REJETEE: 'red'
     }
 
     useEffect(()=>{
