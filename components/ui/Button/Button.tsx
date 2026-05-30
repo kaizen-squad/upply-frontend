@@ -8,7 +8,7 @@ const Button: FC<IButtonProps> = ({type, textContent, className, Icon, isLoading
 
     return (
         <button 
-            {...properties}
+                {...properties}
             type={type ?? 'button'}
             onClick={(e)=>{
                 if(onClick)

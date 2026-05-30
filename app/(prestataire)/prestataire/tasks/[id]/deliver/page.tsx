@@ -41,7 +41,7 @@ const page= () => {
         }
         if(task && ['VALIDEE', 'OUVERTE'].includes(task.status))
             notFound();
-
+ 
     }, [application, isLoading, task])
   return (task && !isLoading && application) ? (
     
