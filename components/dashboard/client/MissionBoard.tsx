@@ -1,49 +1,94 @@
 'use client'
+import EmptyImage from '@/components/shared/EmptyImage';
 import { flagColor } from '@/components/shared/tasks/Task'
 import Button from '@/components/ui/Button/Button'
+import MenuListComposition from '@/components/ui/Menu/Menu';
 import { budgetCurrency } from '@/hooks/useTasks';
 import { formatAmount } from '@/lib/utils';
 import { TaskProps } from '@/types'
+import { MenuItem } from '@mui/material';
 import { useMediaQuery } from '@reactuses/core';
-import { ArrowRight, Loader } from 'lucide-react'
+import { ArrowRight, Check, Loader } from 'lucide-react'
 import { useRouter } from 'next/navigation';
 import React from 'react'
 
 const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({tasks, loadDashboard}) => {
     const isMobile = useMediaQuery('(max-width: 1024px)');
+    const isMdMobile = useMediaQuery('(max-width: 768px)');
     const router = useRouter();
+    const [activeFilter, setActiveFilter] = React.useState('ALL');
+    const tasksFiltered = React.useMemo(()=>{ 
+        if (activeFilter === 'ALL') {
+            return tasks;
+        }
+        return tasks.filter(({status})=> status === activeFilter)
+    }, [activeFilter, tasks]);
+
   return (
     <div>
         {
             Boolean(tasks.length) && 
             <div>
-                <div className='flex items-center justify-between mx-1'>
+                <div className='flex items-center justify-between'>
                     <h2 className='my-3'>MISSIONS RECENTES</h2>
-                    <button 
-                        className='flex bg-alizarin-crimson-red-51 rounded-md text-white-solid font-semibold text-xl items-center px-4 py-2 gap-3 translate-x-1 scale-80 cursor-pointer duration-200 hover:opacity-80 hover:scale-77'
-                        onClick={()=>loadDashboard()}
-                    >
-                        <span className='hidden xs:block'>Refresh</span>
-                        <Loader width={19} strokeWidth={3} />
-                    </button>
+                    <div className="flex items-stretch gap-3 scale-90 translate-x-2">
+                        <Button 
+                            textContent={isMdMobile ? '' : 'Refresh'}
+                            onClick={()=>loadDashboard()}
+                            Icon={()=><Loader width={19} strokeWidth={3} />}
+                            className="rounded-md px-3 py-2 bg-alizarin-crimson-red-51 text-white"
+                            Iposition="right"
+                        />
+                        <MenuListComposition>
+                            <MenuItem className="w-full flex items-center justify-between" onClick={()=> setActiveFilter('ALL')} style={activeFilter === 'ALL' ? {background: 'var(--gallery-gray-93)'} : {}}>
+                            <span className="w-full">Toutes</span>
+                            {activeFilter === 'ALL' && <Check />}
+                            </MenuItem>
+                            <MenuItem className="flex items-center justify-between w-full" onClick={()=> setActiveFilter('OUVERTES')} style={activeFilter === 'OUVERTES' ? {background: 'var(--gallery-gray-93)'} : {}}>
+                            <span className="w-full">Ouvertes</span>
+                            {activeFilter === 'OUVERTES' && <Check />}
+                            </MenuItem>
+                            <MenuItem className="flex items-center justify-between w-full" onClick={()=> setActiveFilter('EN_COURS')} style={activeFilter === 'EN_COURS' ? {background: 'var(--gallery-gray-93)'} : {}}>
+                            <span className="w-full">En cours</span>
+                            {activeFilter === 'EN_COURS' && <Check />}
+                            </MenuItem>
+                            <MenuItem className="flex items-center justify-between w-full" onClick={()=> setActiveFilter('LIVREE')} style={activeFilter === 'LIVREE' ? {background: 'var(--gallery-gray-93)'} : {}}>
+                            <span className="w-full">Livrées</span>
+                            {activeFilter === 'LIVREE' && <Check />}
+                            </MenuItem>
+                            <MenuItem className="flex items-center justify-between w-full" onClick={()=> setActiveFilter('VALIDEES')} style={activeFilter === 'VALIDEES' ? {background: 'var(--gallery-gray-93)'} : {}}>
+                            <span className="w-full">Terminées</span>
+                            {activeFilter === 'VALIDEES' && <Check />}
+                            </MenuItem>
+                        </MenuListComposition>
+                    </div>
                 </div>
 
                 {   
                     isMobile ? 
                         <div className='md:grid md:grid-cols-2 md:gap-7 mt-10'>
-                            {tasks.map(({title, deadline, budget, status, id})=>(
-                                <div key={title} className='my-5 md:my-0 bg-white-solid pl-3 pr-5 py-5 rounded-md shadow-xl'>
-                                    <div className='flex items-center justify-between my-2'>
-                                        <button onClick={()=> router.push(`/client/tasks/${id}`)} className='font-semibold max-w-[70%] line-clamp-1 py-1 px-2 rounded-md hover:bg-gallery-gray-93 cursor-pointer text-left' title={title}>{title}</button>
-                                        <p className='text-alizarin-crimson-red-51 font-semibold line-clamp-1 text-lg'>{formatAmount(budget)} <small>FCFA</small> </p>
-                                    </div>
-                                    <p className="ml-2">{deadline}</p>
-
-                                    <div className='mt-4 flex items-center gap-2 ml-2'>
-                                        <small className='rounded-md px-3 py-1 text-white-solid font-semibold' style={{background: `var(--${flagColor[status]})`}}>{status}</small>
-                                        <hr className='border-gray-200 w-full' />
-                                    </div>
+                            {
+                                tasksFiltered.length === 0 && 
+                                <div className='col-span-2 flex flex-col items-center py-10 bg-white-solid border border-gray-300 rounded-md'>
+                                    <EmptyImage/>
+                                    <p className='text-lg text-center col-span-2 text-scarpa-flow-gray-34 z-1'>Aucune mission trouvée pour ce statut</p>
                                 </div>
+                            }
+                            {
+                                tasksFiltered.length > 0 &&
+                                tasksFiltered.map(({title, deadline, budget, status, id})=>(
+                                    <div key={title} className='my-5 md:my-0 bg-white-solid pl-3 pr-5 py-5 rounded-md shadow-xl'>
+                                        <div className='flex items-center justify-between my-2'>
+                                            <button onClick={()=> router.push(`/client/tasks/${id}`)} className='font-semibold max-w-[70%] line-clamp-1 py-1 px-2 rounded-md hover:bg-gallery-gray-93 cursor-pointer text-left' title={title}>{title}</button>
+                                            <p className='text-alizarin-crimson-red-51 font-semibold line-clamp-1 text-lg'>{formatAmount(budget)} <small>FCFA</small> </p>
+                                        </div>
+                                        <p className="ml-2">{deadline}</p>
+
+                                        <div className='mt-4 flex items-center gap-2 ml-2'>
+                                            <small className='rounded-md px-3 py-1 text-white-solid font-semibold' style={{background: `var(--${flagColor[status]})`}}>{status}</small>
+                                            <hr className='border-gray-200 w-full' />
+                                        </div>
+                                    </div>
                             ))}
                         </div>
                         :
@@ -58,7 +103,16 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                             </thead>
 
                             <tbody>
-                                {tasks.map(({id, title, deadline, budget, status})=>(
+                                
+                                {
+                                tasksFiltered.length === 0 && 
+                                <tr>
+                                    <td colSpan={4} className='text-center py-10 text-santa-gray'>Aucune mission trouvée pour ce statut</td>
+                                </tr>
+                                }
+                                {
+                                    tasksFiltered.length > 0 &&
+                                tasksFiltered.map(({id, title, deadline, budget, status})=>(
                                     <tr key={title} className='border-b border-b-gray-300'>
                                         <td className='px-8 w-[45%] h-max py-6 font-semibold'>
                                             <button onClick={()=>router.push(`/client/tasks/${id}`)} className='w-full text-left duration-200 hover:rounded-md px-3 py-2 hover:bg-gallery-gray-93 hover:underline cursor-pointer border-l-4 h-max' style={{borderColor: `var(--${flagColor[status]})`}}>{title}</button>
