@@ -26,7 +26,7 @@ const TaskList:FC<{loading: boolean; tasks: TaskProps[], role:string}> =  ({load
                 {
                     (Boolean(tasks.length) && !loading) &&
                     <div className="grid xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7 my-10 items-stretch m-auto sm:w-full">
-                        {tasks.map((task)=><Task role={role} key={task.id} task={task} />)}
+                        { tasks.map((task)=><Task role={role} key={task.id} task={task} />)}
                     </div>
                 }
             </div>
