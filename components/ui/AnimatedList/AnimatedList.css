@@ -15,8 +15,6 @@
   background: #120F17;
 }
 
-
-
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
