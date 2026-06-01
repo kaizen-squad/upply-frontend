@@ -1,26 +1,45 @@
 'use client'
 import ApplicationCard from "@/components/dashboard/prestataire/ApplicationCard"
 import FlagApplication from "@/components/dashboard/prestataire/FlagApplication"
+import StarterMissions from "@/components/dashboard/prestataire/StarterMissions";
+import StatsBoard from "@/components/dashboard/prestataire/StatsBoard";
 import TaskCard from "@/components/dashboard/prestataire/TaskCard"
 import FlagTask from "@/components/shared/tasks/FlagTask"
 import Button from "@/components/ui/Button/Button"
+import MenuListComposition from "@/components/ui/Menu/Menu";
 import Spinner from "@/components/ui/Spinner/Spinner"
 import { useDashboard } from "@/hooks/useDashboard";
 import { budgetCurrency } from "@/hooks/useTasks"
 import { cn, formatAmount } from "@/lib/utils"
 import {  PDashboardData } from "@/types"
 import { ArrowRight } from "lucide-react"
+import { ST } from "next/dist/shared/lib/utils";
 import Image from "next/image"
 import { useRouter } from "next/navigation";
-import { useEffect } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 
 const page = () => {
     const { dashboardData, loading, loadDashboard } =  useDashboard<PDashboardData>('prestataire');
-  const router = useRouter();
+    const router = useRouter();
+    const [activeFilter, setActiveFilter] = useState('ALL');
+
+    const filterOptions = [ 
+        { label: 'Toutes les missions', key: 'ALL' },
+        { label: 'En cours', key: 'EN_COURS' },
+        { label: 'Livrées', key: 'LIVREE' },
+        { label: 'Terminées', key: 'VALIDEE' }
+    ];
     useEffect(()=>{
         loadDashboard();
     }, []);
+
+    const tasksFiltered = useMemo(()=>{
+        if (activeFilter === 'ALL') {
+            return dashboardData?.tasks || [];
+        }
+        return dashboardData?.tasks.filter(({status})=> status === activeFilter) || [];
+    }, [dashboardData, activeFilter]) 
     
     if(loading)
         return (
@@ -41,65 +60,34 @@ const page = () => {
             <div className="my-10 w-full">  
                 <div>
                     <h1>Mon Tableau de Bord</h1>
-                    <div className="grid grid-rows-2 grid-cols-2 gap-4 lg:flex lg:flex-row lg:gap-5 my-7 w-full items-stretch">
-                        {
-                            [
-                                {title: 'GAINS EN ATTENTE', text: `${formatAmount(dashboardData?.statistics?.waiting_budget) ?? 0} ${budgetCurrency}` , textColor: 'var(--alizarin-crimson-red-51)', Flag: undefined}, 
-                                {title: 'CANDIDATURES', text: `${dashboardData?.statistics?.waiting_applications ?? 0}`, textColor: 'var(--alizarin-crimson-red-51)', Flag: ()=> <FlagApplication status="EN_ATTENTE" />},
-                                {title: 'MISSIONS ACTIVES', text: `${dashboardData?.statistics?.active_missions ?? 0}`, textColor: 'var(--alizarin-crimson-red-51)', Flag: ()=> <FlagTask status="EN_COURS" />},
-                            ].map(({title, text, textColor, Flag}, index)=> 
-                                <div 
-                                    className={cn(
-                                        "flex flex-col gap-2 justify-between border border-gray-200 md:rounded-sm md:border-black shadow-2xs p-5 bg-white-solid lg:flex-1 rounded-lg",
-                                        index === 0 && 'col-span-2',
-                                        index === 1 && 'row-start-2 col-start-1 col-end-2',
-                                        index === 2 && 'row-start-2 col-start-2 col-end-3'
-                                    )} 
-                                    key={`${title}-${index}`}
-                                >
-                                    <div className="flex items-center justify-between flex-wrap gap-1">
-                                        <small className="text-scarpa-flow-gray-34 font-semibold">{title}</small>
-                                        {Flag && <div className="hidden xs:block md:hidden xl:block"><Flag/></div>}
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <p className="text-3xl font-bold" style={{color:textColor}}>{text}</p>
-                                        {Flag && <div className="block xs:hidden md:block xl:hidden"><Flag/></div>}
-                                    </div>
-                                </div>
-                            ) 
-                        }
-                    </div>
-
+                    <StatsBoard dashboardData={dashboardData} />
+                    
                     <div className="grid lg:grid-cols-[65%_1fr] gap-5">
                         {/* Left */}
                         <div>
-                            <h2>Missions en cours</h2>
+                            <div className="flex items-center justify-between">
+                                <h2>{activeFilter === 'ALL' ? 'Toutes les missions' : `Missions ${filterOptions.find(opt => opt.key === activeFilter)?.label.toLowerCase()}`}</h2>
+                                <MenuListComposition
+                                    items={filterOptions}
+                                    activeFilter={activeFilter}
+                                    setActiveFilter={setActiveFilter}
+                                />
+                            </div>
+                                     
                             {
                                 dashboardData?.tasks.length ?
-                                <div className="mt-7">
-                                    {dashboardData?.tasks.map((task)=>
-                                        <TaskCard key={task.id} task={task} />
-                                    )}
+                                <div className="mt-">
+                                    {
+                                        tasksFiltered.length === 0 ?
+                                            <p className="p-10 text-center w-full bg-white-solid shadow-2xs rounded-sm border-gray-300 border my-5">Aucune mission trouvée.</p> 
+                                            :
+                                            tasksFiltered.map((task)=>
+                                                <TaskCard key={task.id} task={task} />
+                                            )
+                                    }
                                 </div>
                                 :
-                                <div className="mt-7 border shadow-2xs bg-white-solid py-12 text-center rounded-sm">
-                                    <Image 
-                                        src={'/Assets/Rocket.svg'}
-                                        height={65}
-                                        width={65}
-                                        alt="rocket-icon"
-                                        className="m-auto my-4 p-2 rounded-sm border border-gray-200 shadow-2xs"
-                                    />
-                                    <p className="text-2xl font-bold">Aucune tache active ?</p>
-                                    <p className="text-scarpa-flow-gray-34 mt-2 mx-auto w-[90%] ">Lancer votre première candidature ou continuez a vous enrichir avec Upply.</p>
-                                    <Button
-                                        textContent="Decrocher un contrat"
-                                        Icon={ArrowRight}
-                                        Iposition="right"
-                                        className="bg-alizarin-crimson-red-51 py-3 text-white-solid px-6 rounded-sm m-auto mt-4"
-                                        onClick={()=> router.push('/prestataire/tasks')}
-                                    />
-                                </div>
+                                <StarterMissions/>
                             }     
                         </div>
 
@@ -107,7 +95,7 @@ const page = () => {
                         <div className="w-full">
                             <h2>Dernières applications</h2>
 
-                            <div className="flex flex-col gap-3 mt-7">
+                            <div className="flex flex-col gap-3 mt-8">
                                 {   dashboardData?.applications.length ? 
                                         dashboardData?.applications.slice(0,3).map((application, index)=> <ApplicationCard key={index} application={application} />)
                                     :

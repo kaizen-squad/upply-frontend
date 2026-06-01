@@ -39,28 +39,18 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                             className="rounded-md px-3 py-2 bg-alizarin-crimson-red-51 text-white"
                             Iposition="right"
                         />
-                        <MenuListComposition>
-                            <MenuItem className="w-full flex items-center justify-between" onClick={()=> setActiveFilter('ALL')} style={activeFilter === 'ALL' ? {background: 'var(--gallery-gray-93)'} : {}}>
-                            <span className="w-full">Toutes</span>
-                            {activeFilter === 'ALL' && <Check />}
-                            </MenuItem>
-                            <MenuItem className="flex items-center justify-between w-full" onClick={()=> setActiveFilter('OUVERTES')} style={activeFilter === 'OUVERTES' ? {background: 'var(--gallery-gray-93)'} : {}}>
-                            <span className="w-full">Ouvertes</span>
-                            {activeFilter === 'OUVERTES' && <Check />}
-                            </MenuItem>
-                            <MenuItem className="flex items-center justify-between w-full" onClick={()=> setActiveFilter('EN_COURS')} style={activeFilter === 'EN_COURS' ? {background: 'var(--gallery-gray-93)'} : {}}>
-                            <span className="w-full">En cours</span>
-                            {activeFilter === 'EN_COURS' && <Check />}
-                            </MenuItem>
-                            <MenuItem className="flex items-center justify-between w-full" onClick={()=> setActiveFilter('LIVREE')} style={activeFilter === 'LIVREE' ? {background: 'var(--gallery-gray-93)'} : {}}>
-                            <span className="w-full">Livrées</span>
-                            {activeFilter === 'LIVREE' && <Check />}
-                            </MenuItem>
-                            <MenuItem className="flex items-center justify-between w-full" onClick={()=> setActiveFilter('VALIDEES')} style={activeFilter === 'VALIDEES' ? {background: 'var(--gallery-gray-93)'} : {}}>
-                            <span className="w-full">Terminées</span>
-                            {activeFilter === 'VALIDEES' && <Check />}
-                            </MenuItem>
-                        </MenuListComposition>
+                        <MenuListComposition
+                            items={[
+                                {label:'Toutes les missions', key:'ALL'},
+                                {label:'Ouvertes', key:'OUVERTE'},
+                                {label:'En cours', key:'EN_COURS'},
+                                {label:'Livrées', key:'LIVREE'},
+                                {label:'Terminées', key:'VALIDEES'}
+                            ]}
+                            activeFilter={activeFilter}
+                            setActiveFilter={setActiveFilter}
+                        />
+
                     </div>
                 </div>
 

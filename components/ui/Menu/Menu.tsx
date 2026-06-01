@@ -8,9 +8,20 @@ import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
 import Button from '../Button/Button';
 import { SlidersHorizontal } from 'lucide-react';
-import { ReactNode } from 'react';
+import {Dispatch, SetStateAction } from 'react';
 
-const MenuListComposition: React.FC<{children: ReactNode}> = ({children}) => {
+type ItemMenu = {
+  label: string,
+  key: string
+}
+
+type ItemsMenu = {
+  items: ItemMenu[], 
+  activeFilter: string,
+  setActiveFilter: Dispatch<SetStateAction<string>>
+
+}
+const MenuListComposition: React.FC<ItemsMenu> = ({items, activeFilter, setActiveFilter}) => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -89,7 +100,17 @@ const MenuListComposition: React.FC<{children: ReactNode}> = ({children}) => {
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                   >
-                    {children}
+                    {items.map((item) => (
+                      <MenuItem
+                        key={item.key}
+                        className="w-full flex items-center justify-between"
+                        onClick={() => setActiveFilter(item.key)}
+                        style={activeFilter === item.key ? { background: 'var(--gallery-gray-93)' } : {}}
+                      >
+                        <span className="w-full">{item.label}</span>
+                        {activeFilter === item.key && <span>&#10003;</span>}
+                      </MenuItem>
+                    ))}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

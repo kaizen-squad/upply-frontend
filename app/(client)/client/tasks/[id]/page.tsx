@@ -76,7 +76,7 @@ const page = () => {
                 }
                 </div>
               
-              <div className="bg-woodsmoke-gray-10 p-5 mt-3">
+              <div className="bg-woodsmoke-gray-10 p-5 mt-3 h-max">
                <div className="flex items-center gap-4 text-white">
                  <div className="px-4 py-2 bg-alizarin-crimson-red-51 font-black">U</div>
                  <div>

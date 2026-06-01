@@ -11,7 +11,7 @@ const ApplicationCard: FC<{application: ApplicationCardProps}> = ({application:{
     return (
       <div className="p-4 rounded-lg bg-white-solid flex justify-between items-center border-gray-200 border gap-5">
           <div>
-              <p className="font-semibold">{task.title}</p>
+              <p className="font-semibold rounded-md p-2 hover:bg-gray-">{task.title}</p>
               <p className="text-[0.9rem] text-scarpa-flow-gray-34 mt-1">Soumis le {formatFrenchDateIntl(created_at.substring(0,10))}</p>
           </div>
           <FlagApplication status={status} />

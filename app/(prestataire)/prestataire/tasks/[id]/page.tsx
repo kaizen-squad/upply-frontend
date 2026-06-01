@@ -6,7 +6,7 @@ import { useTasksContext } from "@/components/shared/tasks/TaskProvider";
 import TaskDetails from "@/components/shared/tasks/TaskDetails";
 
 const page = () => {
-    const {tasks: [task], refetch, loading} = useTasksContext<TaskProps>();
+    const {tasks: [task], loading} = useTasksContext<TaskProps>();
 
   return (       
      <>     
