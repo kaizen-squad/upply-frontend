@@ -6,10 +6,11 @@ import { useRouter } from "next/navigation";
 import { User } from "@/types/auth";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import apiFetch from "@/lib/api";
+import Image from "next/image";
 
 const ClientAuthProvider: FC<{children:ReactNode}> = ({ children }) => {
     const [loading, setLoading] = useState(true);
-    const {setUser} = useUserStore();
+    const {setUser, user} = useUserStore();
     const router = useRouter();
 
     useEffect(() => {
@@ -31,11 +32,17 @@ const ClientAuthProvider: FC<{children:ReactNode}> = ({ children }) => {
         }
         loadStore();
     }, [setUser, router]);
-    if(loading)
+    if( loading)
         return <div className="flex h-screen w-screen">
             <div className="flex items-center gap-3 h-max m-auto">
-                <Spinner/>
-                <p>Loading...</p>
+                <Image
+                    src={'/Assets/UpplySVG.svg'}
+                    loading='eager'
+                    width={100}
+                    height={100}
+                    alt='upply-logo'
+                    className="cursor-pointer animate-pulse"
+                />
             </div>
         </div>
     return <>{!loading && children}</>;

@@ -1,6 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
+import errorEntry from "next/dist/server/typescript/rules/error";
 
 /**
  * The opened routes which any client can reach whithout authorization, except refresh token where the token is checked directly from the http cookie 

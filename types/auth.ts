@@ -54,8 +54,8 @@ export type User = {
  * Expected Auth Response format. 
  */
 export type AuthDataResponse = {
-    accessToken?: string,
-    refreshToken: string,
+    accessToken: string,
+    refreshToken?: string,
     user: User
 }
 

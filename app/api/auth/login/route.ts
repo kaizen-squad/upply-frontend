@@ -30,7 +30,7 @@ export async function POST(request: Request) {
         maxAge: 7 * 24 * 60 * 60, // 7 jours
         path: '/',  
     });
-     delete response.data.accessToken;
+     delete response.data.refreshToken;
     return NextResponse.json(response);
   }
   
@@ -45,6 +45,6 @@ export async function GET(){
     user = JSON.parse(user?.value as string);
     return NextResponse.json({success:true, data:user, message:'User info'});
   }else{
-    NextResponse.json({success:false});
+    return NextResponse.json({success:false});
   }
 }
