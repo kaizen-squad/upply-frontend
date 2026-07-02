@@ -25,7 +25,7 @@ export function useApplication(): UseApplicationReturn {
           
           if(applyresponse.success){
             notify('Votre candidature a été soumise avec succès.', 'success');
-            setApplication([applyresponse.data].flat(3));
+            setApplication(Array.isArray(applyresponse.data) ? applyresponse.data : [applyresponse.data]);
           }
           else notify(applyresponse.message, 'error');
 
@@ -41,7 +41,7 @@ export function useApplication(): UseApplicationReturn {
         setLoading(true);
         const response = await apiFetch<ApplicationResponse[]>(`api/tasks/${task_id}/applications${role === 'prestataire' ? '/me':''}`);
         if(response.success)
-          setApplication([response.data].flat(3));
+          setApplication(Array.isArray(response.data) ? response.data : [response.data]);
         else
           notify(response.message, 'error');
       }catch(err){
@@ -60,7 +60,7 @@ export function useApplication(): UseApplicationReturn {
           else { 
           if(applyresponse.message)
             notify(applyresponse.message,'error');
-          else throw ''
+          else throw new Error(applyresponse.message)
           }
         }catch(err){
             notify('Une erreur est survenue: Candidature non retirée!', 'error');
@@ -81,7 +81,7 @@ export function useApplication(): UseApplicationReturn {
           else { 
             if(applyresponse.message)
               notify(applyresponse.message,'error');
-            else throw ''
+          else throw new Error(applyresponse.message)
           }
         }catch(err){
             notify('Une erreur est survenue: Candidature non acceptée!', 'error');

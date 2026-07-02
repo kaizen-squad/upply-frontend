@@ -25,13 +25,11 @@ export const useAuth = () =>{
         const { success, message } = response;
         const data:AuthDataResponse | null= response.data;
             
-        console.debug('[useAuth] getLoggedIn', { success, message, user: data?.user });
 
         if(success){
             try{
                 useTokenStore.setState({accessToken:data.accessToken});
                 useUserStore.setState({user: data.user});
-                console.debug('[useAuth] redirecting to dashboard', `/${data.user.role}/dashboard`);
                 router.push(`/${data.user.role}/dashboard`);
             }catch(err){
                 throw(err);
@@ -43,15 +41,18 @@ export const useAuth = () =>{
     const login = async(body:LoginProps) => {
         try{
             setLoading(true);
-            console.debug('[useAuth] login request', body);
             const response: HTTPResponse<AuthDataResponse> = await apiFetch(`/api/auth/login`, body, 'POST');
-            console.debug('[useAuth] login response', response);
-            if(response)
-                getLoggedIn(response)
+                
+            if(response){
+                if(response.status === 401){
+                    notify('Invalid email or password.', 'error');
+                }else{
+                    getLoggedIn(response)
+                }
+            }
             else
                 notify('Login Failed: An unexpected error occured.', 'error')
         }catch(err){
-            console.error('[useAuth] login error', err);
             notify('The server results in error while logging in!', 'error');
         }finally{
             setLoading(false)
@@ -61,18 +62,14 @@ export const useAuth = () =>{
     const register = async (body: RegisterProps) =>{
         try{
             setLoading(true)
-            console.debug('[useAuth] register request', body);
             const response: HTTPResponse<AuthDataResponse> = await apiFetch(`/api/auth/register`, body, 'POST');
-            console.debug('[useAuth] register response', response);
             if(response.success){
                 notify('Registration successful! You can now log in.', 'success');
-                console.debug('[useAuth] redirecting to login after register');
                 router.push('/login');
             }else{
                 notify(response.message, 'error');
             }
         }catch(err){
-            console.error('[useAuth] register error', err);
             notify('The server results in error while registering!', 'error');
         }finally{
             setLoading(false);
@@ -83,9 +80,7 @@ export const useAuth = () =>{
 
     const logout = async () =>{
         try{
-            console.log('[useAuth] logout request');
             const response = await apiFetch(`api/logout`);
-            console.log('[useAuth] logout response', response);
             
             if(response.success){
                 const deleteCookie = await apiFetch('/api/auth/logout')
@@ -95,7 +90,6 @@ export const useAuth = () =>{
                return notify('An unexpected error occured.', 'error');            
             }
         }catch(err){
-            console.error('[useAuth] logout error', err);
             notify('The server results in error while logging out!', 'error');
         }
     }

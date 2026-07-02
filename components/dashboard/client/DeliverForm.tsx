@@ -32,7 +32,6 @@ const DeliverForm: FC<{ task_id: string, isdelivered:boolean }> = ({ task_id,  i
   });
 
   const onSubmit = async (data: DeliveryFormProps) => {
-    console.log(data)
     const response = await deliverTask(data);
     setSuccess(response);
   };

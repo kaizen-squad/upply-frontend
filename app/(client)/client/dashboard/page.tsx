@@ -139,7 +139,7 @@ const page = () => {
                         
                         {
                             (!loading && !Boolean(tasks.length)) &&
-                            <div className='flex h-full mt-10 xl:m-0'>
+                            <div className='flex h-max mt-10 m-0'>
                                 <div className='h-max m-auto'>
                                     <div className='bg-white-solid border-2 border-gray-300'>
                                         <div className='flex items-center gap-3 py-5 px-5'>
@@ -165,7 +165,7 @@ const page = () => {
                                         </div>
                                     </div>
 
-                                    <div className='bg-white-solid border-2 border-gray-300 mt-5'>
+                                    <div className='bg-white-solid border-2 border-gray-300 mt-10'>
                                         <div className='flex items-center gap-2 p-5 '>
                                             <Lightbulb className='text-orange-500'/>
                                             <h3 className='my-2'>Le saviez-vous?</h3>

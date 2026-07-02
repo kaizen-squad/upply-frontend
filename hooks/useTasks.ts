@@ -32,13 +32,13 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
 
       const response = await apiFetch<T[]>(`api/tasks${id ? `/${id}` : ''}`);
       if(response.data){
-        const data:T[] = Array(1).fill(response.data).flat(Infinity)
+        const data:T[] = Array.isArray(response.data) ? response.data : [response.data];
         setTasks(data);
       }
       else{ 
           if(response.message)
             notify(response.message,'error');
-          else throw ''
+          else throw new Error(response.message)
       }
     } catch (err) {
       notify('Erreur lors du chargement.', 'error')
@@ -51,14 +51,13 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
     try{
         setLoading(true);
         const newTask = await apiFetch<TaskProps>('api/tasks', taskData, 'POST');
-        console.debug('createTask response', newTask);
         if(newTask.success){
           notify('Nouvelle tache ajoutée.', 'success');
           return true
         }else{ 
           if(newTask.message)
             notify(newTask.message,'error');
-          else throw ''
+          else throw new Error(newTask.message)
         }
       }catch(err){
         notify('Erreur lors de la création de la tache.', 'error');
@@ -72,14 +71,13 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
     try{
         setLoading(true);
         const deleteT = await apiFetch<TaskProps>(`api/tasks/${task_id}`, undefined, 'DELETE');
-        console.debug('delete response', deleteT);
         if(deleteT.success){
           notify('Mission supprimée!', 'success');
           router.push('/client/dashboard');
         }else {
           if(deleteT.message)
             notify(deleteT.message,'error');
-          else throw ''
+          else throw new Error(deleteT.message)
         }
       }catch(err){
         notify('Erreur lors de la suppression.', 'error');
@@ -92,14 +90,13 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
     try{
         setLoading(true);
         const edit = await apiFetch<TaskProps>(`api/tasks/${taskData.id}`, taskData, 'PUT');
-        console.debug('Edit response', edit);
         if(edit.success){
           notify('La tache a été modifiée.', 'success');
           return true
         } else {
           if(edit.message)
             notify(edit.message,'error');
-          else throw ''
+          else throw new Error(edit.message)
         };
       }catch(err){
         notify("Erreur lors de l'édition.", 'error');
@@ -117,10 +114,9 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
         notify('Livrable soumis! En attente de review.', 'success');
         return true
       }else {
-        console.log(delivery.message)
         if(delivery.message)
           notify(delivery.message, 'error')
-        else throw ''
+          else throw new Error(delivery.message)
       }
     }catch(err){
       notify('Livrable non soumis. Un erreur est survenue', 'error');
@@ -141,7 +137,8 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
         }else {
           if(delivery.message){
             notify(delivery.message, 'error')
-          }else throw ''
+          }
+          else throw new Error(delivery.message)
         }
       }catch(err){
         notify('Un erreur est survenue lors de la soumission du commentaire', 'error');

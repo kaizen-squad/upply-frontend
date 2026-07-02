@@ -12,7 +12,6 @@ import { Dispatch, FC, SetStateAction } from 'react';
     if (isDismissed || isCancelled) {
       setShowFedapay(false);
       setError('Paiement annulé ou interrompu par l’utilisateur.');
-      console.log('FedaPay dialog closed or cancelled', resp);
       return;
     }
 
@@ -26,7 +25,6 @@ import { Dispatch, FC, SetStateAction } from 'react';
     }
 
     setShowFedapay(false);
-    console.log(resp.transaction);
   };
 
   const checkoutButtonOptions = {

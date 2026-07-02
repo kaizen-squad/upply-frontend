@@ -3,17 +3,20 @@ import TaskForm from '@/components/dashboard/client/TaskForm';
 import TaskDetails from '@/components/shared/tasks/TaskDetails';
 import { useTasksContext } from '@/components/shared/tasks/TaskProvider';
 import Button from '@/components/ui/Button/Button';
+import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { Edit, Truck, UserCircle2, X } from 'lucide-react';
+import { div } from 'motion/react-client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 
 const page = () => {
   const {tasks:[task], loading, refetch} = useTasksContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isEdited, setIsEdited] = useState(false);
   const route = useRouter();
+  const {modalify} = useModalify();
 
   useEffect(()=>{
     if(isEdited){
@@ -47,14 +50,21 @@ const page = () => {
                       onClick={()=> route.push(`/client/tasks/${task.id}/review`)}
                     />
                     : 
-                    <div className="flex gap-5 items-center flex-col xs:flex-row xl:flex-col mb-10 xl:mb-5">
+                    <div>
                       {task.status === 'OUVERTE' 
                       ? 
-                      <div>
+                      <div className="flex gap-3 items-center flex-col xs:flex-row xl:flex-col mb-10 xl:mb-5">
                         <Button
                         textContent="Modifier la mission"
                         Icon={Edit}
-                        onClick={()=> setIsEditing(true)}
+                        onClick={()=> {
+                            modalify(
+                              <TaskForm isEditing={true} field_values={task} setIsEdited={setIsEdited}/>
+                            ,{
+                              title: 'Edition de la mission',
+                              size:'lg'
+                            })
+                        }}
                         className="py-3 rounded-md bg-woodsmoke-gray-8 w-full text-white font-bold"
                         />
                       
@@ -98,16 +108,7 @@ const page = () => {
             )
             :
             <div className="mt-10 lg:mt-0">
-              <h1 className="mb-5">Edition de la mission</h1>
-              <div className="relative">
-                <Button
-                  textContent=""
-                  Icon={X}
-                  className="rounded-full p-2 sm:p-3 bg-gallery-gray-93 absolute right-3 top-3"
-                  onClick={()=>setIsEditing(false)}
-                />
-                <TaskForm isEditing={true} field_values={task} setIsEdited={setIsEdited}/>
-              </div>
+              
             </div>
           }
         </TaskDetails>

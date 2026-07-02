@@ -1,7 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
-import errorEntry from "next/dist/server/typescript/rules/error";
 
 /**
  * The opened routes which any client can reach whithout authorization, except refresh token where the token is checked directly from the http cookie 
@@ -87,10 +86,8 @@ instance.interceptors.response.use(
 
                 queue.forEach(p => p.reject());
                 queue = [];
-                console.error('[api] refresh token failed', err);
 
                 if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
-                    console.debug('[api] redirecting to /login due to refresh failure');
                    window.location.href='/login'; // Redirige vers la page de connexion si le rafraîchissement échoue et que nous ne sommes pas déjà sur la page de connexion
                 }
                 return Promise.reject(err);
@@ -128,27 +125,10 @@ export default async function apiFetch<T> (url: string, body?: object | undefine
         requestConfig.baseURL = '';
     }
 
-    try{
 
         const res: HTTPResponse<T> = await instance(requestConfig)
         .then((response)=> response.data)
+        .catch(err=>err)
         return res;
 
-    }catch(err){
-        // Debugging errors in the console
-        if (axios.isAxiosError(err)) {
-            console.error('Error details:', {
-                status: err.response?.status || 500,
-                data: err.response?.data,
-                message: err.message
-            });
-        }else
-            console.error(err);
-        return {
-            success: false,
-            data: null as T,
-            message: "Echec de la tentative: une erreur est survenue",
-            status: 500
-        } ;
-    }
 }

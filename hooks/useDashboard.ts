@@ -31,7 +31,7 @@ export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
       } else { 
           if(response.message)
             notify(response.message,'error');
-          else throw ''
+          else throw new Error(response.message)
       }
     } catch (err) {
       const message ='Une erreur est survenue lors du chargement';
@@ -40,7 +40,7 @@ export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
     } finally {
       setLoading(false);
     }
-  }, [role, loading, notify]);
+  }, [role, notify]);
 
   return {
     loadDashboard,

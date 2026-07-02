@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { cookies } from "next/headers";
 import Providers from "./Providers";
-import { redirect } from "next/navigation";
-import apiFetch from "@/lib/api";
-import ClientAuthProvider from "./ClientAuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +30,8 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <div className="absolute right-5 top-5 shadow-2xl">
+        </div>
         <Providers>
           {children}
         </Providers>
@@ -41,3 +39,5 @@ export default async function RootLayout({
     </html>
   );
 }
+
+

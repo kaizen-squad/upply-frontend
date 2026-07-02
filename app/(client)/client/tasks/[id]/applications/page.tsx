@@ -87,7 +87,7 @@ const page = () => {
       )
     if(!Boolean(application.length))
       return (
-        <div className="h-max m-auto translate-y-15">
+        <div className="h-max m-auto ">
           <div className="-translate-y-20">
             <EmptyImage/>
             <p className="text-xl font-bold relative z-1 text-center">Aucune candidature n'a été soumise.</p>

@@ -27,7 +27,7 @@ export function usePayment<UsePaymentReturn >() {
       else { 
           if(saveApplicant.message)
             notify(saveApplicant.message,'error');
-          else throw ''
+          else throw new Error(saveApplicant.message)
         }
     }catch(err){
         notify('Une erreur est survenue lors de l\'acceptation de la candidature!', 'error');
@@ -48,7 +48,7 @@ export function usePayment<UsePaymentReturn >() {
       else{ 
           if(liberate.message)
             notify(liberate.message,'error');
-          else throw ''
+          else throw new Error(liberate.message)
       }
     }catch(err){
         notify('Une erreur est survenue lors de la liberation des fonds!', 'error');
@@ -64,15 +64,19 @@ export function usePayment<UsePaymentReturn >() {
       const verify = await apiFetch<null>(`api/tasks/${task_id}/payment/verify`, {transaction_id:transaction_id}, 'POST');
       if(verify.success){
         const deleteCookie = await apiFetch<null>('/api/applications', undefined, 'DELETE')  
-        if(deleteCookie.success)  
+        if(deleteCookie.success){
           router.push('/client/dashboard');
           notify('Paiement effectué avec succès.', 'success')
-          return true
+          return true;
+        }else{
+          // Eventualite incertaine
+        }
       }          
       else{ 
           if(verify.message)
             notify(verify.message,'error');
-          else throw ''
+          else throw new Error(verify.message)
+
       }
     }catch(err){
         notify('Erreur lors du paiement.', 'error');

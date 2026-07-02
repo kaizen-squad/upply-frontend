@@ -25,7 +25,6 @@ function RegisterForm() {
       await register(registerData);
   }
   const onError = (data:any)=> {
-    console.log(data)
     notify('Veuillez entrez des données valides!', 'warning')};
 
   return (

@@ -14,7 +14,6 @@ const ModalPortal: FC<ModalPortalProps> = ({ children }) => {
     const root = document.getElementById('modal-root');
     setModalRoot(root);
     if (!root) {
-      console.warn('Modal root manquant pour l\'affichage!');
       return;
     }
   }, []);

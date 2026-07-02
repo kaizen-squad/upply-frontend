@@ -20,13 +20,11 @@ export async function proxy(request: NextRequest) {
   
   // 1. Non authentifié sur route protégée entraine redirection login
   if (!isLoggedIn && !isPublicPath) {
-    console.debug('[middleware] not logged in, redirect to /login', pathname);
     return NextResponse.redirect(new URL('/login', request.url));
   }
   
   // 2. Authentifié sur route publique entraine redirection dashboard
   if (isLoggedIn && isPublicPath) {
-    console.debug('[middleware] logged in on public page, redirect to dashboard', pathname);
     // Récupérer le rôle depuis un cookie (défini au login)
     const userCookie= request.cookies.get('user')?.value;
 

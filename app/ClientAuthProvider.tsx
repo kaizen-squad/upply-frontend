@@ -19,9 +19,7 @@ const ClientAuthProvider: FC<{children:ReactNode}> = ({ children }) => {
                 const userResponse = await apiFetch<User>('/api/auth/login');
                 if (userResponse.success) {
                     setUser(userResponse.data);
-                    console.log(userResponse)
                 } else if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
-                    console.debug('[ClientAuthProvider] redirecting to /login');
                     await apiFetch('/api/auth/logout')
                     router.push("/login");
                 }

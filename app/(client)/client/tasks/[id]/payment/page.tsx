@@ -55,7 +55,7 @@ const page = () => {
                     notify('Le délai de paiement est expiré. Veuillez réeffectuer la procédure de sélection.', 'error')
                 }
             }catch(err){
-                console.error('Error fetching prestataire:', err);
+                
             }finally{
                 setIsLoading(false);
             }

@@ -109,7 +109,7 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                                         </td>
                                         <td className='text-jumbo-gray-46 px-8'>{deadline}</td>
                                         <td className='px-8'>{formatAmount(budget)}</td>
-                                        <td className='p-5 flex justify-end pr-10'>
+                                        <td className='p-5'>
                                             <span className='text-white-solid py-1.5 px-2 rounded-sm text-[0.7rem] font-semibold' style={{background: `var(--${flagColor[status]})`}}>{status}</span>
                                         </td>
                                     </tr>

@@ -30,7 +30,6 @@ function TaskProvider<T = TaskProps >({
 
   useEffect(()=>{
     if(!taskManager.loading && taskManager.tasks.length === 0){
-      console.log('[Provider]')
       notFound()
     }
   },[taskManager.loading])
