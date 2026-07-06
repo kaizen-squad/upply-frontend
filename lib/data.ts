@@ -199,7 +199,7 @@ import { ApplicationResponse, DeliverableDTO, TaskProps } from "@/types";
         file_size: "512 KB",
         file_type: "pdf"
       },
-      created_at: "2026-06-01T08:15:00Z"
+      submitted_at: "2026-06-01T08:15:00Z"
     },
     {
       id:'d2',
@@ -214,7 +214,7 @@ import { ApplicationResponse, DeliverableDTO, TaskProps } from "@/types";
         file_size: "15.8 MB",
         file_type: "pdf"
       },
-      created_at: "2026-06-02T13:45:00Z"
+      submitted_at: "2026-06-02T13:45:00Z"
     },
     {
       id:'d3',
@@ -229,7 +229,7 @@ import { ApplicationResponse, DeliverableDTO, TaskProps } from "@/types";
         file_size: "3.2 MB",
         file_type: "zip"
       },
-      created_at: "2026-06-03T10:30:00Z"
+      submitted_at: "2026-06-03T10:30:00Z"
     },
     {
       id:'d3',
@@ -244,7 +244,7 @@ import { ApplicationResponse, DeliverableDTO, TaskProps } from "@/types";
         file_size: "4 KB",
         file_type: "png"
       },
-      created_at: "2026-06-04T16:20:00Z"
+      submitted_at: "2026-06-04T16:20:00Z"
     },
     {
       id:'d4',
@@ -259,6 +259,6 @@ import { ApplicationResponse, DeliverableDTO, TaskProps } from "@/types";
         file_size: "2 KB",
         file_type: "pdf"
       },
-      created_at: "2026-06-05T09:00:00Z"
+      submitted_at: "2026-06-05T09:00:00Z"
     }
   ];
