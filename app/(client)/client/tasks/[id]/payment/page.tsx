@@ -43,6 +43,9 @@ const page = () => {
     const router = useRouter();
     const {acceptApplication} = useApplication();
     const {modalify, close} = useModalify();
+
+
+
     useEffect(()=>{
         
         const getPrestataire = async ()=>{
@@ -50,12 +53,12 @@ const page = () => {
                 const response = await apiFetch<PrestataireSelectedData | null>('/api/applications');
                 if(response.success){
                     setPrestataire(response.data);
-                    setTotalPayment((task.budget+commissionPlateform(task.budget)))                
+                    setTotalPayment(Math.round(task.budget+commissionPlateform(task.budget))    )                
                 }else{
                     notify('Le délai de paiement est expiré. Veuillez réeffectuer la procédure de sélection.', 'error')
                 }
             }catch(err){
-                
+
             }finally{
                 setIsLoading(false);
             }
@@ -214,7 +217,7 @@ const page = () => {
                             </div>
                             <div className="flex items-center justify-between my-3 gap-5">
                                 <p className="min-w-max text-scarpa-flow-gray-34">Budget de la mission</p>
-                                <strong className="text-alizarin-crimson-red-51">{formatAmount(task.budget)} {budgetCurrency}</strong>
+                                <strong className="text-alizarin-crimson-red-51">{formatAmount((task.budget))} {budgetCurrency}</strong>
                             </div>
                         </div>
                     </div>

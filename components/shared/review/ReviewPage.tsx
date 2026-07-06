@@ -2,19 +2,13 @@
 import { CircleAlert } from 'lucide-react'
 import ReviewForm from './ReviewForm'
 import Image from 'next/image'
-import { useTasksContext } from '../tasks/TaskProvider'
 import { formatAmount, formatFrenchDateIntl } from '@/lib/utils'
 import { budgetCurrency } from '@/hooks/useTasks'
-import { useEffect } from 'react';
-import { notFound } from 'next/navigation';
+import { FC } from 'react';
+import { TaskProps } from '@/types';
 
-const ReviewPage = () => {
-  const {tasks:[task]} = useTasksContext();
-  useEffect(()=>{
-    if(task.status !== 'OUVERTE'){
-        notFound();
-    }
-  },[])
+const ReviewPage: FC<{task:TaskProps}> = ({task}) => {
+
   if(task) 
     return (
       <div className='my-10'>      
@@ -94,8 +88,6 @@ const ReviewPage = () => {
     )
     else return (
       <div>
-
-          API ERROR
       </div>
     )
 }

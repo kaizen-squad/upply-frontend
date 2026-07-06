@@ -67,7 +67,12 @@ export const useAuth = () =>{
                 notify('Registration successful! You can now log in.', 'success');
                 router.push('/login');
             }else{
-                notify(response.message, 'error');
+                if(response.status === 422){
+                    notify('Email ou phone number already in use!', 'error');
+                }else{
+                    notify(response.message, 'error');
+                }
+                
             }
         }catch(err){
             notify('The server results in error while registering!', 'error');

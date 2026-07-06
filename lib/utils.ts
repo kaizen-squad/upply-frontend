@@ -1,4 +1,6 @@
+'use client'
 // lib/utils.ts
+import { HTTPResponse } from '@/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -139,3 +141,8 @@ export function buildFormData(data: Record<string, any>): FormData {
   return formData;
 }
 
+export function ApiResponseInterceptor<T> (response:HTTPResponse<T>): HTTPResponse<T>{
+    if(!response)
+    {}
+    return response
+}

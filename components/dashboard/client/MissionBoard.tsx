@@ -68,9 +68,9 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                                 tasksFiltered.length > 0 &&
                                 tasksFiltered.map(({title, deadline, budget, status, id})=>(
                                     <div key={title} className='my-5 md:my-0 bg-white-solid pl-3 pr-5 py-5 rounded-md shadow-xl'>
-                                        <div className='flex items-center justify-between my-2'>
+                                        <div className='flex items-center gap-3 justify-between my-2'>
                                             <button onClick={()=> router.push(`/client/tasks/${id}`)} className='font-semibold max-w-[70%] line-clamp-1 py-1 px-2 rounded-md hover:bg-gallery-gray-93 cursor-pointer text-left' title={title}>{title}</button>
-                                            <p className='text-alizarin-crimson-red-51 font-semibold line-clamp-1 text-lg'>{formatAmount(budget)} <small>FCFA</small> </p>
+                                            <p className='text-alizarin-crimson-red-51 font-semibold line-clamp-1 text-lg w-max'>{formatAmount(budget)} <small>FCFA</small> </p>
                                         </div>
                                         <p className="ml-2">{deadline}</p>
 

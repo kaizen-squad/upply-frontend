@@ -15,6 +15,7 @@ export interface UseTasksReturn<T = TaskProps> {
   reviewPrestataire: (reviewData:ReviewProps) => Promise<boolean>;
   deleteTask: (task_id:string)=> Promise<void>;
   editTask:(taskData: TaskProps) => Promise<boolean>;
+  getReview: (task_id: string) => Promise<boolean | undefined>
 }
 
 export const budgetCurrency = 'FCFA'
@@ -23,7 +24,7 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
   const [tasks, setTasks] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
     const {notify} = useToasting();
-  const router = useRouter()
+  const router = useRouter();
 
   const fetchTasks = async (id:string | undefined) => {
    
@@ -131,7 +132,7 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
     try{
       setLoading(true);
         const delivery = await apiFetch<Review>(`api/tasks/${reviewData.task_id}/review`, reviewData, 'POST');
-        if(delivery.success && delivery.status === 201){
+        if(delivery.success){
           notify('Commentaire soumis. Merci de choisir Upply.', 'success');
           return true;
         }else {
@@ -148,11 +149,23 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
       return false;
   }
 
+  const getReview = async (task_id: string) => {
+      try{
+        const review = await apiFetch(`api/tasks/${task_id}/review`);
+        return Boolean(review.data) 
+
+      }catch(err){
+        notify('Une erreur est survenue!', 'error');
+      }        
+      
+      return false
+  }
   useEffect(() => {
     if(skip) return;
 
     fetchTasks(id);
   }, []);
+
 
   return { 
     tasks, 
@@ -162,6 +175,7 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
     deliverTask, 
     reviewPrestataire,
     deleteTask,
-    editTask  
+    editTask,
+    getReview  
   };
 }

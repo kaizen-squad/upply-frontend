@@ -9,7 +9,7 @@ import { useToasting } from '@/components/ui/Toast/useToasting';
 import { usePayment } from '@/hooks/usePayment';
 import { budgetCurrency } from '@/hooks/useTasks';
 import apiFetch from '@/lib/api';
-import { commissionPlateform, formatFrenchDateIntl, getInitials } from '@/lib/utils';
+import { commissionPlateform, formatAmount, formatFrenchDateIntl, getInitials } from '@/lib/utils';
 import { DeliverableDTO, TaskProps } from '@/types';
 import { ArrowRight, BadgeCheck, Shield } from 'lucide-react';
 import Image from 'next/image';
@@ -47,6 +47,9 @@ const matchExtBgColor: Record<string, { bg: string; text: string }> = {
 
 // Fonction pour extraire l'extension du fichier
 const getFileExtension = (fileType: string): string => {
+    if(!fileType)
+        return 'error ✕';
+
   const extension = fileType.split('/').pop() || fileType;
   return extension.toLowerCase();
 };
@@ -143,11 +146,11 @@ const page = () => {
                                     <div className="p-5 border border-gray-200 mt-5">
                                         <div className="flex gap-3 items-stretch">
                                             <div style={{
-                                                backgroundColor: matchExtBgColor[deliverable.file.file_type].bg, 
-                                                color: matchExtBgColor[deliverable.file.file_type].text, borderColor: matchExtBgColor[deliverable.file.file_type].text}} className="p-2 font-semibold flex items-center border">{deliverable.file.file_type.toUpperCase()}</div>
+                                                backgroundColor: matchExtBgColor[deliverable.file.file_type ?? 'jpg'].bg, 
+                                                color: matchExtBgColor[deliverable.file.file_type ?? 'jpg'].text, borderColor: matchExtBgColor[deliverable.file.file_type ?? 'jpg'].text}} className="p-2 font-semibold flex items-center border">{deliverable.file.file_type?.toUpperCase() ?? ''}</div>
                                             <div>
-                                                <a title="Download file" download={true} href={`${deliverable.file.file_url}`} className="font-semibold duration-200 hover:text-alizarin-crimson-red-51">{deliverable.file.file_name}</a>
-                                                <p className="text-scarpa-flow-gray-34">{deliverable.file.file_size} • Envoyé le <span>{formatFrenchDateIntl(deliverable.created_at)}</span></p>
+                                                <a title="Download file" download={true} href={`${deliverable.file.file_url ?? ''}`} className="font-semibold duration-200 hover:text-alizarin-crimson-red-51">{deliverable.file.file_name ?? ''}</a>
+                                                <p className="text-scarpa-flow-gray-34">{deliverable.file.file_size ?? '0'} • Envoyé le <span>{formatFrenchDateIntl(deliverable.submitted_at)}</span></p>
                                             </div>
                                         </div>
                                     </div>
@@ -196,17 +199,17 @@ const page = () => {
                                 <div className="px-4">
                                     <div className="flex items-center justify-between pb-3 my-3 border-b border-b-gray-300 lg:border-none">
                                         <span className="text-scarpa-flow-gray-34">Montant du contrat</span>
-                                        <span>{task.budget} {budgetCurrency}</span>
+                                        <span>{formatAmount(task.budget)} {budgetCurrency}</span>
                                     </div>
                                     <div className="flex items-center justify-between pb-3 my-3 border-b border-b-gray-300 lg:border-none">
                                         <span className="text-scarpa-flow-gray-34">Commission de service</span>
-                                        <span className="text-alizarin-crimson-red-51 lg:text-black">- {commissionPlateform(task.budget)} {budgetCurrency}</span>
+                                        <span className="text-alizarin-crimson-red-51 lg:text-black">- {formatAmount(commissionPlateform(task.budget))} {budgetCurrency}</span>
                                     </div>
                                 </div>
                                 <hr className="mx-4 border-gray-300 my-5 hidden lg:block" />
                                 <div className="flex items-center justify-between px-4">
                                     <p className="text-2xl font-bold">Total Net</p>
-                                    <p className="font-bold text-alizarin-crimson-red-51 text-2xl">{(task.budget - commissionPlateform(task.budget))} {budgetCurrency}</p>
+                                    <p className="font-bold text-alizarin-crimson-red-51 text-2xl">{formatAmount(task.budget - commissionPlateform(task.budget))} {budgetCurrency}</p>
                                 </div>
                             </div>
 

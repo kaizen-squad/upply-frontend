@@ -82,7 +82,7 @@ export interface DeliverableDTO {
   content: string,
   prestataire: InfoUser,
   file: FileUpply
-  created_at: string
+  submitted_at: string
 }
 
 export const DeliveryFormSchema = z.object({

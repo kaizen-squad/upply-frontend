@@ -42,8 +42,14 @@ export function useApplication(): UseApplicationReturn {
         const response = await apiFetch<ApplicationResponse[]>(`api/tasks/${task_id}/applications${role === 'prestataire' ? '/me':''}`);
         if(response.success)
           setApplication(Array.isArray(response.data) ? response.data : [response.data]);
-        else
-          notify(response.message, 'error');
+        else{
+          if(response.status === 404){
+            setApplication([]);
+          }else{
+            notify(response.message, 'error');  
+          }
+        }
+          
       }catch(err){
         notify('Une erreur est survenue lors du chargement de vos candidatures!', 'error');
       }finally{

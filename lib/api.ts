@@ -110,7 +110,7 @@ const isNextBackendRoute = (url: string) => url.startsWith('/');
  * @param method method of the request (optional: automatically set to GET when not supplied)
  * @returns res: HTTPResponse {success, message, data}
  */
-export default async function apiFetch<T> (url: string, body?: object | undefined,  method?: 'GET'| 'POST'| 'PUT'| 'PATCH' | 'DELETE'): Promise<HTTPResponse<T> > {
+export default async function apiFetch<T> (url: string, body?: object | undefined,  method?: 'GET'| 'POST'| 'PUT'| 'PATCH' | 'DELETE'): Promise<HTTPResponse<T>> {
 
     if(!method)
         method = 'GET';
@@ -126,9 +126,10 @@ export default async function apiFetch<T> (url: string, body?: object | undefine
     }
 
 
-        const res: HTTPResponse<T> = await instance(requestConfig)
+    const res: HTTPResponse<T> = await instance(requestConfig)
         .then((response)=> response.data)
         .catch(err=>err)
-        return res;
+        
+    return res;
 
 }

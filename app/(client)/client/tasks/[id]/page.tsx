@@ -6,10 +6,9 @@ import Button from '@/components/ui/Button/Button';
 import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { Edit, Truck, UserCircle2, X } from 'lucide-react';
-import { div } from 'motion/react-client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 const page = () => {
   const {tasks:[task], loading, refetch} = useTasksContext();
@@ -86,7 +85,7 @@ const page = () => {
                 }
                 </div>
               
-              <div className="bg-woodsmoke-gray-10 p-5 mt-3 h-max">
+              <div className="bg-woodsmoke-gray-10 p-5 mt-5 h-max">
                <div className="flex items-center gap-4 text-white">
                  <div className="px-4 py-2 bg-alizarin-crimson-red-51 font-black">U</div>
                  <div>
