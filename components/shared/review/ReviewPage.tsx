@@ -6,6 +6,7 @@ import { formatAmount, formatFrenchDateIntl } from '@/lib/utils'
 import { budgetCurrency } from '@/hooks/useTasks'
 import { FC } from 'react';
 import { TaskProps } from '@/types';
+import { notFound } from 'next/navigation';
 
 const ReviewPage: FC<{task:TaskProps}> = ({task}) => {
 
@@ -19,14 +20,14 @@ const ReviewPage: FC<{task:TaskProps}> = ({task}) => {
                 <p className='font-semibold text-[0.9rem] text-scarpa-flow-gray-34'>DETAILS DE LA MISSION</p>
                 <hr className='border border-gray-300 w-full my-2' />
 
-                <div className='flex items-center justify-between'>
-                  <div className='w-[70%]'>
-                    <p className='font-bold text-xl'>{task?.title ?? 'Supervision de la mission Shein'}</p>
-                    <small className='text-santa-gray text-[0.85rem]'>Terminé le {formatFrenchDateIntl(task.created_at ?? '')}</small>
+                <div className='flex items-center justify-between text-md sm:text-xl'>
+                  <div className='w-max'>
+                    <p className='font-bold text-xl w-max'>{task?.title ?? '[Titre de mission]'}</p>
+                    <small className='text-santa-gray text-[0.85rem]'>Terminé le {formatFrenchDateIntl(task.created_at ?? '[Date de fin]')}</small>
                   </div>
-                  <div>
-                    <p className='text-scarpa-flow-gray-34 text-[0.9rem]'>MONTANT FINAL</p>
-                    <p className='text-alizarin-crimson-red-51 text-xl font-bold'>{formatAmount(task.budget)} {budgetCurrency}</p>
+                  <div className="w-max ">
+                    <p className='text-scarpa-flow-gray-34'>MONTANT FINAL</p>
+                    <p className='text-alizarin-crimson-red-51  font-bold '>{formatAmount(task.budget)} {budgetCurrency}</p>
                   </div>
                 </div>
               </div>
@@ -86,10 +87,7 @@ const ReviewPage: FC<{task:TaskProps}> = ({task}) => {
         </div>
       </div>
     )
-    else return (
-      <div>
-      </div>
-    )
+    else return notFound();
 }
 
 export default ReviewPage

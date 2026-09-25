@@ -1,9 +1,9 @@
-import axios, { InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
 
 /**
- * The opened routes which any client can reach whithout authorization, except refresh token where the token is checked directly from the http cookie 
+ * The opened routes which any client can reach without authorization, except refresh token where the token is checked directly from the http cookie
  */
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -21,13 +21,14 @@ let queue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; 
 
 
 /**
- * The instance in charge of all HTTP request accross the app
+ * The instance in charge of all HTTP request across the app
  */
+
 const instance = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
-    },    
+    },
     withCredentials: true,
     allowAbsoluteUrls: true,
 });
@@ -125,11 +126,28 @@ export default async function apiFetch<T> (url: string, body?: object | undefine
         requestConfig.baseURL = '';
     }
 
-
-    const res: HTTPResponse<T> = await instance(requestConfig)
-        .then((response)=> response.data)
-        .catch(err=>err)
+    try {
+        console.log(requestConfig);
         
-    return res;
+        const response = await instance(requestConfig);
+        return response.data as HTTPResponse<T>;
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            const axiosError = err as AxiosError;
+            const response = axiosError.response;
+            return {
+                success: false,
+                data: null as unknown as T,
+                message: response?.statusText ?? axiosError.message,
+                status: response?.status ?? (axiosError.code === 'ECONNABORTED' ? 408 : 503),
+            };
+        }
 
+        return {
+            success: false,
+            data: null as unknown as T,
+            message: (err as Error)?.message ?? 'Unexpected error',
+            status: 500,
+        };
+    }
 }

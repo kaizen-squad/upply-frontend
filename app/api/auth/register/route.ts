@@ -2,7 +2,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import apiFetch from '@/lib/api';
-import { AuthDataResponse } from '@/types/auth';
 import { HTTPResponse } from '@/types';
 import { any } from 'zod';
 

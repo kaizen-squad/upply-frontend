@@ -6,6 +6,10 @@ import { useToasting } from '@/components/ui/Toast/useToasting';
 import { useTasks } from '@/hooks/useTasks';
 import { TaskFormProps, TaskFormType, TaskProps } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoItem } from '@mui/x-date-pickers/internals/demo';
+import dayjs from 'dayjs';
 import { HandCoins } from 'lucide-react';
 import { Dispatch, FC, SetStateAction } from 'react';
 import { Controller, useForm } from 'react-hook-form'
@@ -46,7 +50,9 @@ const   TaskForm:FC<{field_values?:TaskProps, isEditing?:boolean, setIsEdited?:D
             } 
         }
     };
-    const onError = ()=> notify('Veuillez entrez des données valides!', 'warning');
+    const onError = (data:any)=> {
+        notify('Veuillez entrez des données valides!', 'warning');        
+    };
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} className='w-full bg-white-solid py-10 px-5 md:p-10 border rounded-sm' >
@@ -104,21 +110,24 @@ const   TaskForm:FC<{field_values?:TaskProps, isEditing?:boolean, setIsEdited?:D
                 name='deadline'
                 control={control}
                 render={({field, fieldState:{error}})=>
-                    <TextField  
-                        placeholder=""
-                        label='Date limite'
-                        type='date'
-                        className='py-2.5 rounded-none'
-                        {...field}
-                        errorMessage={error?.message ?? ''}
-                    /> }
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoItem label={<span className="font-bold text-[1.02rem]">Date Limite</span>}>
+                        <DesktopDatePicker
+                            ref={field.ref}
+                            value={field.value ? dayjs(field.value) : null}
+                            onChange={(date) => field.onChange(date?.isValid() ? date.format('YYYY-MM-DD') : '')}
+                            minDate={dayjs()}
+                        />
+                        </DemoItem>    
+                    </LocalizationProvider>                
+                }
             />
         </div>
 
         <div className='mt-8 sm:mt-25 w-full'>
             <hr className='hidden sm:block border-gray-200 w-full' />
             <Button
-                disabled={!isValid}
+                // disabled={!isValid}
                 type='submit'
                 textContent={isSubmitting ? 'Loading...' : 'Publier la mission'}
                 className='bg-alizarin-crimson-red-51 text-white-solid font-medium rounded-md py-3 sm:py-2.5 px-5 mt-5 flex justify-self-end mb-5 sm:w-max w-full'

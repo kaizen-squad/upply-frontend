@@ -181,7 +181,8 @@
     }
   }
 
-  .css-1ms7hib-MuiTimelineItem-root::before{
+  .css-1ms7hib-MuiTimelineItem-root::before,
+  .css-1tjyj33-MuiTimelineItem-root:not(:has(.MuiTimelineOppositeContent-root))::before{
     display: none;
   }
 
@@ -203,4 +204,5 @@
     position: absolute;
     top: 0;
   }
+
 

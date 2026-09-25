@@ -15,7 +15,7 @@ export interface UseTasksReturn<T = TaskProps> {
   reviewPrestataire: (reviewData:ReviewProps) => Promise<boolean>;
   deleteTask: (task_id:string)=> Promise<void>;
   editTask:(taskData: TaskProps) => Promise<boolean>;
-  getReview: (task_id: string) => Promise<boolean | undefined>
+  getReview: (task_id: string) => Promise<ReviewProps | undefined>
 }
 
 export const budgetCurrency = 'FCFA'
@@ -151,14 +151,15 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
 
   const getReview = async (task_id: string) => {
       try{
-        const review = await apiFetch(`api/tasks/${task_id}/review`);
-        return Boolean(review.data) 
-
+        const review = await apiFetch<ReviewProps[]>(`api/tasks/${task_id}/review`);
+        if(review.success)
+          return review.data[0]
+        return ;
       }catch(err){
         notify('Une erreur est survenue!', 'error');
       }        
       
-      return false
+      return ;
   }
   useEffect(() => {
     if(skip) return;

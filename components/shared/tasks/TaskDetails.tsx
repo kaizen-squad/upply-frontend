@@ -10,6 +10,7 @@ import Button from '@/components/ui/Button/Button';
 import { Trash2 } from 'lucide-react';
 import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
 import { useMediaQuery } from '@reactuses/core';
+import { useUserStore } from '@/hooks/store';
 
 const TaskDetails:FC<
   | { loading: boolean; task: TaskProps; children:ReactNode, role:'client'|'prestataire' }
@@ -17,7 +18,7 @@ const TaskDetails:FC<
 
   const {modalify} = useModalify();
   const isMobile = useMediaQuery('(max-width: 768px)', true);
-
+  const {user} =useUserStore();
   return (
     <>     
      {/* Chargement */}
@@ -82,7 +83,7 @@ const TaskDetails:FC<
                         </div>
                       </div>
                       {
-                        (role ==='client' && task.status === 'OUVERTE') && 
+                        (role ==='client' && task.client_id === user?.id  && task.status === 'OUVERTE') && 
                         <Button
                           textContent={''}
                           Icon={Trash2}

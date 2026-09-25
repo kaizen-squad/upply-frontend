@@ -11,6 +11,7 @@ import { useMediaQuery } from '@reactuses/core';
 import { ArrowRight, Check, Loader } from 'lucide-react'
 import { useRouter } from 'next/navigation';
 import React from 'react'
+import { clsx } from 'clsx';
 
 const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({tasks, loadDashboard}) => {
     const isMobile = useMediaQuery('(max-width: 1024px)');

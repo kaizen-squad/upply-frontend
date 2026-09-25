@@ -106,7 +106,7 @@ export function getInitials (name: string): string {
  */
 export function formatAmount(amount: number): string {
   const isNegative = amount < 0;
-  const absoluteValue = Math.abs(amount);
+  const absoluteValue = Math.abs(Number(amount.toFixed(2)));
   const [integerPart, fractionPart] = absoluteValue.toString().split('.');
   const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   const formattedNumber = fractionPart ? `${formattedInteger},${fractionPart}` : formattedInteger;

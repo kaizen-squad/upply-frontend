@@ -31,6 +31,7 @@ export const useAuth = () =>{
                 useTokenStore.setState({accessToken:data.accessToken});
                 useUserStore.setState({user: data.user});
                 router.push(`/${data.user.role}/dashboard`);
+                notify('Vous êtes maintenant connecté.', 'success');
             }catch(err){
                 throw(err);
             }   
@@ -44,14 +45,14 @@ export const useAuth = () =>{
             const response: HTTPResponse<AuthDataResponse> = await apiFetch(`/api/auth/login`, body, 'POST');
                 
             if(response){
-                if(response.status === 401){
+                if(response.success){
+                    getLoggedIn(response)
+                }else if(response.status === 401){
                     notify('Invalid email or password.', 'error');
                 }else{
-                    getLoggedIn(response)
+                    notify('Login Failed: An unexpected error occured.', 'error');
                 }
             }
-            else
-                notify('Login Failed: An unexpected error occured.', 'error')
         }catch(err){
             notify('The server results in error while logging in!', 'error');
         }finally{
@@ -64,13 +65,13 @@ export const useAuth = () =>{
             setLoading(true)
             const response: HTTPResponse<AuthDataResponse> = await apiFetch(`/api/auth/register`, body, 'POST');
             if(response.success){
-                notify('Registration successful! You can now log in.', 'success');
+                notify('Registration successfull! You can now log in.', 'success');
                 router.push('/login');
             }else{
                 if(response.status === 422){
                     notify('Email ou phone number already in use!', 'error');
                 }else{
-                    notify(response.message, 'error');
+                    notify('Registation failed! An unexpected error occured!', 'error');
                 }
                 
             }

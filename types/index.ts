@@ -109,7 +109,6 @@ export interface Review {
 
 export const ReviewSchema = z.object({
   task_id: z.string(),
-  reviewee_id: z.string(),
   rating: z.number(),
   comment: z.string().optional()
 })

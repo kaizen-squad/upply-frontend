@@ -48,9 +48,9 @@ export async function proxy(request: NextRequest) {
     const userCookie = request.cookies.get('user')?.value;
     if(userCookie){
        const user: User = JSON.parse(userCookie);
-
+        console.log(request.url)
       // Redirection vers le dashboard pour l'url index "/"
-      if(request.url=== `${process.env.FRONTEND_BASE_URL}/`)
+      if(request.url === `${process.env.FRONTEND_BASE_URL}/`)
         return NextResponse.redirect(new URL(`/${user.role}/dashboard`, request.url));
 
 

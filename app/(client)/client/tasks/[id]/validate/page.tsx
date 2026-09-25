@@ -60,12 +60,12 @@ const page = () => {
     const {tasks:[task]} = useTasksContext<TaskProps>();
     const {modalify, close} = useModalify();
     const {liberatefunds} = usePayment();
-    const {notifyCustom} = useToasting() 
+    const {notifyCustom} = useToasting();
 
     const handleLiberateFunds = async ()=> {
         if(deliverable){
            const liberate = await liberatefunds(deliverable.id);
-           if(!liberate)
+           if(liberate)
                 setTimeout(()=>{
                     return notifyCustom((t)=>(
                         <ReviewToast t={t} username={deliverable.prestataire.name} task_id={task.id} />
@@ -146,11 +146,12 @@ const page = () => {
                                     <div className="p-5 border border-gray-200 mt-5">
                                         <div className="flex gap-3 items-stretch">
                                             <div style={{
-                                                backgroundColor: matchExtBgColor[deliverable.file.file_type ?? 'jpg'].bg, 
-                                                color: matchExtBgColor[deliverable.file.file_type ?? 'jpg'].text, borderColor: matchExtBgColor[deliverable.file.file_type ?? 'jpg'].text}} className="p-2 font-semibold flex items-center border">{deliverable.file.file_type?.toUpperCase() ?? ''}</div>
+                                                backgroundColor: matchExtBgColor[deliverable.file.file_type ?? 'pdf'].bg, 
+                                                color: matchExtBgColor[deliverable.file.file_type ?? 'pdf'].text, 
+                                                borderColor: matchExtBgColor[deliverable.file.file_type ?? 'pdf'].text}} className="p-2 font-semibold flex items-center border">{deliverable.file.file_type?.toUpperCase() ?? '❌'}</div>
                                             <div>
-                                                <a title="Download file" download={true} href={`${deliverable.file.file_url ?? ''}`} className="font-semibold duration-200 hover:text-alizarin-crimson-red-51">{deliverable.file.file_name ?? ''}</a>
-                                                <p className="text-scarpa-flow-gray-34">{deliverable.file.file_size ?? '0'} • Envoyé le <span>{formatFrenchDateIntl(deliverable.submitted_at)}</span></p>
+                                                <a title="Download file" download={true} href={`${deliverable.file.file_url ?? ''}`} className="font-semibold duration-200 hover:text-alizarin-crimson-red-51">{deliverable.file.file_name ?? '[Error]'}</a>
+                                                <p className="text-scarpa-flow-gray-34">{deliverable.file.file_size ?? '0 kb'} • Envoyé le <span>{formatFrenchDateIntl(deliverable.submitted_at)}</span></p>
                                             </div>
                                         </div>
                                     </div>
@@ -203,7 +204,7 @@ const page = () => {
                                     </div>
                                     <div className="flex items-center justify-between pb-3 my-3 border-b border-b-gray-300 lg:border-none">
                                         <span className="text-scarpa-flow-gray-34">Commission de service</span>
-                                        <span className="text-alizarin-crimson-red-51 lg:text-black">- {formatAmount(commissionPlateform(task.budget))} {budgetCurrency}</span>
+                                        <span className="text-alizarin-crimson-red-51 lg:text-black"> {formatAmount(commissionPlateform(task.budget))} {budgetCurrency}</span>
                                     </div>
                                 </div>
                                 <hr className="mx-4 border-gray-300 my-5 hidden lg:block" />
@@ -229,6 +230,7 @@ const page = () => {
                                                 size={25}
                                                 fullColor="var(--yellow)"  
                                                 isSelectable={false}
+
                                             />
                                             <p> <span className="text-xl font-bold">{deliverable.prestataire.rating_avg}</span> <span className="text-scarpa-flow-gray-34">/5</span></p>   
                                         </div>

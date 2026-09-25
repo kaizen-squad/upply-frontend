@@ -19,7 +19,6 @@ const ReviewForm: FC<{task_id: string}> = ({task_id}) => {
         resolver: zodResolver(ReviewSchema),
         defaultValues:{
             task_id: task_id,
-            reviewee_id: '' 
         }
     });
     

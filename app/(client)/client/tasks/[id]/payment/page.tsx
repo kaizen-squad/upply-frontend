@@ -107,6 +107,7 @@ const page = () => {
             setCheckoutLoading(false);
             setCheckoutError('Le module de paiement a pris trop de temps à charger. Vérifiez votre connexion et réessayez.');
             setError('Le module de paiement FedaPay n’a pas pu démarrer après un délai d’attente.');
+            setIsLoading(false);
         }, 12000);
 
         return () => {
@@ -118,9 +119,10 @@ const page = () => {
     }, [showFedapay, isFedapayScriptLoaded]);
 
     useEffect(()=>{
-        if(error)
+        if(error && !showFedapay){
             notify(error,'error');
-    }, [error]);
+        }
+    }, [error, showFedapay]);
 
     if(loading || isLoading) {
         return (
@@ -269,7 +271,7 @@ const page = () => {
                     <div className="">
                         <Button
                             textContent={`Payer ${formatAmount(totalPayment)} ${budgetCurrency}`}
-                            Icon={showFedapay?()=><Spinner size={7} />:''}
+                            Icon={isLoading ? ()=><Spinner size={7} />:''}
                             className="rounded-md cursor-pointer bg-alizarin-crimson-red-51 text-white font-bold w-full  py-4 m-auto"
                             onClick={()=> {
                                 setShowFedapay(true);
@@ -310,7 +312,7 @@ const page = () => {
             {showFedapay && (
             <div className="fixed inset-0 z-50 ">
                 <div className="w-full h-full flex flex-col">
-                    <div className="flex-1 w-full h-full ">
+                    <div className="fedapay flex-1 w-full h-full ">
                         {!isFedapayScriptError && !checkoutError && isFedapayScriptLoaded && !checkoutLoading && (
                             <Fedapay setShowFedapay={setShowFedapay} setError={setError} setPaymentInfos={setPaymentInfos} amount={totalPayment} />
                         )}

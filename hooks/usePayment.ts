@@ -39,16 +39,18 @@ export function usePayment<UsePaymentReturn >() {
   const liberatefunds = async (deliverable_id:string)=> {
       try{
       setLoading(true);
-      const liberate = await apiFetch<null>(`api/deliverable/validate/${deliverable_id}`, undefined, 'POST');
+      const liberate = await apiFetch<null>(`api/deliverables/validate/${deliverable_id}`, undefined, 'POST');
       if(liberate.success){
         router.push(`/client/dashboard`);
         notify('Votre mission est maintenant achevée', 'success'); 
         return true
       }          
       else{ 
-          if(liberate.message)
-            notify(liberate.message,'error');
-          else throw new Error(liberate.message)
+          if(liberate.message){
+            const error = liberate.message || 'Une erreur est survenue lors de la liberation des fonds!';
+            notify(error,'error');
+          }
+
       }
     }catch(err){
         notify('Une erreur est survenue lors de la liberation des fonds!', 'error');
