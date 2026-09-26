@@ -12,19 +12,19 @@ const TaskCard:FC<{task:TaskProps}> = ({task}) => {
   const router = useRouter();
   if(isMobile)
     return (
-      <div className='my-5 bg-white-solid rounded-sm shadow-2xs p-5 border border-gray-200'>
+      <div className='my-5 bg-white-solid rounded-sm shadow-2xs p-5 px-5 border border-gray-200 relative'>
           <div className='flex items-center justify-between'>
-            <small className='uppercase line-clamp-1'>REF:MS-<span>{task.id.substring(0,10)}...</span> </small>
+            <small className='uppercase line-clamp-1 rounded-sm bg-gallery-gray-93 py-1 px-1 w-[49%]'>REF:MS-<span>{task.id}</span> </small>
             <div className='flex items-center gap-2'>
               {
                 task.status === 'LIVREE' &&
-                <div className='flex items-center justify-end'>
+                <div className='flex items-center justify-end absolute bottom-5 right-5 sm:relative sm:bottom-0 sm:right-0'>
                   <small className='text-white rounded-sm py-0.5 px-2 bg-yellow'>En attente de validation</small>
                 </div>
               }
               {
                 task.status === 'VALIDEE' &&
-                <div className='flex items-center justify-end'>
+                <div className='flex items-center justify-end absolute bottom-5 right-5 sm:relative sm:bottom-0 sm:right-0'>
                   <small className='text-white rounded-sm py-0.5 px-2 bg-green-success'>Mission validée</small>
                 </div>
               }              
@@ -33,7 +33,7 @@ const TaskCard:FC<{task:TaskProps}> = ({task}) => {
           </div>
           <button onClick={()=>{
             router.push(`/prestataire/tasks/${task.id}`)
-          }} className='text-lg font-semibold rounded-sm hover:px-2 py-1 hover:bg-gallery-gray-93 w-max mb-1 cursor-pointer duration-200'>{task.title}</button>
+          }} className='text-lg font-semibold rounded-sm mt-2 hover:px-2 py-1 hover:bg-gallery-gray-93 w-max mb-1 cursor-pointer duration-200'>{task.title}</button>
           <div className='flex items-center gap-3 mb-4'>
             <Image
               src={'/Assets/Cash.svg'}

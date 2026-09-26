@@ -56,15 +56,15 @@ const page = () => {
             </div>
         )
     return (
-        <div className="flex w-full h-full min-h-(--main-height)">
-            <div className="my-10 w-full">  
+        <div className="flex w-full lg:max-h-(--main-height) ">
+            <div className="my-10 w-full h-full">  
                 <div>
                     <h1>Mon Tableau de Bord</h1>
                     <StatsBoard dashboardData={dashboardData} />
                     
-                    <div className="grid lg:grid-cols-[65%_1fr] gap-5">
+                    <div className="grid lg:grid-cols-[65%_1fr] gap-5 h-full lg:overflow-y-hidden">
                         {/* Left */}
-                        <div>
+                        <div className="lg:overflow-scroll lg:max-h-[700px] scrollbar-none rounded-t-lg">
                             <div className="flex items-center justify-between">
                                 <h2>{activeFilter === 'ALL' ? 'Toutes les missions' : `Missions ${filterOptions.find(opt => opt.key === activeFilter)?.label.toLowerCase()}`}</h2>
                                 <MenuListComposition
@@ -76,7 +76,7 @@ const page = () => {
                                      
                             {
                                 dashboardData?.tasks.length ?
-                                <div className="mt-">
+                                <div className="">
                                     {
                                         tasksFiltered.length === 0 ?
                                             <p className="p-10 text-center w-full bg-white-solid shadow-2xs rounded-sm border-gray-300 border my-5">Aucune mission trouvée.</p> 

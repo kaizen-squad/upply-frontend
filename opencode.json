@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "audit-plan": {
+      "description": "Analyse le projet et produit un rapport d'audit sans modifier aucun fichier. Mode Plan uniquement.",
+      "mode": "primary",
+      "prompt": "{file:./.opencode/agents/audit-plan.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "patch": true,
+        "bash": true
+      },
+      "permission": {
+        "edit": true,
+        "bash": true,
+        "webfetch": true
+      }
+    }
+  }
+}

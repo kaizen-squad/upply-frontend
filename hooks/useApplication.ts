@@ -1,6 +1,6 @@
 import { useToasting } from "@/components/ui/Toast/useToasting";
 import apiFetch from "@/lib/api";
-import { ApplicationFormType, ApplicationResponse } from "@/types";
+import { ApplicationFormType, ApplicationResponse, ApplicationStatus } from "@/types";
 import { useState } from "react";
 
 interface UseApplicationReturn {
@@ -61,8 +61,10 @@ export function useApplication(): UseApplicationReturn {
           setLoading(true);
           const applyresponse = await apiFetch<null>(`api/application/${application_id}/reject`, undefined, 'PUT');
           
-          if(applyresponse.success)
+          if(applyresponse.success){
             notify('La candidature a été rejetée.', 'success');
+            updateTaskStatus(application_id, 'REJETEE');
+          }
           else { 
           if(applyresponse.message)
             notify(applyresponse.message,'error');
@@ -97,6 +99,9 @@ export function useApplication(): UseApplicationReturn {
         return false;
     }
 
+    const updateTaskStatus = (id: string, status: ApplicationStatus)=>{
+      setApplication(prev => [...prev].map(app => ({...app, status: app.id === id ? status : app.status})))
+    }
 
     return {applyTotask, application, loading, rejectApplication, acceptApplication, getTaskApplication}
 }

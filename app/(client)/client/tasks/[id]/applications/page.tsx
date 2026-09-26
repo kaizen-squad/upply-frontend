@@ -44,7 +44,7 @@ const page = () => {
           <h1>{task.title}</h1>
           <p className="text-scarpa-flow-gray-34 mt-4">{formatRelativeTime(task?.created_at ?? '')}</p>
 
-          <div className="grid lg:grid-cols-[65%_1fr] gap-10 my-5">
+          <div className="grid xl:grid-cols-[65%_1fr] gap-10 my-5">
             <div className="flex flex-col gap-5">
               {
                 application.map((app, index) => <ApplicationCard application={app} key={index} />)

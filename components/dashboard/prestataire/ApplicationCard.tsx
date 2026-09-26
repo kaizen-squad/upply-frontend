@@ -20,7 +20,7 @@ const ApplicationCard: FC<{application: ApplicationCardProps}> = ({application:{
   }
   else return (
     <div className='bg-white border p-5 rounded-sm shadow-2xs'>
-       <div className='flex items-center justify-between flex-wrap-reverse gap-5 lg:gap-2'>
+       <div className='flex justify-between flex-wrap-reverse flex-col gap-5 lg:gap-2'>
             <p className='font-bold line-clamp-2'>{task.title}</p>
             <div className='self-end'><FlagApplication status={status} /></div>
        </div>
