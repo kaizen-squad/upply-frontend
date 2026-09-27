@@ -52,7 +52,7 @@ export type User = {
 
 export const UserCookieSchema = z.object({
     name: z.string(),
-    role: z.enum(['client', 'prestataire']),
+    role: z.enum(['client', 'prestataire'])
 }).passthrough();
 
 /**

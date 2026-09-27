@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import apiFetch from '@/lib/api';
 import { HTTPResponse } from '@/types';
 import { RefreshTokenResponse } from '@/types/auth';
+import { success } from 'zod';
 
 export async function POST() {
   const cookieStore = await cookies();
@@ -19,9 +20,8 @@ export async function POST() {
   // Call the backend to refresh the tokens
   const response:HTTPResponse<RefreshTokenResponse> = await apiFetch(`api/refresh`, {tokenString: refreshToken}, 'POST');
   if (response.success) {
-    return NextResponse.json({
-      accessToken: response.data.accessToken
-    });
+    
+    return NextResponse.json(response);
   }
   
   //Delete the cookie the previous request result in success.

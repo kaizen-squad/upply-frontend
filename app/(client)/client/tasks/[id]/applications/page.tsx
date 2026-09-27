@@ -5,7 +5,7 @@ import Spinner from "@/components/ui/Spinner/Spinner";
 import { budgetCurrency } from "@/hooks/useTasks";
 import { formatAmount, formatRelativeTime } from "@/lib/utils";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import { formatFrenchDateIntl } from '@/lib/utils';
 import FlagTask from "@/components/shared/tasks/FlagTask";
 import EmptyImage from "@/components/shared/EmptyImage";
@@ -24,7 +24,6 @@ const Page = () => {
     const visibleApplications = application.slice(pagination.startIndex, pagination.endIndex);
 
     useEffect(()=>{
-      
       if(task && task.id)
         if(task.status !== 'OUVERTE'){          
             notFound();

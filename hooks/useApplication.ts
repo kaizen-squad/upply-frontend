@@ -1,6 +1,7 @@
 import { useToasting } from "@/components/ui/Toast/useToasting";
 import apiFetch from "@/lib/api";
-import { ApplicationFormType, ApplicationResponse, ApplicationStatus } from "@/types";
+import { useApplicationsStore } from "@/hooks/store";
+import { ApplicationFormType, ApplicationResponse } from "@/types";
 import { useCallback, useState } from "react";
 
 interface UseApplicationReturn {
@@ -14,7 +15,9 @@ interface UseApplicationReturn {
 
 
 export function useApplication(): UseApplicationReturn {
-  const [application, setApplication] = useState<ApplicationResponse[]>([]);
+  const application = useApplicationsStore((state) => state.applications);
+  const setApplication = useApplicationsStore((state) => state.setApplications);
+  const updateTaskStatus = useApplicationsStore((state) => state.updateApplicationStatus);
   const [loading, setLoading] = useState(true);
   const {notify} = useToasting();
 
@@ -55,7 +58,7 @@ export function useApplication(): UseApplicationReturn {
       }finally{
         setLoading(false);
       }
-    }, [notify, setLoading]);
+    }, [notify, setApplication]);
     const rejectApplication = async (application_id:string) => {
       try{
           setLoading(true);
@@ -84,6 +87,7 @@ export function useApplication(): UseApplicationReturn {
           
           if(applyresponse.success){
             notify('La candidature a été acceptée.', 'success');
+            updateTaskStatus(application_id, 'ACCEPTEE');
             return true;
           }
           else { 
@@ -98,10 +102,6 @@ export function useApplication(): UseApplicationReturn {
         }
         return false;
     };
-
-    const updateTaskStatus = (id: string, status: ApplicationStatus)=>{
-      setApplication(prev => [...prev].map(app => ({...app, status: app.id === id ? status : app.status})))
-    }
 
     return {applyTotask, application, loading, rejectApplication, acceptApplication, getTaskApplication}
 }

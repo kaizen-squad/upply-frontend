@@ -14,8 +14,9 @@ const ClientAuthProvider: FC<{children:ReactNode}> = ({ children }) => {
 
     useEffect(() => {
         const loadStore = async ()=> {
+            
             try{
-                const userResponse = await apiFetch<User>('/api/auth/login');
+                const userResponse = await apiFetch<User>('/api/auth/login');                         
                 if (userResponse.success) {
                     const tokenResponse = await apiFetch<{ accessToken: string }>('/api/auth/refresh', undefined, 'POST');
                     if (!tokenResponse.success || !tokenResponse.data?.accessToken) {
@@ -24,6 +25,7 @@ const ClientAuthProvider: FC<{children:ReactNode}> = ({ children }) => {
 
                     useTokenStore.setState({ accessToken: tokenResponse.data.accessToken });
                     setUser(userResponse.data);
+                    
                 } else if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
                     await apiFetch('/api/auth/logout')
                     router.push("/login");
@@ -35,7 +37,7 @@ const ClientAuthProvider: FC<{children:ReactNode}> = ({ children }) => {
         }
         loadStore();
     }, [setUser, router]);
-    if( loading)
+    if(loading)
         return <div className="flex h-screen w-screen">
             <div className="flex items-center gap-3 h-max m-auto">
                 <Image

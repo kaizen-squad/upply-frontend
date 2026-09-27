@@ -44,7 +44,7 @@ export async function GET(){
   if(userCookie){
     try {
       const user = UserCookieSchema.safeParse(JSON.parse(userCookie.value));
-      if (user.success) {
+      if (user.success) {        
         return NextResponse.json({success:true, data:user.data, message:'User info'});
       }
     } catch {

@@ -40,7 +40,6 @@ export function usePayment() {
       try{
       setLoading(true);
       const liberate = await apiFetch<null>(`api/deliverables/validate/${deliverable_id}`, undefined, 'POST');
-      console.log(liberate)
       if(liberate.success){
         router.push(`/client/dashboard`);
         notify('Votre mission est maintenant achevée', 'success'); 
