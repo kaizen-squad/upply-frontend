@@ -18,7 +18,7 @@ const TaskDetails:FC<
 
   const {modalify} = useModalify();
   const isMobile = useMediaQuery('(max-width: 768px)', true);
-  const {user} =useUserStore();
+  const {user} = useUserStore();
   return (
     <>     
      {/* Chargement */}

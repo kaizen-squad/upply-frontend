@@ -58,7 +58,7 @@ const Page = () => {
                     
                     <div className="grid lg:grid-cols-[65%_1fr] gap-5 h-full lg:overflow-y-hidden">
                         {/* Left */}
-                        <div className="lg:overflow-scroll lg:max-h-[700px] scrollbar-none rounded-t-lg">
+                        <div className="lg:overflow-scroll lg:max-h-175 scrollbar-none rounded-t-lg">
                             <div className="flex items-center justify-between">
                                 <h2>{activeFilter === 'ALL' ? 'Toutes les missions' : `Missions ${filterOptions.find(opt => opt.key === activeFilter)?.label.toLowerCase()}`}</h2>
                                 <MenuListComposition

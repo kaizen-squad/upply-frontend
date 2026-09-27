@@ -46,7 +46,8 @@ export type RegisterProps = z.infer<typeof RegisterSchema>;
  */
 export type User = {
     name: string,
-    role: Role
+    role: Role,
+    id: string
 }
 
 export const UserCookieSchema = z.object({
