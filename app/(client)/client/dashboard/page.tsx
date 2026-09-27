@@ -9,10 +9,10 @@ import { useRouter } from 'next/navigation';
 import { useDashboard } from '@/hooks/useDashboard';
 import { useMediaQuery } from '@reactuses/core';
 
-const page = () => {
+const Page = () => {
     const router = useRouter();
   const isMobile = useMediaQuery('(max-width: 768px)', true);
-    const {loadDashboard, dashboardData, loading} = useDashboard<CDashboardData>('client');
+    const {loadDashboard, dashboardData, loading, error} = useDashboard<CDashboardData>('client');
 
     const {tasks = [], statistics = {opened: 0, pending: 0, validated: 0}} = dashboardData || {};
 
@@ -22,82 +22,90 @@ const page = () => {
 
     useEffect(()=>{
         loadDashboard();
-    }, [])
+    }, [loadDashboard])
 
-    
+    if (error && !loading) {
+        return (
+            <div role="alert" className="m-auto mt-10 w-fit text-center">
+                <p>{error}</p>
+            </div>
+        );
+    }
+
+
     return (
         <div className={'block pb-10 gap-10 m-auto lg:m-auto xl:grid grid-cols-[67%_1fr]'}>
             <div>
                 <div className='flex items-center justify-between w-full'>
                     <div>
                         {
-                            loading ? 
+                            loading ?
                             <div>
-                                <p className='h-10 rounded-md bg-gray-200 w-50 animate-pulse lg:mt-3 mb-2'></p> 
+                                <p className='h-10 rounded-md bg-gray-200 w-50 animate-pulse lg:mt-3 mb-2'></p>
                                 <p  className='h-7 rounded-md bg-gray-200 w-80 animate-pulse lg:mt-3'></p>
                             </div>
-                                        
+
                             : (
-                                Boolean(tasks.length) ? 
+                                Boolean(tasks.length) ?
                                 <div>
-                                    <h1>VUE D'ENSEMBLE</h1>
-                                    <p className='text-santa-gray text-[0.9rem] mt-2 lg:text-md'>Suivi en temps réel de votre activité opérationnelle.</p>
-                                </div>  : 
+                                    <h1>VUE D&apos;ENSEMBLE</h1>
+                                    <p className='text-scarpa-flow-gray-34 text-[0.9rem] mt-2 lg:text-md'>Suivi en temps réel de votre activité opérationnelle.</p>
+                                </div>  :
                                 <div>
                                     <h1>Prêt à déléguer votre première tâche ?</h1>
-                                    <p className='text-santa-gray text-[0.9rem] mt-2 lg:text-md'>Votre tableau de bord est prêt à recevoir vos projets.</p>
+                                    <p className='text-scarpa-flow-gray-34 text-[0.9rem] mt-2 lg:text-md'>Votre tableau de bord est prêt à recevoir vos projets.</p>
                                 </div>
                             )
                         }
-                                
-                    </div> 
-                    
+
+                    </div>
+
                             {
                                 (!loading && Boolean(tasks.length)) &&
-                                <Button 
+                                <Button
                                     textContent={isMobile ? '' : 'NOUVELLE MISSION'}
                                     Icon={Plus}
                                     className='min-w-max px-5 py-3 rounded-sm bg-alizarin-crimson-red-51 font-medium text-white-solid md:translate-x-5 scale-80 flex-end hover:scale-77 duration-200'
                                     onClick={()=> router.push('/client/tasks/new')}
                                 />
-                            }          
+                            }
                         </div>
 
                         <div className='lg:grid-cols-3 lg:gap-8 gap-5 mt-10 grid'>
-                            <div 
-                            className='border-l-7 border-l-scorpion-gray-37 flex items-center justify-between lg:block rounded-sm bg-white-solid p-5 lg:border-2 lg:border-gray-200 shadow-2xs' 
+                            <div
+                            className='border-l-7 border-l-scorpion-gray-37 flex items-center justify-between lg:block rounded-sm bg-white-solid p-5 lg:border-2 lg:border-gray-200 shadow-2xs'
                             >
                                 <small className='text-jumbo-gray-46 font-semibold'>MISSIONS OUVERTES</small>
                                 {
-                                    !loading ? 
+                                    !loading ?
                                         <p className='text-4xl font-bold lg:mt-3 text-alizarin-crimson-red-51'>{formatNumber(statistics.opened)}</p>
-                                    : 
-                                        <p className='h-10 rounded-md bg-gray-200 w-25 animate-pulse lg:mt-3'></p> 
+                                    :
+                                        <p className='h-10 rounded-md bg-gray-200 w-25 animate-pulse lg:mt-3'></p>
                                 }
-                                
+
                             </div>
                             <div className='border-l-7 border-l-orange-alert flex items-center justify-between lg:block rounded-sm bg-white-solid p-5 lg:border-2 lg:border-gray-200 shadow-2xs'>
                                 <small className='text-jumbo-gray-46 font-semibold' >EN COURS</small>
                                 {
-                                    !loading ? 
+                                    !loading ?
                                         <p className='text-4xl font-bold lg:mt-3'>{formatNumber(statistics.pending)}</p>
-                                    : 
-                                        <p className='h-10 rounded-md bg-gray-200 w-25 animate-pulse lg:mt-3'></p> 
+                                    :
+                                        <p className='h-10 rounded-md bg-gray-200 w-25 animate-pulse lg:mt-3'></p>
                                 }
                             </div>
                             <div className='border-l-7 border-l-green-success flex items-center justify-between lg:block rounded-sm bg-white-solid p-5 lg:border-2 lg:border-gray-200 shadow-2xs'>
                                 <small className='text-jumbo-gray-46 font-semibold' >TERMINEES</small>
                                 {
-                                    !loading ? 
+                                    !loading ?
                                         <p className='text-4xl font-bold lg:mt-3'>{formatNumber(statistics.validated)}</p>
-                                    : 
-                                        <p className='h-10 rounded-md bg-gray-200 w-25 animate-pulse lg:mt-3'></p> 
+                                    :
+                                        <p className='h-10 rounded-md bg-gray-200 w-25 animate-pulse lg:mt-3'></p>
                                 }
                             </div>
                         </div>
 
                         <div className='mt-15'>
-                            
+
                             {
                                 !loading ?
                                     <MissionBoard tasks={tasks} loadDashboard={loadDashboard} />
@@ -108,7 +116,7 @@ const page = () => {
                                         <small className='text-lg font-semibold'>Loading tasks...</small>
                                     </div>
                             }
-                            
+
                         </div>
                     </div>
 
@@ -118,13 +126,13 @@ const page = () => {
                                 <div className='px-5 py-8 bg-woodsmoke-gray-8 rounded-sm xl:w-full mt-10 mx-auto'>
                                     <Zap stroke='white' strokeWidth={2}/>
                                     <h3 className='my-2 text-white-solid'>Optimisez votre annonce</h3>
-                                    <p className='text-santa-gray'>Une description détaillée avec des étapes claires augmente vos chances de recevoir des candidatures qualifiées de 40%. N'hésitez pas à joindre des fichiers de référence pour guider les prestataires.</p>  
+                                    <p className='text-santa-gray'>Une description détaillée avec des étapes claires augmente vos chances de recevoir des candidatures qualifiées de 40%. N&apos;hésitez pas à joindre des fichiers de référence pour guider les prestataires.</p>
                                 </div>
 
                                 <div className='px-5 py-8 bg-woodsmoke-gray-8 rounded-sm xl:w-full mt-10 mx-auto'>
                                     <Zap stroke='white' strokeWidth={2}/>
                                     <h3 className='my-2 text-white-solid'>Notez vos prestaires</h3>
-                                    <p className='text-santa-gray'>Évaluez vos prestataires avec justesse. Un retour constructif après chaque mission aide la communauté à identifier les meilleurs talents et améliore la qualité globale des livrables sur Upply.</p>  
+                                    <p className='text-santa-gray'>Évaluez vos prestataires avec justesse. Un retour constructif après chaque mission aide la communauté à identifier les meilleurs talents et améliore la qualité globale des livrables sur Upply.</p>
                                 </div>
 
                                 <div className='px-5 py-8 bg-woodsmoke-gray-8 rounded-sm xl:w-full mt-10 mx-auto'>
@@ -132,11 +140,11 @@ const page = () => {
                                         <Lightbulb className='text-orange-500'/>
                                         <h3 className='my-2 text-white-solid'>Optimisez votre annonce</h3>
                                     </div>
-                                    <p className='text-santa-gray'>Comparez les notes et les expériences passées des candidats. Un candidat avec une expérience spécifique dans l'e-commerce garantira souvent de meilleurs résultats pour cette mission..</p>  
+                                    <p className='text-santa-gray'>Comparez les notes et les expériences passées des candidats. Un candidat avec une expérience spécifique dans l&apos;e-commerce garantira souvent de meilleurs résultats pour cette mission..</p>
                                 </div>
-                            </div> 
+                            </div>
                         }
-                        
+
                         {
                             (!loading && !Boolean(tasks.length)) &&
                             <div className='flex h-max mt-10 m-0'>
@@ -161,7 +169,7 @@ const page = () => {
                                                     </div>
                                                     <div className='h-1.5 w-full border-2 border-gray-300' style={{background: bg}}></div>
                                                 </div>)
-                                            } 
+                                            }
                                         </div>
                                     </div>
 
@@ -172,15 +180,15 @@ const page = () => {
                                         </div>
                                         <p className='p-5 bg-gallery-gray-93'>Upply assure une transparence totale de vos transactions. Chaque étape de la facturation est sécurisée garantissant une fiabilité à 100%</p>
                                     </div>
-                                
+
                                 </div>
                             </div>
                         }
-                    </div>     
+                    </div>
                 </div>
         )
 
 }
-                
 
-export default page
+
+export default Page

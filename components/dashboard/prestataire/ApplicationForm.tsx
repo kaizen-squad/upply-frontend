@@ -37,7 +37,7 @@ const ApplicationForm:FC<{task: TaskProps}> = ({task}) => {
 
     useEffect(()=>{
         getTaskApplication(task.id,'prestataire');
-    },[])
+    }, [getTaskApplication, task.id])
 
   
 
@@ -103,7 +103,7 @@ const ApplicationForm:FC<{task: TaskProps}> = ({task}) => {
 
                         <div>
                             <div className='flex items-center justify-between'>
-                                <small>STATUT DE l'EXAMEN</small>
+                                <small>STATUT DE l&apos;EXAMEN</small>
                                 <small>{application.status.replace('_', ' ')}</small>
                             </div>
                             <div className='border h-2 mt-1' style={{background: applicationRangeBarColor[application.status]}}></div>

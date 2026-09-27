@@ -6,17 +6,22 @@ import { cn } from '@/lib/utils';
 
 const TextField: FC<ITextFieldProps> = ( { type, id, label, value, className, placeholder, onChange, errorMessage, Icon, Eposition='top', ...props } ) => {
         const textFieldId = props.name || id || label?.toLowerCase().replace(/\s/g, '-');
+        const describedBy = [props['aria-describedby'], errorMessage ? `${textFieldId}-error` : undefined]
+            .filter(Boolean)
+            .join(' ') || undefined;
     return ( 
         <div className='flex flex-col gap-2 w-full'>  
             {label && <div className='flex justify-between w-full'>
                 <label htmlFor={textFieldId} className={cn('font-bold ', errorMessage ? 'text-red-600' : '') }>{label}</label>
-                {(errorMessage && Eposition ==='top') && <small className='text-red-500'>{errorMessage}</small>}
+                {(errorMessage && Eposition ==='top') && <small id={`${textFieldId}-error`} className='text-red-500'>{errorMessage}</small>}
             </div>}              
            
            <div className='relative h-full'>
                 {Icon && <Icon className='absolute left-3 top-[8px] text-gray-400 w-5'/>}
                 <input 
                     {...props} 
+                    aria-invalid={errorMessage ? true : props['aria-invalid']}
+                    aria-describedby={describedBy}
                     value={value ?? ''} 
                     type={type ?? 'text'} id={textFieldId} 
                     className={cn(

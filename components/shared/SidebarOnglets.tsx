@@ -1,6 +1,4 @@
 'use client'
-import Button from '@/components/ui/Button/Button';
-import { useUserStore } from '@/hooks/store'
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';

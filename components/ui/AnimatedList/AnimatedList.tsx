@@ -12,7 +12,7 @@ type AnimatedItemProps = {
 
 const AnimatedItem = ({ children, delay = 0, index, onMouseEnter, onClick }: AnimatedItemProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const inView = useInView(ref as any, { amount: 0.5, once: true });
+  const inView = useInView(ref, { amount: 0.5, once: true });
   return (
     <motion.div
       ref={ref}

@@ -7,14 +7,14 @@ import Button from '@/components/ui/Button/Button';
 import { useRouter } from 'next/navigation';
 import EmptyImage from '@/components/shared/EmptyImage';
 
-const page = () => {
+const Page = () => {
     const {loading, tasks, refetch} = useTasks<TaskProps>('mine');
     const router = useRouter();
   return (
     <div className={tasks.length ? "w-full pb-10 px-2" : "h-(--main-height) w-full flex flex-col pb-10 px-2"}>
          <div>
             <h1>Vos Missions </h1>
-            <p className="text-santa-gray mt-2">Explorez les missions que vous proposez.</p>
+            <p className="text-scarpa-flow-gray-34 mt-2">Explorez les missions que vous proposez.</p>
         </div>
         {
             tasks.length === 0 && !loading &&
@@ -23,7 +23,7 @@ const page = () => {
                   <EmptyImage/>
                   <div className="relative z-1">
                     <p className="text-xl font-bold text-center">Aucune mission disponible pour le moment!</p>
-                    <p className="text-center lg:w-1/2 m-auto my-4 text-santa-gray text-md">Faites vos premières propositions ou continuez à offrir des opportunités.</p>
+                    <p className="text-center lg:w-1/2 m-auto my-4 text-scarpa-flow-gray-34 text-md">Faites vos premières propositions ou continuez à offrir des opportunités.</p>
                   </div>
                   <div className="flex items-center gap-5 justify-center">
                     <Button 
@@ -47,4 +47,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

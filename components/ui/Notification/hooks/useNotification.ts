@@ -5,7 +5,7 @@ const NOTIFICATION_TIME = 4000;
 
 const useNotification = (notifications:NotificationProps[], setNotifications:Dispatch<SetStateAction<NotificationProps[]>>) => {
     
-    const removeNotification = async (id:string) => {
+    const removeNotification = useCallback(async (id:string) => {
         const notification = document.getElementById(id);
         if(!notification) return;
         const animate = notification?.animate([
@@ -15,7 +15,7 @@ const useNotification = (notifications:NotificationProps[], setNotifications:Dis
         if(animate)
             animate.onfinish = () => setNotifications((prev:NotificationProps[]) => prev.filter(n => n.id !== id))
                              
-    }
+    }, [setNotifications]);
 
     const renderNotification = useCallback((message:string, type:NotificationType, persistant: boolean=false)=>{
 
@@ -31,7 +31,7 @@ const useNotification = (notifications:NotificationProps[], setNotifications:Dis
         if(!persistant)
             setTimeout(() => removeNotification(newNotification.id), NOTIFICATION_TIME)
 
-    }, [removeNotification])
+    }, [removeNotification, setNotifications])
 
     
 

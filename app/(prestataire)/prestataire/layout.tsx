@@ -9,7 +9,7 @@ import { Overlay } from '@/components/ui/Overlay/Overlay';
 import { useMediaQuery } from '@reactuses/core';
 import { ReactNode, useState } from 'react';
 
-const layout:React.FC<{children:ReactNode}> = ({children}) => {
+const Layout:React.FC<{children:ReactNode}> = ({children}) => {
     const [isMobileSidebarOpened, setIsMobileSidebarOpened] = useState(false);
     const isMobile = useMediaQuery('(max-width: 800px)', true);
 
@@ -47,4 +47,4 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
   )
 }
 
-export default layout
+export default Layout

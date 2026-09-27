@@ -6,12 +6,12 @@ import MenuListComposition from '@/components/ui/Menu/Menu';
 import { budgetCurrency } from '@/hooks/useTasks';
 import { formatAmount } from '@/lib/utils';
 import { TaskProps } from '@/types'
-import { MenuItem } from '@mui/material';
 import { useMediaQuery } from '@reactuses/core';
-import { ArrowRight, Check, Loader } from 'lucide-react'
+import { ArrowRight, Loader } from 'lucide-react'
 import { useRouter } from 'next/navigation';
 import React from 'react'
-import { clsx } from 'clsx';
+import PaginationControls from '@/components/shared/PaginationControls';
+import { useResponsivePagination } from '@/hooks/useResponsivePagination';
 
 const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({tasks, loadDashboard}) => {
     const isMobile = useMediaQuery('(max-width: 1024px)');
@@ -24,6 +24,8 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
         }
         return tasks.filter(({status})=> status === activeFilter)
     }, [activeFilter, tasks]);
+    const pagination = useResponsivePagination(tasksFiltered.length);
+    const visibleTasks = tasksFiltered.slice(pagination.startIndex, pagination.endIndex);
 
   return (
     <div>
@@ -49,7 +51,10 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                                 {label:'Terminées', key:'VALIDEES'}
                             ]}
                             activeFilter={activeFilter}
-                            setActiveFilter={setActiveFilter}
+                            setActiveFilter={(filter) => {
+                                setActiveFilter(filter);
+                                pagination.setPage(1);
+                            }}
                         />
 
                     </div>
@@ -67,8 +72,8 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                             }
                             {
                                 tasksFiltered.length > 0 &&
-                                tasksFiltered.map(({title, deadline, budget, status, id})=>(
-                                    <div key={title} className='my-5 md:my-0 bg-white-solid pl-3 pr-5 py-5 rounded-md shadow-xl'>
+                                visibleTasks.map(({title, deadline, budget, status, id})=>(
+                                    <div key={id} className='my-5 md:my-0 bg-white-solid pl-3 pr-5 py-5 rounded-md shadow-xl'>
                                         <div className='flex items-center gap-3 justify-between my-2'>
                                             <button onClick={()=> router.push(`/client/tasks/${id}`)} className='font-semibold max-w-[70%] line-clamp-1 py-1 px-2 rounded-md hover:bg-gallery-gray-93 cursor-pointer text-left' title={title}>{title}</button>
                                             <p className='text-alizarin-crimson-red-51 font-semibold line-clamp-1 text-lg w-max'>{formatAmount(budget)} <small>FCFA</small> </p>
@@ -98,13 +103,13 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                                 {
                                 tasksFiltered.length === 0 && 
                                 <tr>
-                                    <td colSpan={4} className='text-center py-10 text-santa-gray'>Aucune mission trouvée pour ce statut</td>
+                                    <td colSpan={4} className='text-center py-10 text-scarpa-flow-gray-34'>Aucune mission trouvée pour ce statut</td>
                                 </tr>
                                 }
                                 {
                                     tasksFiltered.length > 0 &&
-                                tasksFiltered.map(({id, title, deadline, budget, status})=>(
-                                    <tr key={title} className='border-b border-b-gray-300'>
+                                visibleTasks.map(({id, title, deadline, budget, status})=>(
+                                    <tr key={id} className='border-b border-b-gray-300'>
                                         <td className='px-8 w-[45%] h-max py-6 font-semibold'>
                                             <button onClick={()=>router.push(`/client/tasks/${id}`)} className='w-full text-left duration-200 hover:rounded-md px-3 py-2 hover:bg-gallery-gray-93 hover:underline cursor-pointer border-l-4 h-max' style={{borderColor: `var(--${flagColor[status]})`}}>{title}</button>
                                         </td>
@@ -118,6 +123,12 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
                             </tbody>
                         </table>
                 }
+                <PaginationControls
+                    page={pagination.page}
+                    pageCount={pagination.pageCount}
+                    onPageChange={pagination.setPage}
+                    label="Pagination des missions"
+                />
             </div>
 
         }
@@ -126,7 +137,7 @@ const MissionBoard:React.FC<{tasks: TaskProps[], loadDashboard: ()=>void}> = ({t
             <div className='w-full m-auto mt-20 text-center bg-white-solid border border-gray-300'>
                 <div className='w-[70%] m-auto py-15'>
                     <h2 className='my-3'>Lancer un projet maintenant</h2>
-                    <p className='my-3 text-santa-gray'>Décrivez votre besoin et nous trouverons le prestataire idéal pour votre mission.</p>
+                    <p className='my-3 text-scarpa-flow-gray-34'>Décrivez votre besoin et nous trouverons le prestataire idéal pour votre mission.</p>
                     <Button
                         textContent='COMMENCER ICI'
                         Icon={ArrowRight}

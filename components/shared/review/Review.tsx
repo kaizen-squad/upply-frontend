@@ -2,7 +2,7 @@ import { ReviewProps } from "@/types";
 import { FC } from "react";
 import Rating from "react-ratings-star";
 
-const Review:FC<ReviewProps> = ({task_id, comment, rating}) => {
+const Review:FC<ReviewProps> = ({comment, rating}) => {
     
   return (
     <div className="p-3 px-5 border border-gray-100 rounded-xs bg-white shadow-gallery-gray-93 shadow-[5px_5px_1px_0]">

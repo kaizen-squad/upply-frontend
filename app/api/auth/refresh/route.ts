@@ -5,7 +5,7 @@ import apiFetch from '@/lib/api';
 import { HTTPResponse } from '@/types';
 import { RefreshTokenResponse } from '@/types/auth';
 
-export async function POST(request: Request) {
+export async function POST() {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get('refreshToken')?.value;
   
@@ -18,11 +18,9 @@ export async function POST(request: Request) {
   
   // Call the backend to refresh the tokens
   const response:HTTPResponse<RefreshTokenResponse> = await apiFetch(`api/refresh`, {tokenString: refreshToken}, 'POST');
-  const { data } = response;
-
   if (response.success) {
     return NextResponse.json({
-      accessToken: data.accessToken
+      accessToken: response.data.accessToken
     });
   }
   

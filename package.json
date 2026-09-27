@@ -21,7 +21,6 @@
     "axios": "^1.15.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.23",
-    "dotenv": "^17.4.2",
     "fedapay-reactjs": "^1.1.2",
     "lucide-react": "^1.8.0",
     "motion": "^12.40.0",

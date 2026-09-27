@@ -1,7 +1,7 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import apiFetch from '@/lib/api';
-import type { Deliverable, Review, ReviewProps, TaskFormType, TaskProps } from '@/types';
+import type { Deliverable, Review, ReviewProps, TaskCollectionResponse, TaskFormType, TaskProps } from '@/types';
 import { DeliveryFormProps } from '@/types/index';
 import { useRouter } from 'next/navigation';
 import { useToasting } from '@/components/ui/Toast/useToasting';
@@ -20,33 +20,42 @@ export interface UseTasksReturn<T = TaskProps> {
 
 export const budgetCurrency = 'FCFA'
 
+function normalizeTaskCollection<T>(payload: T | T[] | TaskCollectionResponse<T> | null): T[] {
+  if (Array.isArray(payload)) {
+    return payload as T[];
+  }
+
+  if (payload && typeof payload === 'object' && 'tasks' in payload) {
+    const tasks = payload.tasks;
+    return Array.isArray(tasks) ? tasks as T[] : [];
+  }
+
+  return payload && typeof payload === 'object' ? [payload as T] : [];
+}
+
 export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false): UseTasksReturn<T> {
   const [tasks, setTasks] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
     const {notify} = useToasting();
   const router = useRouter();
 
-  const fetchTasks = async (id:string | undefined) => {
+  const fetchTasks = useCallback(async (id:string | undefined) => {
    
     try { 
       setLoading(true);
 
-      const response = await apiFetch<T[]>(`api/tasks${id ? `/${id}` : ''}`);
-      if(response.data){
-        const data:T[] = Array.isArray(response.data) ? response.data : [response.data];
-        setTasks(data);
+      const response = await apiFetch<T[] | T | TaskCollectionResponse<T>>(`api/tasks${id ? `/${id}` : ''}`);
+      if (response.success) {
+        setTasks(normalizeTaskCollection(response.data));
+      } else {
+        notify(response.message || 'Une erreur est survenue lors du chargement.', 'error');
       }
-      else{ 
-          if(response.message)
-            notify(response.message,'error');
-          else throw new Error(response.message)
-      }
-    } catch (err) {
+    } catch {
       notify('Erreur lors du chargement.', 'error')
     } finally {
       setLoading(false);
     }
-  };
+  }, [notify]);
 
   const createTask = async (taskData:TaskFormType) => {
     try{
@@ -60,7 +69,7 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
             notify(newTask.message,'error');
           else throw new Error(newTask.message)
         }
-      }catch(err){
+      }catch{
         notify('Erreur lors de la création de la tache.', 'error');
       }finally{
         setLoading(false)
@@ -80,7 +89,7 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
             notify(deleteT.message,'error');
           else throw new Error(deleteT.message)
         }
-      }catch(err){
+      }catch{
         notify('Erreur lors de la suppression.', 'error');
       }finally{
         setLoading(false)
@@ -99,7 +108,7 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
             notify(edit.message,'error');
           else throw new Error(edit.message)
         };
-      }catch(err){
+      }catch{
         notify("Erreur lors de l'édition.", 'error');
       }finally{
         setLoading(false)
@@ -119,7 +128,7 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
           notify(delivery.message, 'error')
           else throw new Error(delivery.message)
       }
-    }catch(err){
+    }catch{
       notify('Livrable non soumis. Un erreur est survenue', 'error');
       return false;
     }finally{
@@ -141,7 +150,7 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
           }
           else throw new Error(delivery.message)
         }
-      }catch(err){
+      }catch{
         notify('Un erreur est survenue lors de la soumission du commentaire', 'error');
       }finally{
         setLoading(false)
@@ -149,29 +158,30 @@ export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false
       return false;
   }
 
-  const getReview = async (task_id: string) => {
+  const getReview = useCallback(async (task_id: string) => {
       try{
         const review = await apiFetch<ReviewProps[]>(`api/tasks/${task_id}/review`);
         if(review.success)
           return review.data[0]
         return ;
-      }catch(err){
+      }catch{
         notify('Une erreur est survenue!', 'error');
       }        
       
       return ;
-  }
+  }, [notify]);
+  const refetch = useCallback((id: string | undefined) => fetchTasks(id), [fetchTasks]);
   useEffect(() => {
     if(skip) return;
 
-    fetchTasks(id);
-  }, []);
+    void Promise.resolve().then(() => fetchTasks(id));
+  }, [fetchTasks, id, skip]);
 
 
   return { 
     tasks, 
     loading,
-    refetch: (id:string | undefined)=> fetchTasks(id), 
+    refetch,
     createTask,
     deliverTask, 
     reviewPrestataire,

@@ -119,19 +119,19 @@ export function formatAmount(amount: number): string {
  * @param data Object containing fields and files
  * @returns FormData ready to send
  */
-export function buildFormData(data: Record<string, any>): FormData {
+export function buildFormData(data: Record<string, unknown>): FormData {
   const formData = new FormData();
   
   Object.entries(data).forEach(([key, value]) => {
-    if (value instanceof File || value instanceof Blob) {
+    if (typeof Blob !== 'undefined' && value instanceof Blob) {
       formData.append(key, value);
     } else if (value && typeof value === 'object' && !Array.isArray(value)) {
       // For nested objects, send as JSON string
       formData.append(key, JSON.stringify(value));
     } else if (Array.isArray(value)) {
       // For arrays, send each item with same key
-      value.forEach((item) => {
-        formData.append(key, item);
+      value.forEach((item: unknown) => {
+        formData.append(key, typeof item === 'string' || item instanceof Blob ? item : String(item));
       });
     } else {
       formData.append(key, String(value));

@@ -10,12 +10,13 @@ import { useAuth } from '@/hooks/useAuth';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { useToasting } from '@/components/ui/Toast/useToasting';
+import z from 'zod/v4';
 
 
 function RegisterForm() {
-  const {handleSubmit, control} = useForm<RegisterProps>({
+  const {handleSubmit, control} = useForm<z.input<typeof RegisterSchema>, unknown, RegisterProps>({
     mode: 'onChange',
-    resolver: zodResolver(RegisterSchema) as any,
+    resolver: zodResolver(RegisterSchema),
     defaultValues: { role: 'Client' as RegisterProps['role'], rating_avg: 1.11 },
   });
     const {notify} = useToasting();
@@ -24,7 +25,7 @@ function RegisterForm() {
   const onSubmit = async (registerData:RegisterProps)=>{
       await register(registerData);
   }
-  const onError = (data:any)=> {
+  const onError = ()=> {
     notify('Veuillez entrez des données valides!', 'warning')};
 
   return (

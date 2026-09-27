@@ -6,20 +6,19 @@ import { useCallback, useState } from "react";
 export interface UseDashboardReturn<T = CDashboardData | PDashboardData| undefined> {
   loading: boolean
   dashboardData: T | undefined
-  loadDashboard: () => void,
+  loadDashboard: () => Promise<void>;
   error: string | null
 }
 
 export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
   role: 'client' | 'prestataire' = 'client'
 ): UseDashboardReturn<T> {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState<T | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
   const {notify} = useToasting();
 
   const loadDashboard = useCallback(async () => {
-    if (loading) return;
     try {
       setLoading(true);
       setError(null);
@@ -29,12 +28,13 @@ export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
       if (response.success) {
         setDashboardData(response.data);
       } else { 
-          if(response.message)
-            notify(response.message,'error');
-          else throw new Error(response.message)
+        const message =
+          response.message || "Une erreur est survenue lors du chargement";
+        setError(message);
+        notify(message, "error");
       }
-    } catch (err) {
-      const message ='Une erreur est survenue lors du chargement';
+    } catch {
+      const message = "Une erreur est survenue lors du chargement";
       setError(message);
       notify(message, 'error');
     } finally {

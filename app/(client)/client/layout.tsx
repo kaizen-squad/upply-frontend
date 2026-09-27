@@ -7,9 +7,10 @@ import Header from '@/components/ui/Header/Header';
 import HeaderMobile from '@/components/ui/Header/HeaderMobile';
 import { Overlay } from '@/components/ui/Overlay/Overlay';
 import { useMediaQuery } from '@reactuses/core';
+import { clsx } from 'clsx';
 import { ReactNode, useState } from 'react';
 
-const layout:React.FC<{children:ReactNode}> = ({children}) => {
+const Layout:React.FC<{children:ReactNode}> = ({children}) => {
     const [isMobileSidebarOpened, setIsMobileSidebarOpened] = useState(false);
     const isMobile = useMediaQuery('(max-width: 800px)', true);
   return (
@@ -20,7 +21,7 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
                 :
                 <Header role="client" />
         }
-        <div className="flex mt-(--header-height) md:mt-0 md:h-(--main-height) md:overflow-y-hidden">
+        <div className={clsx("flex mt-(--header-height) md:h-(--main-height) md:overflow-y-hidden", !isMobile && 'mt-0')}>
             {
                 isMobile ? 
                     <div className='md:hidden'>
@@ -45,4 +46,4 @@ const layout:React.FC<{children:ReactNode}> = ({children}) => {
   )
 }
 
-export default layout
+export default Layout

@@ -1,4 +1,4 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
 import { HTTPResponse } from '../types/index';
 import { useTokenStore } from "@/hooks/store";
 
@@ -17,7 +17,7 @@ export const publicAccessRoutes = [
 ]
 
 let isRefreshing = false;
-let queue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; }[] = [];
+let queue: { resolve: (value: unknown) => void; reject: (reason?: unknown) => void; }[] = [];
 
 
 /**
@@ -127,26 +127,23 @@ export default async function apiFetch<T> (url: string, body?: object | undefine
     }
 
     try {
-        console.log(requestConfig);
-        
         const response = await instance(requestConfig);
         return response.data as HTTPResponse<T>;
     } catch (err) {
         if (axios.isAxiosError(err)) {
-            const axiosError = err as AxiosError;
-            const response = axiosError.response;
+            const response = err.response;            
             return {
                 success: false,
-                data: null as unknown as T,
-                message: response?.statusText ?? axiosError.message,
-                status: response?.status ?? (axiosError.code === 'ECONNABORTED' ? 408 : 503),
+                data: null,
+                message: response?.data?.message ?? err.message,
+                status: response?.status ?? (err.code === 'ECONNABORTED' ? 408 : 503),
             };
         }
 
         return {
             success: false,
-            data: null as unknown as T,
-            message: (err as Error)?.message ?? 'Unexpected error',
+            data: null,
+            message: err instanceof Error ? err.message : 'Unexpected error',
             status: 500,
         };
     }

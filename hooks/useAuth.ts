@@ -22,11 +22,8 @@ export const useAuth = () =>{
     const router = useRouter();
 
     const getLoggedIn = (response: HTTPResponse<AuthDataResponse>)=> {
-        const { success, message } = response;
-        const data:AuthDataResponse | null= response.data;
-            
-
-        if(success){
+        if(response.success){
+            const { data } = response;
             try{
                 useTokenStore.setState({accessToken:data.accessToken});
                 useUserStore.setState({user: data.user});
@@ -35,8 +32,9 @@ export const useAuth = () =>{
             }catch(err){
                 throw(err);
             }   
-        }else 
-            notify(message, 'error');
+        }else {
+            notify(response.message, 'error');
+        }
     }
 
     const login = async(body:LoginProps) => {
@@ -53,7 +51,7 @@ export const useAuth = () =>{
                     notify('Login Failed: An unexpected error occured.', 'error');
                 }
             }
-        }catch(err){
+        }catch{
             notify('The server results in error while logging in!', 'error');
         }finally{
             setLoading(false)
@@ -75,7 +73,7 @@ export const useAuth = () =>{
                 }
                 
             }
-        }catch(err){
+        }catch{
             notify('The server results in error while registering!', 'error');
         }finally{
             setLoading(false);
@@ -95,7 +93,7 @@ export const useAuth = () =>{
             }else{
                return notify('An unexpected error occured.', 'error');            
             }
-        }catch(err){
+        }catch{
             notify('The server results in error while logging out!', 'error');
         }
     }

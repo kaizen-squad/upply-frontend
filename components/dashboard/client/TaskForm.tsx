@@ -17,7 +17,7 @@ import { Controller, useForm } from 'react-hook-form'
 const   TaskForm:FC<{field_values?:TaskProps, isEditing?:boolean, setIsEdited?:Dispatch<SetStateAction<boolean>>}> = ({field_values, isEditing=false, setIsEdited}) => {
     const {createTask, editTask} = useTasks(undefined, true);
     const {notify} = useToasting();
-    const {control, handleSubmit, formState:{isValid, isSubmitting, isSubmitSuccessful}, reset} = useForm<TaskFormType>({
+    const {control, handleSubmit, formState:{isValid, isSubmitting}, reset} = useForm<TaskFormType>({
         mode:'onChange',
         resolver: zodResolver(TaskFormProps),
         defaultValues: {
@@ -50,14 +50,14 @@ const   TaskForm:FC<{field_values?:TaskProps, isEditing?:boolean, setIsEdited?:D
             } 
         }
     };
-    const onError = (data:any)=> {
+    const onError = ()=> {
         notify('Veuillez entrez des données valides!', 'warning');        
     };
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} className='w-full bg-white-solid py-10 px-5 md:p-10 border rounded-sm' >
         <h2>Informations de la mission</h2>
-        <p className='text-santa-gray hidden lg:block'>Détaillez vos besoins pour attirer les meilleurs prestataires de la plateforme</p>
+        <p className='text-scarpa-flow-gray-34 hidden lg:block'>Détaillez vos besoins pour attirer les meilleurs prestataires de la plateforme</p>
 
         <div className='my-8'>
             <Controller
@@ -109,7 +109,7 @@ const   TaskForm:FC<{field_values?:TaskProps, isEditing?:boolean, setIsEdited?:D
             <Controller
                 name='deadline'
                 control={control}
-                render={({field, fieldState:{error}})=>
+                render={({field})=>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoItem label={<span className="font-bold text-[1.02rem]">Date Limite</span>}>
                         <DesktopDatePicker

@@ -5,7 +5,7 @@ import { TaskProps } from '@/types/index';
 import { useTasksContext } from "@/components/shared/tasks/TaskProvider";
 import TaskDetails from "@/components/shared/tasks/TaskDetails";
 
-const page = () => {
+const Page = () => {
     const {tasks: [task], loading} = useTasksContext<TaskProps>();
 
   return (       
@@ -36,4 +36,4 @@ const page = () => {
   ) 
 }
 
-export default page
+export default Page

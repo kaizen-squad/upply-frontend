@@ -2,9 +2,9 @@
 import { useTasks } from '@/hooks/useTasks';
 import { TaskProps } from '@/types';
 import { notFound } from 'next/navigation';
-import { createContext, ReactNode, useContext, useEffect, useMemo } from 'react';
+import { createContext, ReactNode, useContext, useEffect } from 'react';
 
-interface TaskProviderProps<T = TaskProps > {
+interface TaskProviderProps {
   taskId: string;
   children: ReactNode;
 }
@@ -24,7 +24,7 @@ export function useTasksContext<T = TaskProps>() {
 function TaskProvider<T = TaskProps >({ 
   taskId, 
   children 
-}: TaskProviderProps<T>) {
+}: TaskProviderProps) {
   
   const taskManager = useTasks<T>(taskId);
 
@@ -32,7 +32,7 @@ function TaskProvider<T = TaskProps >({
     if(!taskManager.loading && taskManager.tasks.length === 0){
       notFound()
     }
-  },[taskManager.loading])
+  }, [taskManager.loading, taskManager.tasks.length]);
   return (
     <TasksContext.Provider value={taskManager}> 
        {children}

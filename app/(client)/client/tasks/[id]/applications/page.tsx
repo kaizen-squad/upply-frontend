@@ -13,11 +13,15 @@ import { useApplication } from "@/hooks/useApplication";
 import Button from "@/components/ui/Button/Button";
 import { Redo2 } from "lucide-react";
 import { notFound, useRouter } from "next/navigation";
+import PaginationControls from "@/components/shared/PaginationControls";
+import { useResponsivePagination } from "@/hooks/useResponsivePagination";
 
-const page = () => {
+const Page = () => {
     const {loading, application, getTaskApplication} = useApplication();
     const {tasks: [task]} = useTasksContext();
     const router = useRouter();
+    const pagination = useResponsivePagination(application.length);
+    const visibleApplications = application.slice(pagination.startIndex, pagination.endIndex);
 
     useEffect(()=>{
       
@@ -26,7 +30,7 @@ const page = () => {
             notFound();
         }else
           getTaskApplication(task.id, 'client');
-    }, [task]);
+    }, [task, getTaskApplication]);
 
     if(loading) 
       return (
@@ -47,9 +51,15 @@ const page = () => {
           <div className="grid xl:grid-cols-[65%_1fr] gap-10 my-5">
             <div className="flex flex-col gap-5">
               {
-                application.map((app, index) => <ApplicationCard application={app} key={index} />)
+                visibleApplications.map((app) => <ApplicationCard application={app} key={app.id} />)
               }
             </div>
+            <PaginationControls
+              page={pagination.page}
+              pageCount={pagination.pageCount}
+              onPageChange={pagination.setPage}
+              label="Pagination des candidatures"
+            />
               <div className="flex flex-col gap-10">
                 <div className="bg-woodsmoke-gray-8 p-5 rounded-sm shadow-2xs">
                     <div className="flex items-center gap-2 font-bold text-white-solid">
@@ -61,7 +71,7 @@ const page = () => {
                       />
                       <span>CONSEIL CLIENT</span>
                     </div>
-                    <p className="text-gallery-gray-93 mt-5">Comparez les notes et les expériences passées des candidats. Un candidat avec une expérience spécifique dans l'e-commerce garantira souvent de meilleurs résultats pour cette mission.</p>
+                    <p className="text-gallery-gray-93 mt-5">Comparez les notes et les expériences passées des candidats. Un candidat avec une expérience spécifique dans l&apos;e-commerce garantira souvent de meilleurs résultats pour cette mission.</p>
                 </div>
 
                 <div className="p-5 bg-white-solid rounded-sm border border-gray-200 shadow-2xs border-l-5 border-l-alizarin-crimson-red-51">
@@ -90,7 +100,7 @@ const page = () => {
         <div className="h-max m-auto ">
           <div className="-translate-y-20">
             <EmptyImage/>
-            <p className="text-xl font-bold relative z-1 text-center">Aucune candidature n'a été soumise.</p>
+            <p className="text-xl font-bold relative z-1 text-center">Aucune candidature n&apos;a été soumise.</p>
           </div>
           <Button
             textContent="Retourner"
@@ -103,4 +113,4 @@ const page = () => {
       )
 }
 
-export default page
+export default Page

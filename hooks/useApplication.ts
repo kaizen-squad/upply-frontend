@@ -1,7 +1,7 @@
 import { useToasting } from "@/components/ui/Toast/useToasting";
 import apiFetch from "@/lib/api";
 import { ApplicationFormType, ApplicationResponse, ApplicationStatus } from "@/types";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 interface UseApplicationReturn {
   application: ApplicationResponse[],
@@ -29,14 +29,14 @@ export function useApplication(): UseApplicationReturn {
           }
           else notify(applyresponse.message, 'error');
 
-        }catch(err){
+        }catch{
             notify('Une erreur est survenue: Candidature non soumise!', 'error');
         }finally{
           setLoading(false);
         }
     }
 
-    const getTaskApplication = async (task_id:string, role:'client'|'prestataire'): Promise<void> => {
+    const getTaskApplication = useCallback(async (task_id:string, role:'client'|'prestataire'): Promise<void> => {
       try{
         setLoading(true);
         const response = await apiFetch<ApplicationResponse[]>(`api/tasks/${task_id}/applications${role === 'prestataire' ? '/me':''}`);
@@ -50,12 +50,12 @@ export function useApplication(): UseApplicationReturn {
           }
         }
           
-      }catch(err){
+      }catch{
         notify('Une erreur est survenue lors du chargement de vos candidatures!', 'error');
       }finally{
         setLoading(false);
       }
-    }
+    }, [notify, setLoading]);
     const rejectApplication = async (application_id:string) => {
       try{
           setLoading(true);
@@ -70,7 +70,7 @@ export function useApplication(): UseApplicationReturn {
             notify(applyresponse.message,'error');
           else throw new Error(applyresponse.message)
           }
-        }catch(err){
+        }catch{
             notify('Une erreur est survenue: Candidature non retirée!', 'error');
         }finally{
           setLoading(false);
@@ -91,13 +91,13 @@ export function useApplication(): UseApplicationReturn {
               notify(applyresponse.message,'error');
           else throw new Error(applyresponse.message)
           }
-        }catch(err){
+        }catch{
             notify('Une erreur est survenue: Candidature non acceptée!', 'error');
         }finally{
           setLoading(false);
         }
         return false;
-    }
+    };
 
     const updateTaskStatus = (id: string, status: ApplicationStatus)=>{
       setApplication(prev => [...prev].map(app => ({...app, status: app.id === id ? status : app.status})))

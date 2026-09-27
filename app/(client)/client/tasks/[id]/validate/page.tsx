@@ -45,16 +45,7 @@ const matchExtBgColor: Record<string, { bg: string; text: string }> = {
   }
 };
 
-// Fonction pour extraire l'extension du fichier
-const getFileExtension = (fileType: string): string => {
-    if(!fileType)
-        return 'error ✕';
-
-  const extension = fileType.split('/').pop() || fileType;
-  return extension.toLowerCase();
-};
-
-const page = () => {
+const Page = () => {
     const [deliverable, setDeliverable] = useState<DeliverableDTO | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const {tasks:[task]} = useTasksContext<TaskProps>();
@@ -84,9 +75,7 @@ const page = () => {
                 if(response.success){
                     setDeliverable(response.data);
                 }
-            }catch(err){
-                
-            }finally{
+            }catch{}finally{
                 setLoading(false)
             }  
         }
@@ -106,16 +95,14 @@ const page = () => {
         )
     else
         if(deliverable){
-            const fileExtension = getFileExtension(deliverable.file.file_type);
-
             return (
-                <div className="md:py-6">
+                <div className="">
                     <h1 className="hidden md:block">Révision du Livrable</h1>
                    
                     <div className="md:hidden flex items-center gap-3 bg-white shadow-2xs border border-gray-300 rounded-sm p-4">
                         <div className="h-max p-3 rounded-full border border-gray-300 bg-gray-100 font-bold text-center text-xl">{getInitials(deliverable.prestataire.name)}</div>
                         <div>
-                            <small className="text-santa-gray">Livrable soumis par</small>
+                            <small className="text-scarpa-flow-gray-34">Livrable soumis par</small>
                             <p className="text-scarpa-flow-gray-34 font-semibold">{deliverable.prestataire.name}</p>
                         </div>
                     </div>
@@ -261,6 +248,6 @@ const page = () => {
             )
 }
 
-export default page
+export default Page
 
 

@@ -9,7 +9,7 @@ import { Role } from '@/types/auth';
 import BackButton from '@/components/shared/BackButton';
 
 const Header:FC<{role: Role}> = ({role}) => {
-    const {control, handleSubmit} = useForm<{search:string}>({
+    const {control} = useForm<{search:string}>({
         mode: 'onChange',
     });
     const router = useRouter();

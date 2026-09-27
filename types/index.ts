@@ -8,12 +8,9 @@ export type DataType = AuthDataResponse | RefreshTokenResponse;
 /**
  * HTTP Response format for all requests.
  */
-export interface HTTPResponse<T>{
-    success: boolean,
-    data: T,
-    message: string,
-    status: number
-}
+export type HTTPResponse<T> =
+  | { success: true; data: T; message: string; status: number }
+  | { success: false; data: null; message: string; status: number };
 
 export type TaskStatus = 'OUVERTE' | 'EN_COURS' | 'LIVREE' | 'VALIDEE'
 
@@ -26,6 +23,19 @@ export type TaskProps = {
   deadline: string // YYYY-MM-DD
   status: TaskStatus
   created_at?: string
+  total_applications?: number
+}
+
+export type TaskPagination = {
+  total: number
+  per_page: number
+  current_page: number
+  last_page: number
+}
+
+export type TaskCollectionResponse<T> = {
+  tasks: T[]
+  pagination?: TaskPagination
 }
 
 export const TaskFormProps = z.object({
@@ -137,13 +147,14 @@ export type PDashboardData = {
 export type CStatistics = {
   opened: number,
   pending: number,
-  validated: number,
-  total_spent: number
+  validated: number
 }
 
 export type CDashboardData = {
   tasks: TaskProps[],
-  statistics: CStatistics
+  pagination: TaskPagination,
+  statistics: CStatistics,
+  total_spent: number
 }
 
 export type UserFull = {  
@@ -165,3 +176,9 @@ export interface PrestataireSelectedData {
   task_id: string,
   prestataire_name: string
 }
+
+export const PrestataireSelectedDataSchema = z.object({
+  application_id: z.string(),
+  task_id: z.string(),
+  prestataire_name: z.string(),
+}).passthrough();

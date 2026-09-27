@@ -3,20 +3,21 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import apiFetch from '@/lib/api';
 import { HTTPResponse } from '@/types';
-import { any } from 'zod';
+import { AuthDataResponse } from '@/types/auth';
 
 export async function POST(request: Request) {
     
   const body = await request.json();
   
-  const response: HTTPResponse<any> = await apiFetch(`api/register`, body, 'POST');
+  const response: HTTPResponse<AuthDataResponse> = await apiFetch(`api/register`, body, 'POST');
+  const refreshToken = response.success ? response.data.refreshToken : undefined;
   
-  const {data} = response;
-  if (response.success && data.refreshToken) {
+  if (response.success && refreshToken) {
+    const { data } = response;
     //Configure the cookies needed for the user session
     const cookieStore = await cookies();
     
-    cookieStore.set('refreshToken', data.refreshToken, {
+    cookieStore.set('refreshToken', refreshToken, {
       httpOnly: true,      
       secure: process.env.NODE_ENV === 'production', // HTTPS in prod
       sameSite: 'lax',     

@@ -1,27 +1,19 @@
 'use client'
 import ApplicationCard from "@/components/dashboard/prestataire/ApplicationCard"
-import FlagApplication from "@/components/dashboard/prestataire/FlagApplication"
 import StarterMissions from "@/components/dashboard/prestataire/StarterMissions";
 import StatsBoard from "@/components/dashboard/prestataire/StatsBoard";
 import TaskCard from "@/components/dashboard/prestataire/TaskCard"
-import FlagTask from "@/components/shared/tasks/FlagTask"
-import Button from "@/components/ui/Button/Button"
 import MenuListComposition from "@/components/ui/Menu/Menu";
 import Spinner from "@/components/ui/Spinner/Spinner"
 import { useDashboard } from "@/hooks/useDashboard";
-import { budgetCurrency } from "@/hooks/useTasks"
-import { cn, formatAmount } from "@/lib/utils"
 import {  PDashboardData } from "@/types"
-import { ArrowRight } from "lucide-react"
-import { ST } from "next/dist/shared/lib/utils";
-import Image from "next/image"
-import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react"
+import PaginationControls from "@/components/shared/PaginationControls";
+import { useResponsivePagination } from "@/hooks/useResponsivePagination";
 
 
-const page = () => {
+const Page = () => {
     const { dashboardData, loading, loadDashboard } =  useDashboard<PDashboardData>('prestataire');
-    const router = useRouter();
     const [activeFilter, setActiveFilter] = useState('ALL');
 
     const filterOptions = [ 
@@ -32,7 +24,7 @@ const page = () => {
     ];
     useEffect(()=>{
         loadDashboard();
-    }, []);
+    }, [loadDashboard]);
 
     const tasksFiltered = useMemo(()=>{
         if (activeFilter === 'ALL') {
@@ -40,6 +32,8 @@ const page = () => {
         }
         return dashboardData?.tasks.filter(({status})=> status === activeFilter) || [];
     }, [dashboardData, activeFilter]) 
+    const pagination = useResponsivePagination(tasksFiltered.length);
+    const visibleTasks = tasksFiltered.slice(pagination.startIndex, pagination.endIndex);
     
     if(loading)
         return (
@@ -57,7 +51,7 @@ const page = () => {
         )
     return (
         <div className="flex w-full lg:max-h-(--main-height) ">
-            <div className="my-10 w-full h-full">  
+            <div className="mb-10 w-full h-full">  
                 <div>
                     <h1>Mon Tableau de Bord</h1>
                     <StatsBoard dashboardData={dashboardData} />
@@ -70,7 +64,10 @@ const page = () => {
                                 <MenuListComposition
                                     items={filterOptions}
                                     activeFilter={activeFilter}
-                                    setActiveFilter={setActiveFilter}
+                                    setActiveFilter={(filter) => {
+                                        setActiveFilter(filter);
+                                        pagination.setPage(1);
+                                    }}
                                 />
                             </div>
                                      
@@ -81,14 +78,20 @@ const page = () => {
                                         tasksFiltered.length === 0 ?
                                             <p className="p-10 text-center w-full bg-white-solid shadow-2xs rounded-sm border-gray-300 border my-5">Aucune mission trouvée.</p> 
                                             :
-                                            tasksFiltered.map((task)=>
+                                            visibleTasks.map((task)=>
                                                 <TaskCard key={task.id} task={task} />
                                             )
                                     }
                                 </div>
                                 :
                                 <StarterMissions/>
-                            }     
+                            }
+                            <PaginationControls
+                                page={pagination.page}
+                                pageCount={pagination.pageCount}
+                                onPageChange={pagination.setPage}
+                                label="Pagination des missions"
+                            />
                         </div>
 
                         {/* Right */}
@@ -97,7 +100,7 @@ const page = () => {
 
                             <div className="flex flex-col gap-3 mt-8">
                                 {   dashboardData?.applications.length ? 
-                                        dashboardData?.applications.slice(0,3).map((application, index)=> <ApplicationCard key={index} application={application} />)
+                                        dashboardData?.applications.slice(0,3).map((application)=> <ApplicationCard key={application.task.id} application={application} />)
                                     :
                                         <div className="text-center py-5 bg-white border shadow-2xs">
                                             Aucune candidature
@@ -112,4 +115,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

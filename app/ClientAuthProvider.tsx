@@ -4,13 +4,12 @@ import { useTokenStore, useUserStore } from "@/hooks/store";
 import { FC, ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { User } from "@/types/auth";
-import Spinner from "@/components/ui/Spinner/Spinner";
 import apiFetch from "@/lib/api";
 import Image from "next/image";
 
 const ClientAuthProvider: FC<{children:ReactNode}> = ({ children }) => {
     const [loading, setLoading] = useState(true);
-    const {setUser, user} = useUserStore();
+    const {setUser} = useUserStore();
     const router = useRouter();
 
     useEffect(() => {
@@ -29,7 +28,7 @@ const ClientAuthProvider: FC<{children:ReactNode}> = ({ children }) => {
                     await apiFetch('/api/auth/logout')
                     router.push("/login");
                 }
-            }catch(e){}
+            }catch{}
             finally{
                 setLoading(false);
             }            

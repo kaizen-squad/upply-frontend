@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { ReviewProps } from '../../../../../../types/index';
 import Spinner from '@/components/ui/Spinner/Spinner';
 
-const page = () => {
+const Page = () => {
     const {tasks:[task], getReview} = useTasksContext();
     const [review, setReview] = useState<ReviewProps| undefined>(); 
     const [isLoading, setIsLoading] = useState(true)
@@ -18,14 +18,18 @@ const page = () => {
             try{
               const res = await getReview(task.id);
               setReview(res);
-            }catch(e){}
+            }catch{}
             finally{
               setIsLoading(false);
             }
           }
       }
       checkReview();
-    }, [task]);
+    }, [task, getReview]);
+
+  if (task && task.status !== 'VALIDEE') {
+    return notFound();
+  }
 
   if(isLoading)
     return (<div className="h-[80vh] w-full flex items-center justify-center">
@@ -46,4 +50,4 @@ const page = () => {
   
 }
 
-export default page
+export default Page

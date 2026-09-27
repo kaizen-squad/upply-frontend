@@ -1,4 +1,6 @@
-function FilePreview({ filePath, fileName }: { filePath: string; fileName: string }) {
+import Image from 'next/image';
+
+export default function FilePreview({ filePath, fileName }: { filePath: string; fileName: string }) {
   const ext = filePath.split('.').pop()?.toLowerCase();
   
   const getPreview = () => {
@@ -8,9 +10,12 @@ function FilePreview({ filePath, fileName }: { filePath: string; fileName: strin
       case 'png':
       case 'gif':
         return (
-          <img 
+          <Image
             src={filePath} 
             alt={fileName}
+            width={1200}
+            height={800}
+            unoptimized
             className="max-w-full h-auto rounded"
             onError={(e) => {
               e.currentTarget.src = '/placeholder-image.png';

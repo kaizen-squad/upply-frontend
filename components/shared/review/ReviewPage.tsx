@@ -23,7 +23,7 @@ const ReviewPage: FC<{task:TaskProps}> = ({task}) => {
                 <div className='flex items-center justify-between text-md sm:text-xl'>
                   <div className='w-max'>
                     <p className='font-bold text-xl w-max'>{task?.title ?? '[Titre de mission]'}</p>
-                    <small className='text-santa-gray text-[0.85rem]'>Terminé le {formatFrenchDateIntl(task.created_at ?? '[Date de fin]')}</small>
+                    <small className='text-scarpa-flow-gray-34 text-[0.85rem]'>Terminé le {formatFrenchDateIntl(task.created_at ?? '[Date de fin]')}</small>
                   </div>
                   <div className="w-max ">
                     <p className='text-scarpa-flow-gray-34'>MONTANT FINAL</p>

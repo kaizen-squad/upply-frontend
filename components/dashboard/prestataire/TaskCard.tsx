@@ -33,7 +33,7 @@ const TaskCard:FC<{task:TaskProps}> = ({task}) => {
           </div>
           <button onClick={()=>{
             router.push(`/prestataire/tasks/${task.id}`)
-          }} className='text-lg font-semibold rounded-sm mt-2 hover:px-2 py-1 hover:bg-gallery-gray-93 w-max mb-1 cursor-pointer duration-200'>{task.title}</button>
+          }} className='text-lg font-semibold rounded-sm mt-2 hover:px-2 py-1 hover:bg-gallery-gray-93 w-max mb-1 cursor-pointer duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600'>{task.title}</button>
           <div className='flex items-center gap-3 mb-4'>
             <Image
               src={'/Assets/Cash.svg'}
@@ -71,7 +71,7 @@ const TaskCard:FC<{task:TaskProps}> = ({task}) => {
           <div className='mt-3 w-full'>
             <button onClick={()=>{
               router.push(`/prestataire/tasks/${task.id}`)
-            }} className='text-lg font-semibold rounded-sm hover:px-2 py-1 hover:bg-gallery-gray-93 w-max cursor-pointer duration-200'>{task.title}</button>           
+            }} className='text-lg font-semibold rounded-sm hover:px-2 py-1 hover:bg-gallery-gray-93 w-max cursor-pointer duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600'>{task.title}</button>
              <div className='flex items-center gap-15 text-scarpa-flow-gray-34 mt-3 w-full jus'>
                 <div>
                   <small className='font-semibold'>DEADLINE</small>

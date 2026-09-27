@@ -11,13 +11,7 @@ import FlagApplication from '../prestataire/FlagApplication';
 const ApplicationCard = ({ application }: { application: ApplicationResponse }) => {
         const { modalify } = useModalify();
         const isMobile = useMediaQuery('(max-width: 768px)');
-        application = {
-            ...application,
-            prestataire:{
-                ...application.prestataire,
-                rating_avg:Number(application.prestataire.rating_avg)
-            }
-        }
+        const rating = Number(application.prestataire.rating_avg);
   return (
     <div className="md:flex justify-between gap-5 bg-white-solid rounded-sm p-5 border py-10">
         <div className="flex gap-4">
@@ -25,9 +19,9 @@ const ApplicationCard = ({ application }: { application: ApplicationResponse }) 
             <div>
                 <p className="font-semibold">{application.prestataire.name}</p>
                 <div className="flex items-center gap-2 my-1">
-                    <p>{application.prestataire.rating_avg.toFixed(1)}/5</p>
+                    <p>{rating.toFixed(1)}/5</p>
                     <Rating 
-                        value={application.prestataire.rating_avg}
+                        value={rating}
                         size={15}
                         fullColor="var(--yellow)"
                         emptyColor="#e4e5e9"

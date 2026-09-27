@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { FC, ReactNode } from 'react'
 
-const layout: FC<{children:ReactNode}> = ({children}) => {
+const Layout: FC<{children:ReactNode}> = ({children}) => {
   const pathname = usePathname();
   const router = useRouter();
   return (
@@ -50,4 +50,4 @@ const layout: FC<{children:ReactNode}> = ({children}) => {
   )
 }
 
-export default layout
+export default Layout

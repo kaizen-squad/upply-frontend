@@ -1,20 +1,21 @@
 'use client'
-import { useEffect, useState, type FC, type ReactNode } from "react"
+import { useEffect, useSyncExternalStore, type FC, type ReactNode } from "react"
 import { createPortal } from "react-dom";
+
+const subscribe = () => () => {};
+const getNotificationRoot = () => document.getElementById('notification-root');
+const getServerSnapshot = () => null;
 
 interface NotificationPortalProps{
     children: ReactNode
 }
 const NotificationPortal:FC<NotificationPortalProps> = ( {children} ) => {
-    const [notificationRoot, setNotificationRoot] = useState<HTMLElement | null>(null);
+    const notificationRoot = useSyncExternalStore(subscribe, getNotificationRoot, getServerSnapshot);
     useEffect(()=>{
-        const root = document.getElementById('notification-root');
-        setNotificationRoot(root);
-        if(!root){
+        if(!notificationRoot){
             console.warn("Notification root manquant pour l'affichage!")
-            return 
         }
-    }, [])
+    }, [notificationRoot])
     if(!notificationRoot) return null;
   return createPortal(children, notificationRoot)
 }

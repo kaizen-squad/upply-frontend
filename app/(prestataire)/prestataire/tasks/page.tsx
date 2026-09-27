@@ -5,14 +5,14 @@ import Button from "@/components/ui/Button/Button";
 import { useTasks } from "@/hooks/useTasks"
 import { RotateCw } from "lucide-react";
 
-const page =  () => {
+const Page =  () => {
     const {loading, tasks, refetch} = useTasks(undefined);
 
   return (
     <div className={tasks.length ? "w-full px-2" : "px-2 pb-10 w-full h-(--main-height) flex flex-col"}>
         <div>
             <h1>Missions Disponibles</h1>
-            <p className="text-santa-gray mt-2">Explorez les opportunités du jour.</p>
+            <p className="text-scarpa-flow-gray-34 mt-2">Explorez les opportunités du jour.</p>
         </div>
         {
             (tasks.length === 0 && !loading) &&
@@ -21,7 +21,7 @@ const page =  () => {
                         
                     <div className="relative z-1">
                         <p className="w-[80%] md:w-full m-auto text-3xl font-semibold">Aucune mission disponible pour le moment</p>
-                        <p className="text-center lg:w-1/2 m-auto my-4 text-santa-gray text-md">Revenez plus tard ou modifiez vos filtres de recherche pour découvrir de nouvelles opportunités.</p>
+                        <p className="text-center lg:w-1/2 m-auto my-4 text-scarpa-flow-gray-34 text-md">Revenez plus tard ou modifiez vos filtres de recherche pour découvrir de nouvelles opportunités.</p>
                     </div>
                     <Button 
                         Icon={RotateCw} 
@@ -37,4 +37,4 @@ const page =  () => {
   )
 }
 
-export default page
+export default Page

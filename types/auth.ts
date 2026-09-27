@@ -1,4 +1,4 @@
-import z, { minLength } from 'zod/v4';
+import z from 'zod/v4';
 
 /**
  * Login form fields schema with zod validation.
@@ -12,7 +12,7 @@ export const LoginSchema = z.object({
  * Register form fields schema with zod validation.
  */
 export const RegisterSchema = z.object({    
-    role: z.preprocess((val:string)=> val.toLowerCase(), z.enum(['client', 'prestataire'])),
+    role: z.string().transform((value) => value.toLowerCase()).pipe(z.enum(['client', 'prestataire'])),
     name: z.string().min(2,{error:'Too small !'}),
     email: z.email(),
     password: z.string().min(8, {error:'8 characters minimum!'}),
@@ -46,9 +46,13 @@ export type RegisterProps = z.infer<typeof RegisterSchema>;
  */
 export type User = {
     name: string,
-    role: Role,
-    id: string
+    role: Role
 }
+
+export const UserCookieSchema = z.object({
+    name: z.string(),
+    role: z.enum(['client', 'prestataire']),
+}).passthrough();
 
 /**
  * Expected Auth Response format. 

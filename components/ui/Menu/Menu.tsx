@@ -24,8 +24,10 @@ type ItemsMenu = {
 const MenuListComposition: React.FC<ItemsMenu> = ({items, activeFilter, setActiveFilter}) => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement | null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
-  const handleToggle = () => {
+  const handleToggle = (event?: React.MouseEvent<HTMLButtonElement>) => {
+    if (event) setAnchorEl(event.currentTarget);
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -60,11 +62,12 @@ const MenuListComposition: React.FC<ItemsMenu> = ({items, activeFilter, setActiv
   }, [open]);
 
   return (
-    <Stack direction="row" spacing={2}>
+    <Stack direction="row" spacing={2} className="z-10 relative">
       <div ref={anchorRef} tabIndex={-1}>
        
         <Button
             id="composition-button"
+            aria-label="Filtrer les missions"
             aria-controls={open ? 'composition-menu' : undefined}
             aria-expanded={open}
             aria-haspopup="true"
@@ -76,7 +79,7 @@ const MenuListComposition: React.FC<ItemsMenu> = ({items, activeFilter, setActiv
 
         <Popper
           open={open}
-          anchorEl={anchorRef.current}
+          anchorEl={anchorEl}
           role={undefined}
           placement="bottom-start"
           transition

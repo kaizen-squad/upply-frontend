@@ -1,22 +1,18 @@
 'use client';
 
-import { useEffect, useState, type FC, type ReactNode } from 'react';
+import { useSyncExternalStore, type FC, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+
+const subscribe = () => () => {};
+const getModalRoot = () => document.getElementById('modal-root');
+const getServerSnapshot = () => null;
 
 interface ModalPortalProps {
   children: ReactNode;
 }
 
 const ModalPortal: FC<ModalPortalProps> = ({ children }) => {
-  const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const root = document.getElementById('modal-root');
-    setModalRoot(root);
-    if (!root) {
-      return;
-    }
-  }, []);
+  const modalRoot = useSyncExternalStore(subscribe, getModalRoot, getServerSnapshot);
 
   if (!modalRoot) return null;
 

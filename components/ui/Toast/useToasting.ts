@@ -1,8 +1,7 @@
-import { useMediaQuery } from '@reactuses/core';
-import { ReactNode, useEffect } from 'react';
+import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 export const useToasting = () => {
-    const notify = (message: string, type: 'success' | 'error' | 'warning') => {
+    const notify = useCallback((message: string, type: 'success' | 'error' | 'warning') => {
     switch (type) { 
         case 'success':
             toast.success(message, {position:'top-center', duration: 5000, style:{
@@ -29,7 +28,7 @@ export const useToasting = () => {
             }});
             break;
         }
-    }
+    }, []);
     const notifyCustom = toast.custom ;
     return {notify, notifyCustom}
 }

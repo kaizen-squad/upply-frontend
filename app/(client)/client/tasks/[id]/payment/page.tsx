@@ -22,7 +22,7 @@ export type PaymentInfosType = {
     completed: boolean,
     transaction_id: string|undefined
 }
-const page = () => {
+const Page = () => {
     const {tasks: [task], loading} = useTasksContext();
     const [prestataire, setPrestataire] = useState<PrestataireSelectedData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +38,7 @@ const page = () => {
     const [checkoutLoading, setCheckoutLoading] = useState(false);
     const [checkoutError, setCheckoutError] = useState('');
     const checkoutTimeoutRef = useRef<number | null>(null);
+    const processedTransactionRef = useRef<string | null>(null);
     const {verifyPayment, deleteSavedApplicant} = usePayment() ;
     const {notify} = useToasting();
     const router = useRouter();
@@ -57,7 +58,7 @@ const page = () => {
                 }else{
                     notify('Le délai de paiement est expiré. Veuillez réeffectuer la procédure de sélection.', 'error')
                 }
-            }catch(err){
+            }catch{
 
             }finally{
                 setIsLoading(false);
@@ -68,21 +69,35 @@ const page = () => {
                 notFound();
             }else
                 getPrestataire();
-    }, [task])
+    }, [task, notify])
 
     useEffect(()=>{
-        const acceptAndPay = async ()=>{
-            if(paymentInfos.completed && paymentInfos.transaction_id && prestataire){
-                const accept = await acceptApplication(prestataire.application_id);
-                if(accept){
-                    const verified = await verifyPayment(task.id, paymentInfos.transaction_id);
-                    if(verified)
-                        deleteSavedApplicant();
-                }
-            }
+        const transactionId = paymentInfos.transaction_id;
+        const taskId = task?.id;
+
+        if (
+            !paymentInfos.completed ||
+            !transactionId ||
+            !taskId ||
+            !prestataire ||
+            processedTransactionRef.current === transactionId
+        ) {
+            return;
         }
-        acceptAndPay();
-    },[paymentInfos]);
+
+        // Lock before awaiting stateful handlers to prevent duplicate payment requests.
+        processedTransactionRef.current = transactionId;
+
+        const acceptAndPay = async () => {
+            const accepted = await acceptApplication(prestataire.application_id);
+            if (!accepted) return;
+
+            const verified = await verifyPayment(taskId, transactionId);
+            if (verified) await deleteSavedApplicant();
+        };
+
+        void acceptAndPay();
+    }, [paymentInfos, prestataire, task?.id, acceptApplication, verifyPayment, deleteSavedApplicant]);
 
     useEffect(() => {
         if (!showFedapay) {
@@ -90,18 +105,12 @@ const page = () => {
                 window.clearTimeout(checkoutTimeoutRef.current);
                 checkoutTimeoutRef.current = null;
             }
-            setCheckoutLoading(false);
             return;
         }
 
         if (isFedapayScriptLoaded) {
-            setCheckoutLoading(false);
             return;
         }
-
-        setCheckoutLoading(true);
-        setCheckoutError('');
-        setIsFedapayScriptError(false);
 
         checkoutTimeoutRef.current = window.setTimeout(() => {
             setCheckoutLoading(false);
@@ -122,7 +131,7 @@ const page = () => {
         if(error && !showFedapay){
             notify(error,'error');
         }
-    }, [error, showFedapay]);
+    }, [error, showFedapay, notify]);
 
     if(loading || isLoading) {
         return (
@@ -153,6 +162,7 @@ const page = () => {
                 onLoad={() => {
                     setIsFedapayScriptLoaded(true);
                     setIsFedapayScriptError(false);
+                    setCheckoutLoading(false);
                 }}
                 onError={() => {
                     setIsFedapayScriptError(true);
@@ -225,7 +235,7 @@ const page = () => {
                     </div>
 
                     <div className="rounded-md p-5 bg-yellow-fade border border-yellow">
-                        <p><strong className="text-scarpa-flow-gray-34">Sécurité Escrow:</strong> Votre budget sera bloqué en toute sécurité dans notre système de séquestre. Le prestataire ne recevra le paiement qu'après validation complète de la mission.</p>
+                        <p><strong className="text-scarpa-flow-gray-34">Sécurité Escrow:</strong> Votre budget sera bloqué en toute sécurité dans notre système de séquestre. Le prestataire ne recevra le paiement qu&apos;après validation complète de la mission.</p>
                     </div>
                 </div>
 
@@ -274,6 +284,9 @@ const page = () => {
                             Icon={isLoading ? ()=><Spinner size={7} />:''}
                             className="rounded-md cursor-pointer bg-alizarin-crimson-red-51 text-white font-bold w-full  py-4 m-auto"
                             onClick={()=> {
+                                setCheckoutLoading(!isFedapayScriptLoaded);
+                                setCheckoutError('');
+                                setIsFedapayScriptError(false);
                                 setShowFedapay(true);
                             }}
                         />
@@ -292,12 +305,12 @@ const page = () => {
                     <div className="grid xs:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5 h-max">
                         <div className="rounded-md p-5 bg-white-solid border gap-2">
                             <p className="font-semibold text-xl">Securité Escrow</p>
-                            <p className="text-scarpa-flow-gray-34 mt-3">Votre budget est bloqué en toute sécurité dans notre système de séquestre. Le prestataire ne pourra accéder aux fonds qu'après votre validation finale du travail accompli.</p>
+                            <p className="text-scarpa-flow-gray-34 mt-3">Votre budget est bloqué en toute sécurité dans notre système de séquestre. Le prestataire ne pourra accéder aux fonds qu&apos;après votre validation finale du travail accompli.</p>
                         </div>
 
                         <div className="rounded-md p-5 border flex flex-col justify-between">
                             <div>
-                                <p className="text-xl font-semibold">Besoin d'aide?</p>
+                                <p className="text-xl font-semibold">Besoin d&apos;aide?</p>
                                 <p className="text-jumbo-gray-46 mt-3">Notre équipe de support est disponible 24/7 pour vous aider.</p>
                             </div>                            
                             <Button
@@ -324,4 +337,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

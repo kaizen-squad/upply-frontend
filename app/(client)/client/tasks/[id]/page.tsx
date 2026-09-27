@@ -7,25 +7,25 @@ import Button from '@/components/ui/Button/Button';
 import { useModalify } from '@/components/ui/Modal/hooks/useModalify';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { ReviewProps } from '@/types';
-import { Edit, Truck, UserCircle2, X } from 'lucide-react';
-import { div } from 'motion/react-client';
+import { Edit, Truck, UserCircle2 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const page = () => {
+const Page = () => {
   const {tasks:[task], loading, refetch, getReview} = useTasksContext();
   const [isLoadingReview, setIsLoadingReview] = useState(false);
   const [review, setReview] = useState<ReviewProps | undefined>(undefined);
   const [isEdited, setIsEdited] = useState(false);
   const route = useRouter();
   const {modalify} = useModalify();
+  const taskId = task?.id;
 
   useEffect(()=>{
-    if(isEdited){
-      refetch(task.id);
+    if(isEdited && taskId){
+      refetch(taskId);
     }
-  },[isEdited])
+  }, [isEdited, refetch, taskId])
 
   useEffect(()=>{
     const checkReview = async() => {
@@ -36,13 +36,13 @@ const page = () => {
             setReview(res);
             
           }
-        }catch(e){}
+        }catch{}
         finally{
           setIsLoadingReview(false);
         }
     }
     checkReview();
-  }, [task])
+  }, [task, getReview])
 
   if(loading){
     return (
@@ -139,4 +139,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

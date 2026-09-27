@@ -12,7 +12,7 @@ import { LockKeyhole, Zap, CircleCheck } from 'lucide-react';
 import { notFound, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const page= () => {
+const Page= () => {
     const {tasks:[task], loading} = useTasksContext<TaskProps>();
     const router = useRouter();
     const {application:[application], getTaskApplication}=useApplication();
@@ -31,7 +31,7 @@ const page= () => {
     
         getApplication();
 
-    }, [loading, task]);
+    }, [loading, task, getTaskApplication, router]);
 
     useEffect(()=>{
         if(!application && !isLoading){
@@ -42,7 +42,7 @@ const page= () => {
         if(task && ['VALIDEE', 'OUVERTE'].includes(task.status))
             notFound();
  
-    }, [application, isLoading, task])
+    }, [application, isLoading, task, notify, router])
   return (task && !isLoading && application) ? (
     
     <div className=''>
@@ -74,7 +74,7 @@ const page= () => {
                         <LockKeyhole className='text-alizarin-crimson-red-51' /> 
                         <p className='font-semibold'>Fonds sécurisés</p>
                     </div> 
-                    <p className='text-santa-gray mt-3'>Les fonds pour cette mission {formatAmount(task?.budget)} {budgetCurrency} sont actuellement conservés en toute sécurité dans l'escrow FedaPay.</p>
+                    <p className='text-scarpa-flow-gray-34 mt-3'>Les fonds pour cette mission {formatAmount(task?.budget)} {budgetCurrency} sont actuellement conservés en toute sécurité dans l&apos;escrow FedaPay.</p>
                 </div>
             </div>
                 
@@ -107,4 +107,4 @@ const page= () => {
   )
 }
 
-export default page
+export default Page

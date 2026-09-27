@@ -76,14 +76,12 @@ Pour chaque page et composant, vérifie et corrige :
 - Vérifier le typage TypeScript : supprimer les `any`, `as unknown as`, `@ts-ignore`
   (ou les justifier par un commentaire).
 
-### 5. 🎨 COHÉRENCE VISUELLE
-- Uniformiser les espacements, tailles de police, rayons, ombres via les tokens
-  Tailwind (ou votre système de design).
-- Vérifier les états hover/focus/active/disabled sur tous les éléments interactifs.
+### 5. Accessibilité et extra modifications
+
 - Accessibilité minimale : `alt`, `aria-label`, contrastes, navigation clavier,
   `focus-visible`.
-- Responsive : vérifier qu'aucun composant ne casse sur mobile/tablette.
-
+- Toast: Assure toi que sur le format mobile/ tablette les toasts de notifications soient balayables du doigt
+- Data display: Pour les data qui peuvent creer un defilement interminable, cree une pagination en adaptant le format a l'ecran (responsive)
 ---
 
 ## 📐 MÉTHODE DE TRAVAIL ATTENDUE

@@ -1,9 +1,9 @@
 import { cn, getInitials } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { FC } from 'react'
-import { toast } from 'react-hot-toast';
+import { toast, type Toast } from 'react-hot-toast';
 
-const ReviewToast:FC<{username:string, task_id:string, t:any}> = ({ username, task_id, t}) => {
+const ReviewToast:FC<{username:string, task_id:string, t:Toast}> = ({ username, task_id, t}) => {
     const router = useRouter();
     return (
         <div

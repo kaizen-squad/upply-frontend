@@ -20,10 +20,6 @@ const ModalContainer: FC = () => {
           }
         };
 
-        const handleClose = () => {
-          close(modal.id);
-        };
-
         return (
           <div key={modal.id}>
             <Overlay

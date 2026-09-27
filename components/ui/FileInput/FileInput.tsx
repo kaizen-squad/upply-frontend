@@ -1,12 +1,11 @@
 // components/ui/FileInput.tsx
 'use client';
 
-import { useRef, useState, DragEvent, ChangeEvent, InputHTMLAttributes } from 'react';
+import { useEffect, useRef, useState, DragEvent, ChangeEvent, InputHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 import { 
   Upload, 
   File, 
-  FileImage, 
   FileText, 
   FileSpreadsheet, 
   FileArchive, 
@@ -23,6 +22,12 @@ interface FileItem {
   file: File;
   id: string;
   previewUrl?: string;
+}
+
+interface PreviewModalProps {
+  file: File;
+  fileUrl: string;
+  onClose: () => void;
 }
 
 export interface FileInputProps
@@ -70,6 +75,37 @@ const formatFileSize = (bytes: number): string => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };
 
+const PreviewModal = ({ file, fileUrl, onClose }: PreviewModalProps) => (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={onClose}>
+    <div className="relative max-w-4xl w-full max-h-[90vh] bg-white rounded-lg overflow-hidden" onClick={event => event.stopPropagation()}>
+      <button type="button" onClick={onClose} aria-label="Fermer l’aperçu" className="absolute top-2 right-2 p-1 bg-gray-800 text-white rounded-full cursor-pointer hover:bg-gray-700 z-10">
+        <X size={20} />
+      </button>
+      {file.type.startsWith('image/') && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={fileUrl} alt={`Aperçu de ${file.name}`} className="w-full h-auto max-h-[85vh] object-contain" />
+      )}
+      {file.type === 'application/pdf' && (
+        <iframe src={fileUrl} className="w-full h-[85vh]" title={`Aperçu de ${file.name}`} />
+      )}
+      {file.type.includes('word') && (
+        <div className="p-6 text-center">
+          <FileText className="w-16 h-16 mx-auto text-blue-500" />
+          <p className="mt-4">Aperçu non disponible pour les documents Word.</p>
+          <a href={fileUrl} download={file.name} className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded">Télécharger</a>
+        </div>
+      )}
+      {!file.type.startsWith('image/') && file.type !== 'application/pdf' && !file.type.includes('word') && (
+        <div className="p-6 text-center">
+          {getFileIcon(file)}
+          <p className="mt-4">Aucun aperçu disponible pour ce type de fichier.</p>
+          <a href={fileUrl} download={file.name} className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded">Télécharger</a>
+        </div>
+      )}
+    </div>
+  </div>
+);
+
 export function FileInput({
   icon = <Upload className="h-10 w-10" />,
   label = "Glissez-déposez votre fichier ici",
@@ -86,9 +122,27 @@ export function FileInput({
 }: FileInputProps) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [fileItems, setFileItems] = useState<FileItem[]>([]);
-  const [previewFile, setPreviewFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<{ file: File; url: string } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const objectUrlsRef = useRef(new Set<string>());
     const {notify} = useToasting();
+
+  const createPreviewUrl = (file: File) => {
+    const url = URL.createObjectURL(file);
+    objectUrlsRef.current.add(url);
+    return url;
+  };
+
+  const revokePreviewUrl = (url?: string) => {
+    if (!url) return;
+    URL.revokeObjectURL(url);
+    objectUrlsRef.current.delete(url);
+  };
+
+  useEffect(() => () => {
+    objectUrlsRef.current.forEach(url => URL.revokeObjectURL(url));
+    objectUrlsRef.current.clear();
+  }, []);
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!disabled) setIsDragOver(true);
@@ -118,16 +172,16 @@ export function FileInput({
     }
     if (validFiles.length === 0) return;
 
-    let newFiles = [...fileItems];
+    const newFiles = [...fileItems];
     for (const file of validFiles) {
       if (multiple && newFiles.length >= maxFiles) {
         notify(`Nombre maximum de fichiers atteint (${maxFiles})`, 'warning');
         break;
       }
-      const previewUrl = file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined;
+      const previewUrl = file.type.startsWith('image/') ? createPreviewUrl(file) : undefined;
       newFiles.push({
         file,
-        id: `${file.name}-${Date.now()}`,
+        id: `${file.name}-${file.lastModified}-${file.size}-${crypto.randomUUID()}`,
         previewUrl,
       });
     }
@@ -153,6 +207,8 @@ export function FileInput({
   };
 
   const removeFile = (id: string) => {
+    const removedItem = fileItems.find(item => item.id === id);
+    revokePreviewUrl(removedItem?.previewUrl);
     setFileItems(prev => {
       const newItems = prev.filter(item => item.id !== id);
       const dataTransfer = new DataTransfer();
@@ -164,41 +220,6 @@ export function FileInput({
 
   const openFileDialog = () => {
     if (!disabled && inputRef.current) inputRef.current.click();
-  };
-
-  const PreviewModal = ({ file, onClose }: { file: File; onClose: () => void }) => {
-    const fileUrl = URL.createObjectURL(file);
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={onClose}>
-        <div className="relative max-w-4xl w-full max-h-[90vh] bg-white rounded-lg overflow-hidden" onClick={e => e.stopPropagation()}>
-          <button type="button" onClick={onClose} className="absolute top-2 right-2 p-1 bg-gray-800 text-white rounded-full cursor-pointer hover:bg-gray-700 z-10">
-            <X size={20} />
-          </button>
-          {file.type.startsWith('image/') && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={fileUrl} alt="preview" className="w-full h-auto max-h-[85vh] object-contain" />
-          )}
-          {file.type === 'application/pdf' && (
-            <iframe src={fileUrl} className="w-full h-[85vh]" title="PDF preview" />
-          )}
-          {file.type.includes('word') && (
-            <div className="p-6 text-center">
-              <FileText className="w-16 h-16 mx-auto text-blue-500" />
-              <p className="mt-4">Aperçu non disponible pour les documents Word.</p>
-              <a href={fileUrl} download={file.name} className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded">Télécharger</a>
-            </div>
-          )}
-          {/* Autres types : message simple */}
-          {!file.type.startsWith('image/') && file.type !== 'application/pdf' && !file.type.includes('word') && (
-            <div className="p-6 text-center">
-              {getFileIcon(file)}
-              <p className="mt-4">Aucun aperçu disponible pour ce type de fichier.</p>
-              <a href={fileUrl} download={file.name} className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded">Télécharger</a>
-            </div>
-          )}
-        </div>
-      </div>
-    );
   };
 
   return (
@@ -253,7 +274,10 @@ export function FileInput({
                 </div>
                 <div className="flex items-center gap-1">
                   <button
-                    onClick={() => setPreviewFile(file)}
+                    onClick={() => {
+                      if (preview) revokePreviewUrl(preview.url);
+                      setPreview({ file, url: createPreviewUrl(file) });
+                    }}
                     className="p-1 text-gray-500 hover:text-blue-600 transition-colors cursor-pointer"
                     title="Prévisualiser"
                     type="button"
@@ -275,8 +299,15 @@ export function FileInput({
         </div>
       )}
 
-      {previewFile && (
-        <PreviewModal file={previewFile} onClose={() => setPreviewFile(null)} />
+      {preview && (
+        <PreviewModal
+          file={preview.file}
+          fileUrl={preview.url}
+          onClose={() => {
+            revokePreviewUrl(preview.url);
+            setPreview(null);
+          }}
+        />
       )}
     </div>
   );

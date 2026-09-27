@@ -136,7 +136,7 @@ const TaskDetails:FC<
                       alt="empty-page"
                       className="m-auto scale-200"
                     />
-                    <h1 className="text-center h-max m-auto mt-5">This task doesn't exist or has been removed!</h1>
+                    <h1 className="text-center h-max m-auto mt-5">This task doesn&apos;t exist or has been removed!</h1>
                   </div>
                 </div>
             }

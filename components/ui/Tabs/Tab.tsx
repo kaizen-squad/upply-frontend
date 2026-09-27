@@ -1,16 +1,16 @@
 'use client'
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 function  Tab( {options, current, onclick}: {options: string[], current?:string, onclick: (e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void} ) {
     const ref = useRef<HTMLDivElement>(null);
     const container = useRef<HTMLDivElement>(null);
 
-    const tabFunc = (e?:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
+    const tabFunc = useCallback((e?:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
         
         if(!e && !current) return;
     
         const selected = e?.currentTarget;  
-        let rect = selected?.getBoundingClientRect() ||  document.getElementById(current!)?.getBoundingClientRect() ;
+        const rect = selected?.getBoundingClientRect() ||  document.getElementById(current!)?.getBoundingClientRect() ;
         const containerRect = container.current ? container.current.getBoundingClientRect() : {left:0}
 
         if(ref.current && rect && container){
@@ -19,7 +19,7 @@ function  Tab( {options, current, onclick}: {options: string[], current?:string,
             ref.current.style.top = `${0}px`;
             ref.current.style.left = `${rect.left - containerRect?.left}px`;
         }
-    }
+    }, [current]);
 
 
     useEffect(()=>{      
@@ -27,7 +27,7 @@ function  Tab( {options, current, onclick}: {options: string[], current?:string,
         tabFunc();
         window.addEventListener('resize', onResize);
         return () => window.removeEventListener('resize', onResize);
-    }, [current]);
+    }, [tabFunc]);
 
     
   return (

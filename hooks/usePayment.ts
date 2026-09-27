@@ -2,7 +2,7 @@ import { useToasting } from "@/components/ui/Toast/useToasting";
 import apiFetch from "@/lib/api";
 import { PrestataireSelectedData } from "@/types";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export interface UsePaymentReturn {
   loading: boolean,
@@ -12,11 +12,11 @@ export interface UsePaymentReturn {
   deleteSavedApplicant: ()=> Promise<void>
 }
 
-export function usePayment<UsePaymentReturn >() {
+export function usePayment() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const {notify} = useToasting();
-  const proceedToPayment = async (data: PrestataireSelectedData) => {
+  const proceedToPayment = useCallback(async (data: PrestataireSelectedData) => {
   try{
       setLoading(true);
       const saveApplicant = await apiFetch<null>('/api/applications', data, 'POST');
@@ -29,38 +29,36 @@ export function usePayment<UsePaymentReturn >() {
             notify(saveApplicant.message,'error');
           else throw new Error(saveApplicant.message)
         }
-    }catch(err){
+    }catch{
         notify('Une erreur est survenue lors de l\'acceptation de la candidature!', 'error');
     }finally{
       setLoading(false);
     }
-  }
+  }, [router, notify]);
 
-  const liberatefunds = async (deliverable_id:string)=> {
+  const liberatefunds = useCallback(async (deliverable_id:string)=> {
       try{
       setLoading(true);
       const liberate = await apiFetch<null>(`api/deliverables/validate/${deliverable_id}`, undefined, 'POST');
+      console.log(liberate)
       if(liberate.success){
         router.push(`/client/dashboard`);
         notify('Votre mission est maintenant achevée', 'success'); 
         return true
       }          
       else{ 
-          if(liberate.message){
-            const error = liberate.message || 'Une erreur est survenue lors de la liberation des fonds!';
-            notify(error,'error');
-          }
-
+          const error = 'Une erreur est survenue lors de la liberation des fonds!';
+          notify(error,'error'); 
       }
-    }catch(err){
+    }catch{
         notify('Une erreur est survenue lors de la liberation des fonds!', 'error');
     }finally{
       setLoading(false);
     }
     return false
-  }
+  }, [router, notify]);
 
-  const verifyPayment = async (task_id:string, transaction_id:string) => {
+  const verifyPayment = useCallback(async (task_id:string, transaction_id:string) => {
       try{
       setLoading(true);
       const verify = await apiFetch<null>(`api/tasks/${task_id}/payment/verify`, {transaction_id:transaction_id}, 'POST');
@@ -70,8 +68,6 @@ export function usePayment<UsePaymentReturn >() {
           router.push('/client/dashboard');
           notify('Paiement effectué avec succès.', 'success')
           return true;
-        }else{
-          // Eventualite incertaine
         }
       }          
       else{ 
@@ -80,17 +76,17 @@ export function usePayment<UsePaymentReturn >() {
           else throw new Error(verify.message)
 
       }
-    }catch(err){
+    }catch{
         notify('Erreur lors du paiement.', 'error');
     }finally{
       setLoading(false);
     }
     return false
-  }
+  }, [router, notify]);
 
-  const deleteSavedApplicant = async ()=>{
+  const deleteSavedApplicant = useCallback(async ()=>{
     await apiFetch('/api/applications', undefined, 'DELETE')
-  }
+  }, []);
 
   return{
     loading,

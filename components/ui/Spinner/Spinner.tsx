@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils'
 import { FC } from 'react'
 
 const Spinner:FC<{size?: number}> = ({size = 11}) => {
