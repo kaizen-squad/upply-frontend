@@ -5,15 +5,29 @@ import { ApplicationFormType, ApplicationResponse } from "@/types";
 import { useCallback, useState } from "react";
 
 interface UseApplicationReturn {
+  /** Applications currently held in the shared store. */
   application: ApplicationResponse[],
+  /** Whether an application request is in progress. */
   loading: boolean,
+  /** Submits a candidature for a task. */
   applyTotask: (task_id:string, applyData: ApplicationFormType) => Promise<void>,
+  /** Rejects an application and updates the shared application state. */
   rejectApplication: (application_id:string) => Promise<void>,
+  /** Accepts an application, updates shared state, and reports success. */
   acceptApplication: (application_id:string) => Promise<boolean>,
+  /** Loads applications for a task in the context of the supplied role. */
   getTaskApplication: (task_id:string, role:'client'|'prestataire') => Promise<void>,
-} 
+}
 
 
+/**
+ * Loads and mutates the application's shared mission-candidature state.
+ *
+ * Successful accept/reject actions update the Zustand store so subscribed UI refreshes
+ * immediately; request failures are reported through notifications.
+ *
+ * @returns Current candidatures, loading state, and application actions.
+ */
 export function useApplication(): UseApplicationReturn {
   const application = useApplicationsStore((state) => state.applications);
   const setApplication = useApplicationsStore((state) => state.setApplications);

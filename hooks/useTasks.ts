@@ -7,19 +7,35 @@ import { useRouter } from 'next/navigation';
 import { useToasting } from '@/components/ui/Toast/useToasting';
 
 export interface UseTasksReturn<T = TaskProps> {
+  /** Current task collection. */
   tasks: T[];
+  /** Whether a task request or mutation is in progress. */
   loading: boolean;
+  /** Reloads all tasks or the task identified by `id`. */
   refetch: (id:string | undefined) => Promise<void>;
+  /** Creates a task and reports whether the request succeeded. */
   createTask: (taskData: TaskFormType) => Promise<boolean>;
+  /** Submits a deliverable and reports whether the request succeeded. */
   deliverTask: (deliverData: DeliveryFormProps) => Promise<boolean>;
+  /** Submits a review and reports whether the request succeeded. */
   reviewPrestataire: (reviewData:ReviewProps) => Promise<boolean>;
+  /** Deletes a task and returns to the client dashboard on success. */
   deleteTask: (task_id:string)=> Promise<void>;
+  /** Updates a task and reports whether the request succeeded. */
   editTask:(taskData: TaskProps) => Promise<boolean>;
+  /** Loads the first review associated with a task, when present. */
   getReview: (task_id: string) => Promise<ReviewProps | undefined>
 }
 
 export const budgetCurrency = 'FCFA'
 
+/**
+ * Normalizes the task response variants accepted by the API into a list.
+ *
+ * @typeParam T - Task item type.
+ * @param payload - A task, task array, paginated collection, or null response.
+ * @returns A task array; null or an invalid collection becomes an empty array.
+ */
 function normalizeTaskCollection<T>(payload: T | T[] | TaskCollectionResponse<T> | null): T[] {
   if (Array.isArray(payload)) {
     return payload as T[];
@@ -33,6 +49,14 @@ function normalizeTaskCollection<T>(payload: T | T[] | TaskCollectionResponse<T>
   return payload && typeof payload === 'object' ? [payload as T] : [];
 }
 
+/**
+ * Loads mission data and exposes task creation, editing, delivery, review, and deletion actions.
+ *
+ * @typeParam T - Task item type returned by the backend.
+ * @param id - Optional mission identifier; omitted to request the collection.
+ * @param skip - When true, skips the initial automatic request.
+ * @returns Task data, loading state, and mission actions.
+ */
 export function useTasks<T =  TaskProps>(id:string|undefined, skip:boolean=false): UseTasksReturn<T> {
   const [tasks, setTasks] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);

@@ -4,6 +4,12 @@ import apiFetch from '@/lib/api';
 import { AuthDataResponse, UserCookieSchema } from '@/types/auth';
 import { HTTPResponse } from '@/types';
 
+/**
+ * Authenticates credentials through the backend and stores the session cookies on success.
+ *
+ * @param request - Incoming request containing the login payload as JSON.
+ * @returns The backend authentication response, with the refresh token removed from its data.
+ */
 export async function POST(request: Request) {
   const body = await request.json();
 
@@ -38,6 +44,11 @@ export async function POST(request: Request) {
 }
 
 
+/**
+ * Returns the validated user stored in the session cookie, clearing invalid session cookies.
+ *
+ * @returns A JSON response containing the user when the cookie is valid.
+ */
 export async function GET(){
   const cookiestore = await cookies();
   const userCookie = cookiestore.get('user');

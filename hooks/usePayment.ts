@@ -5,13 +5,23 @@ import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
 export interface UsePaymentReturn {
+  /** Whether a payment-related request is in progress. */
   loading: boolean,
+  /** Saves the selected prestataire and navigates to the payment page. */
   proceedToPayment: (data: { application_id: string, task_id: string, prestataire_name: string }) => Promise<void>,
+  /** Requests release of funds after deliverable validation. */
   liberatefunds: (deliverable_id:string) => Promise<boolean>,
+  /** Verifies a payment transaction and clears the saved selection on success. */
   verifyPayment: (task_id:string, transaction_id:string)=>Promise<void>,
+  /** Clears the saved applicant selection. */
   deleteSavedApplicant: ()=> Promise<void>
 }
 
+/**
+ * Provides payment, applicant-selection, and deliverable-fund actions for the client flow.
+ *
+ * @returns Payment actions and their shared loading state.
+ */
 export function usePayment() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();

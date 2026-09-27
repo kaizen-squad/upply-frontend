@@ -16,11 +16,20 @@ import { useToasting } from "@/components/ui/Toast/useToasting";
  * logout method: clean the token's cookies and redirect to login
  * @returns 
  */
+/**
+ * Exposes the login, registration, and logout actions used by client components.
+ *
+ * Updates the shared user/token stores, reports results through toasts, and navigates
+ * according to the outcome of each authentication request.
+ *
+ * @returns Authentication actions and the loading state for login/registration.
+ */
 export const useAuth = () =>{
     const {notify} = useToasting();
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
+    /** Stores a successful session response and opens the user's dashboard. */
     const getLoggedIn = (response: HTTPResponse<AuthDataResponse>)=> {
         if(response.success){
             const { data } = response;
@@ -37,6 +46,7 @@ export const useAuth = () =>{
         }
     }
 
+    /** Attempts to authenticate with the supplied credentials. */
     const login = async(body:LoginProps) => {
         try{
             setLoading(true);
@@ -58,6 +68,7 @@ export const useAuth = () =>{
         }
     }
 
+    /** Creates an account and redirects to the login page after success. */
     const register = async (body: RegisterProps) =>{
         try{
             setLoading(true)
@@ -82,6 +93,7 @@ export const useAuth = () =>{
         
     }
 
+    /** Ends the remote and local session, then redirects to login on success. */
     const logout = async () =>{
         try{
             const response = await apiFetch(`api/logout`);

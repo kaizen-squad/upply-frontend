@@ -6,6 +6,11 @@ import { HTTPResponse } from '@/types';
 import { RefreshTokenResponse } from '@/types/auth';
 import { success } from 'zod';
 
+/**
+ * Exchanges the refresh token cookie for a new access token through the backend.
+ *
+ * @returns The refreshed token response, or a 401 response when no refresh cookie exists.
+ */
 export async function POST() {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get('refreshToken')?.value;

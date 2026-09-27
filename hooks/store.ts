@@ -7,6 +7,7 @@ type UserStoreProps = {
     setUser: (value: User)=>void
 }
 
+/** Zustand hook and store for the currently authenticated user. */
 export const useUserStore = create<UserStoreProps>((set)=> ({
     user: undefined,
     setUser: (value: User)=> {set({user:value})}
@@ -18,6 +19,7 @@ type ApplicationsStoreProps = {
     updateApplicationStatus: (applicationId: string, status: ApplicationStatus) => void
 }
 
+/** Zustand hook and store for the currently displayed mission applications. */
 export const useApplicationsStore = create<ApplicationsStoreProps>((set) => ({
     applications: [],
     setApplications: (applications) => set({ applications }),
@@ -37,7 +39,7 @@ type TokenStoreProps = {
 }
 
 /**
- * Store used to save the access token.
+ * Zustand hook and store for the in-memory access token.
  */
 export const useTokenStore = create<TokenStoreProps>((set)=>({
     accessToken: undefined,

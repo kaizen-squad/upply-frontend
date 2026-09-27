@@ -3,6 +3,15 @@
 import { useState } from 'react';
 import { useMediaQuery } from '@reactuses/core';
 
+/**
+ * Computes responsive pagination boundaries for a list.
+ *
+ * Uses five items per page on narrow screens and ten on wider screens. If the list
+ * shrinks, the returned page is clamped to its new last page.
+ *
+ * @param itemCount - Number of items in the full collection.
+ * @returns Current page, page count, slice boundaries, and a page setter.
+ */
 export function useResponsivePagination(itemCount: number) {
   const isMobile = useMediaQuery('(max-width: 639px)');
   const pageSize = isMobile ? 5 : 10;

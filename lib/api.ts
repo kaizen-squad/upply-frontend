@@ -102,14 +102,26 @@ instance.interceptors.response.use(
         return Promise.reject(error);
 });
 
+/**
+ * Determines whether a request URL targets a local Next.js route.
+ *
+ * @param url - Request URL passed to {@link apiFetch}.
+ * @returns `true` when the URL starts with `/` and should use the local origin.
+ */
 const isNextBackendRoute = (url: string) => url.startsWith('/');
 
 /**
- * The fetch agent use for all request accross the app
- * @param url the endpoint to reach
- * @param body the optional body 
- * @param method method of the request (optional: automatically set to GET when not supplied)
- * @returns res: HTTPResponse {success, message, data}
+ * Sends an HTTP request and returns the response body using the app's common response shape.
+ *
+ * URLs beginning with `/` target local Next.js routes; other URLs target the configured
+ * external backend. Request failures are converted into an unsuccessful `HTTPResponse`
+ * rather than being thrown to the caller.
+ *
+ * @typeParam T - Type of the successful response data.
+ * @param url - Local or external endpoint to request.
+ * @param body - Optional request body.
+ * @param method - HTTP method; defaults to `GET`.
+ * @returns The response body or a normalized error response.
  */
 export default async function apiFetch<T> (url: string, body?: object | undefined,  method?: 'GET'| 'POST'| 'PUT'| 'PATCH' | 'DELETE'): Promise<HTTPResponse<T>> {
 

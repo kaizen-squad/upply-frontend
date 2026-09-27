@@ -7,6 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "npm run test:unit && npm run test:functional",
+    "test:unit": "vitest run --configLoader native",
+    "test:unit:watch": "vitest --configLoader native",
+    "test:functional": "playwright test",
     "tailwind:watch": "tailwindcss -i ./app/globals.css -o ./app/output.css --watch",
     "tailwind:build": "tailwindcss -i ./app/globals.css -o ./app/output.css --minify"
   },
@@ -36,11 +40,16 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
-    "typescript": "^5"
+    "jsdom": "^29.1.1",
+    "typescript": "^5",
+    "vitest": "^3.2.7"
   }
 }

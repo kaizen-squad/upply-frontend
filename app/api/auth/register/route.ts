@@ -5,6 +5,12 @@ import apiFetch from '@/lib/api';
 import { HTTPResponse } from '@/types';
 import { AuthDataResponse } from '@/types/auth';
 
+/**
+ * Registers an account through the backend and stores the resulting session cookies.
+ *
+ * @param request - Incoming request containing the registration payload as JSON.
+ * @returns The access token and user on success, or the backend response on failure.
+ */
 export async function POST(request: Request) {
     
   const body = await request.json();

@@ -10,6 +10,13 @@ export interface UseDashboardReturn<T = CDashboardData | PDashboardData| undefin
   error: string | null
 }
 
+/**
+ * Loads and exposes dashboard data for a client or prestataire account.
+ *
+ * @typeParam T - Dashboard response type; defaults to the application's two dashboard models.
+ * @param role - Role whose dashboard endpoint should be requested.
+ * @returns Dashboard data, loading/error state, and the function used to load it.
+ */
 export function useDashboard<T = CDashboardData | PDashboardData | undefined>(
   role: 'client' | 'prestataire' = 'client'
 ): UseDashboardReturn<T> {

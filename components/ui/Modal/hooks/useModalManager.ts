@@ -13,12 +13,21 @@ export interface ModalConfig {
 }
 
 export interface ModalManager {
+  /** Modals currently open in the interface. */
   modals: ModalConfig[];
+  /** Adds a modal and returns its identifier. */
   open: (config: Omit<ModalConfig, 'id'> & { id?: string }) => string;
+  /** Removes the modal with the supplied identifier. */
   close: (id: string) => void;
+  /** Removes all open modals. */
   closeAll: () => void;
 }
 
+/**
+ * Creates the state manager used to open and dismiss one or more modals.
+ *
+ * @returns The current modal list and operations to open, close, or clear it.
+ */
 export function useModalManager(): ModalManager {
   const [modals, setModals] = useState<ModalConfig[]>([]);
 

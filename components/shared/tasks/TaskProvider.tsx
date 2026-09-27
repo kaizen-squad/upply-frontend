@@ -11,6 +11,13 @@ interface TaskProviderProps {
 
 const TasksContext = createContext<ReturnType<typeof useTasks> | undefined>(undefined);
 
+/**
+ * Reads task state from the nearest `TaskProvider`.
+ *
+ * @typeParam T - Task data type managed by the provider.
+ * @returns The task hook result from the context.
+ * @throws {Error} When called outside a `TaskProvider`.
+ */
 export function useTasksContext<T = TaskProps>() {
   const context = useContext(TasksContext);
   

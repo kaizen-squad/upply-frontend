@@ -13,14 +13,15 @@ interface ModalifyOptions {
 }
 
 /**
- * Hook qui fournit la fonction modalify pour afficher facilement une modale
- * @returns {Object} { modalify: fonction pour afficher une modale }
+ * Provides a convenience function for opening a modal with optional callbacks.
+ *
+ * @returns A modal opener that returns its id, plus operations to close one or all modals.
  *
  * @example
  * const { modalify } = useModalify();
  *
  * const handleDelete = async () => {
- *   await modalify(
+ *   modalify(
  *     <p>Êtes-vous sûr de vouloir supprimer?</p>,
  *     {
  *       title: 'Confirmation',
@@ -32,6 +33,7 @@ interface ModalifyOptions {
 export function useModalify() {
   const { open, close, closeAll } = useModal();
 
+  /** Opens a modal and returns the id assigned by the modal manager. */
   const modalify = useCallback(
     (children: ReactNode, options: ModalifyOptions = {}) => {
       const { id, title, size = 'md', onConfirm, onCancel } = options;

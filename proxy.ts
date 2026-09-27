@@ -4,6 +4,12 @@ import type { NextRequest } from 'next/server';
 import { User } from './types/auth';
 
 
+/**
+ * Applies session and role-based redirects before protected pages are rendered.
+ *
+ * @param request - Incoming request inspected for its path and session cookies.
+ * @returns A redirect for unauthenticated or wrong-role requests, otherwise continues.
+ */
 export async function proxy(request: NextRequest) {
   const refreshToken = request.cookies.get('refreshToken');
   const isLoggedIn = !!refreshToken;

@@ -91,10 +91,22 @@ export function formatFrenchDateIntl(dateStr: string): string {
 
 const commission = 0.1;
 
+/**
+ * Calculates the platform commission using the current 10% rate.
+ *
+ * @param budget - Mission budget in the same currency unit as the result.
+ * @returns Ten percent of the supplied budget.
+ */
 export function commissionPlateform(budget: number): number {
   return budget * commission
 }
 
+/**
+ * Builds uppercase initials from the first character of each space-separated name part.
+ *
+ * @param name - Full name to abbreviate.
+ * @returns Concatenated uppercase initials.
+ */
 export function getInitials (name: string): string {
   return name.split(' ').map(w => w[0]).join('').toUpperCase();
 }
@@ -115,9 +127,13 @@ export function formatAmount(amount: number): string {
 }
 
 /**
- * Utility function to build FormData for file upload
- * @param data Object containing fields and files
- * @returns FormData ready to send
+ * Converts an object into `FormData` for multipart requests.
+ *
+ * Blob values are appended as files, nested objects are JSON-encoded, and array items
+ * are appended under repeated keys.
+ *
+ * @param data - Fields and files to append.
+ * @returns Form data ready to pass to the HTTP client.
  */
 export function buildFormData(data: Record<string, unknown>): FormData {
   const formData = new FormData();
@@ -141,6 +157,15 @@ export function buildFormData(data: Record<string, unknown>): FormData {
   return formData;
 }
 
+/**
+ * Returns an API response unchanged.
+ *
+ * This compatibility helper currently performs no transformation or validation.
+ *
+ * @typeParam T - Type of the response data.
+ * @param response - Response to pass through.
+ * @returns The same response object.
+ */
 export function ApiResponseInterceptor<T> (response:HTTPResponse<T>): HTTPResponse<T>{
     if(!response)
     {}

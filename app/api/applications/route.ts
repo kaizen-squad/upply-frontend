@@ -2,6 +2,12 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { PrestataireSelectedDataSchema } from '@/types';
 
+/**
+ * Validates and stores the selected prestataire/application data in an HttpOnly cookie.
+ *
+ * @param request - Incoming request containing the selected data as JSON.
+ * @returns A success response or a 400 response when JSON or schema validation fails.
+ */
 export async function POST (request: Request) {
 
     let body: unknown;
@@ -35,6 +41,11 @@ export async function POST (request: Request) {
     return NextResponse.json({success: true, message: 'Application data stored in cookie.'});
 }
 
+/**
+ * Reads and validates the selected application data from its cookie.
+ *
+ * @returns The saved selection, or an unsuccessful response if it is absent or invalid.
+ */
 export async function GET() {
     const cookieStore = await cookies();
     const applicationData = cookieStore.get('applicationData');
@@ -53,6 +64,11 @@ export async function GET() {
     return NextResponse.json({success: false, data: null, message: 'No application data found in cookie'});
 }
 
+/**
+ * Deletes the saved application-data cookie.
+ *
+ * @returns A JSON success response after deleting the cookie.
+ */
 export async function DELETE() {
     const cookieStore = await cookies();
     cookieStore.delete('applicationData');

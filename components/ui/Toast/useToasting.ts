@@ -1,5 +1,11 @@
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
+
+/**
+ * Provides the application's standard toast notification functions.
+ *
+ * @returns `notify` for success, error, and warning messages, plus the custom toast helper.
+ */
 export const useToasting = () => {
     const notify = useCallback((message: string, type: 'success' | 'error' | 'warning') => {
     switch (type) { 
