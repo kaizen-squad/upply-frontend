@@ -108,9 +108,7 @@ Les scripts et les configurations correspondantes sont définis dans `package.js
 
 ## Paiement, notifications et modales
 
-L’intégration FedaPay est dans `components/dashboard/client/payment/`. Les notifications et modales sont fournies par les providers assemblés dans `app/Providers.tsx`. La documentation du système de modales est dans [MODALIFY_DOCUMENTATION.md](./MODALIFY_DOCUMENTATION.md).
-
-Les conventions de branches, commits et revue figurent dans [REPOSITORY-CONVENTIONS.md](./REPOSITORY-CONVENTIONS.md). Les consignes de maintenance du projet figurent dans [CLAUDE.md](./CLAUDE.md).
+L’intégration FedaPay est dans `components/dashboard/client/payment/`. Les notifications et modales sont fournies par les providers assemblés dans `app/Providers.tsx`.
 
 ## Production
 
