@@ -5,9 +5,6 @@ const projectRoot = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
   root: projectRoot,
-  esbuild: {
-    jsx: 'automatic',
-  },
   resolve: {
     alias: {
       '@': projectRoot,
@@ -19,7 +16,6 @@ export default defineConfig({
     setupFiles: ['./tests/setup.ts'],
     clearMocks: true,
     restoreMocks: true,
-    minWorkers: 1,
     maxWorkers: 2,
   },
 });
